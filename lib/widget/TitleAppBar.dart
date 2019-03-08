@@ -111,9 +111,9 @@ class _TitleAppBarState extends BaseState<TitleAppBar> {
               ),
             ),
           ),
-      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top * 0.8),
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       width: MediaQuery.of(context).size.width,
-      height: 48.0 + MediaQuery.of(context).padding.top * 0.8,
+      height: 48.0 + MediaQuery.of(context).padding.top ,
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
