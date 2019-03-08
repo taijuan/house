@@ -1,0 +1,83 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+apply plugin: 'com.android.application'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+android {
+    compileSdkVersion 28
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    defaultConfig {
+        applicationId "berry.android.dm"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 102
+        versionName "1.0.2"
+        resConfig "en"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("house.jks")
+            storePassword "123456"
+            keyAlias "house"
+            keyPassword "123456"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "house"
+    productFlavors {
+        house {
+            resValue("string", "appName", "house")
+        }
+        zj {
+            applicationIdSuffix = ".zj"
+            resValue("string", "appName", "中介")
+        }
+        fd {
+            applicationIdSuffix = ".fd"
+            resValue("string", "appName", "房东")
+        }
+        fk {
+            applicationIdSuffix = ".fk"
+            resValue("string", "appName", "房客")
+        }
+        wx {
+            applicationIdSuffix = ".wx"
+            resValue("string", "appName", "维修")
+        }
+    }
+    productFlavors.all { flavor ->
+        flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+}

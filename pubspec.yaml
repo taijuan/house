@@ -1,0 +1,79 @@
+name: house
+description: A new Flutter application.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^0.5.1+1
+  image_picker: ^0.5.0+3
+  cached_network_image: ^0.6.1
+  dio: ^2.0.14
+  photo_view: ^0.2.1
+  google_maps_flutter: ^0.2.0+6
+  url_launcher: ^5.0.1
+  intl: ^0.15.7
+  permission_handler: ^3.0.0
+  location: ^2.0.0
+  webview_flutter: ^0.3.3+1
+  package_info: ^0.4.0+1
+  flutter_image_compress: ^0.2.4
+
+flutter:
+  #图片资源
+  assets:
+  - image/house_back_black.webp
+  - image/house_back_white.webp
+  - image/house_email_sent_ok.webp
+  - image/house_signup_image.webp
+  - image/house_views_green.webp
+  - image/house_views_gray.webp
+  - image/house_about_me.webp
+  - image/house_agency_me_gray.webp
+  - image/house_agency_me_green.webp
+  - image/house_agency_properties_gray.webp
+  - image/house_agency_properties_green.webp
+  - image/house_agency_task_gray.webp
+  - image/house_agency_task_green.webp
+  - image/house_agency_vendor_green.webp
+  - image/house_agency_vendor_grey.webp
+  - image/house_notification.webp
+  - image/house_profile.webp
+  - image/house_settings.webp
+  - image/house_photo.webp
+  - image/house_loading_image_placeholder.webp
+  - image/house_add.webp
+  - image/house_map.webp
+  - image/house_location.webp
+  - image/house_sqft.webp
+  - image/house_car.webp
+  - image/house_built.webp
+  - image/house_bed.webp
+  - image/house_bath.webp
+  - image/house_email.webp
+  - image/house_phone.webp
+  - image/house_fold.webp
+  - image/house_search.webp
+  - image/house_unfold_white.webp
+  - image/house_auth_select.webp
+  - image/house_auth_unselect.webp
+  - image/house_timeline.webp
+  - image/house_timeline_nor.webp
+  - image/house_marker_green.webp
+  - image/house_marker_red.webp
+  - image/launch_background.webp
+  #自定义字体
+  fonts:
+  - family: LatoRegular
+    fonts:
+    - asset: font/lato_regular.ttf
+  - family: LatoSemiBold
+    fonts:
+    - asset: font/lato_semibold.ttf
+  - family: LatoBold
+    fonts:
+    - asset: font/lato_bold.ttf
