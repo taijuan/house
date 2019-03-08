@@ -12,6 +12,9 @@ TextStyle createTextStyle({
   String fontFamily: fontFamilyRegular,
   double height: 1.2,
 }) {
+  if (Platform.isIOS) {
+    fontSize = fontSize * 1.2;
+  }
   return TextStyle(
     color: color,
     fontSize: fontSize,
