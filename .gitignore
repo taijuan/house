@@ -5,3 +5,7 @@ pubspec.lock
 .packages
 .flutter-plugins
 android/local.properties
+android/.gradle/
+android/gradlew
+android/gradlew.bat
+build/
