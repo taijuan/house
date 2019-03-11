@@ -119,125 +119,135 @@ class _CertificateListPageState
   }
 
   _buildCertificateItem(Certificate data) {
-    return Container(
+    return Card(
       margin: EdgeInsets.symmetric(horizontal: 16),
-      height: 160,
-      decoration: BoxDecoration(
-        color: HouseColor.white,
-        borderRadius: BorderRadius.circular(4),
-        border: Border(
-          left: BorderSide(
-            color: HouseColor.green,
-            width: 8,
-          ),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            height: 36,
-            child: Row(
-              children: <Widget>[
-                Text(
-                  data.typeName,
-                  style: createTextStyle(
-                    fontSize: 17,
-                    fontFamily: fontFamilySemiBold,
-                  ),
-                ),
-                Spacer(),
-                Text(
-                  data.typeName,
-                  style: createTextStyle(
-                    fontSize: 17,
-                    fontFamily: fontFamilySemiBold,
-                  ),
-                ),
-              ],
+      clipBehavior: Clip.antiAlias,
+      elevation: 0,
+      child: Container(
+        height: 160,
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              color: _getStatusColor(data.status),
+              width: 8,
             ),
           ),
-          Container(
-            color: HouseColor.divider,
-            height: 0.5,
-          ),
-          Expanded(
-            child: Padding(
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
               padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              height: 36,
+              child: Row(
                 children: <Widget>[
-                  _buildNameValue(
-                    name: HouseValue.of(context).licenseNo,
-                    value: data.certificateNo,
+                  Text(
+                    data.typeName,
+                    style: createTextStyle(
+                      fontSize: 17,
+                      fontFamily: fontFamilySemiBold,
+                    ),
                   ),
-                  _buildNameValue(
-                    name: HouseValue.of(context).expireDate,
-                    value: data.endDate,
+                  Spacer(),
+                  Text(
+                    data.status.desc,
+                    style: createTextStyle(
+                      fontSize: 17,
+                      fontFamily: fontFamilySemiBold,
+                      color: _getStatusColor(data.status),
+                    ),
                   ),
                 ],
               ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(12),
-            child: Row(
-              children: <Widget>[
-                Spacer(),
-                Container(
-                  height: 28,
-                  child: OutlineButton(
-                    onPressed: () {
-                      _deleteDialog(id: data.id);
-                    },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    borderSide: BorderSide(
-                      color: HouseColor.gray,
-                      width: 0.5,
-                    ),
-                    padding: EdgeInsets.only(left: 8, right: 8, bottom: 4),
-                    child: Text(
-                      HouseValue.of(context).delete,
-                      style: createTextStyle(),
-                    ),
-                  ),
-                ),
-                Container(width: 12),
-                Container(
-                  height: 28,
-                  child: OutlineButton(
-                    onPressed: () {
-                      push<bool>(
-                        context,
-                        CertificatePage(data: data),
-                      ).then((refreshState) {
-                        if (refreshState == true) {
-                          _refreshKey.currentState.show();
-                        }
-                      });
-                    },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    borderSide: BorderSide(
-                      color: HouseColor.gray,
-                      width: 0.5,
-                    ),
-                    padding: EdgeInsets.only(left: 8, right: 8, bottom: 4),
-                    child: Text(
-                      HouseValue.of(context).modify,
-                      style: createTextStyle(),
-                    ),
-                  ),
-                ),
-              ],
+            Container(
+              color: HouseColor.divider,
+              height: 0.5,
             ),
-          ),
-        ],
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildNameValue(
+                      name: HouseValue.of(context).licenseNo,
+                      value: data.certificateNo,
+                    ),
+                    _buildNameValue(
+                      name: HouseValue.of(context).expireDate,
+                      value: data.endDate,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(12),
+              child: Row(
+                children: <Widget>[
+                  Spacer(),
+                  Container(
+                    height: 28,
+                    child: OutlineButton(
+                      onPressed: () {
+                        _deleteDialog(id: data.id);
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      borderSide: BorderSide(
+                        color: HouseColor.gray,
+                        width: 0.5,
+                      ),
+                      padding: EdgeInsets.only(left: 8, right: 8, bottom: 4),
+                      child: Text(
+                        HouseValue.of(context).delete,
+                        style: createTextStyle(),
+                      ),
+                    ),
+                  ),
+                  _buildModifyBtn(data),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModifyBtn(Certificate data) {
+    if (data.status.value == 1) {
+      return SizedBox.shrink();
+    }
+    return Container(
+      height: 28,
+      margin: EdgeInsets.only(left: 12),
+      child: OutlineButton(
+        onPressed: () {
+          push<bool>(
+            context,
+            CertificatePage(data: data),
+          ).then((refreshState) {
+            if (refreshState == true) {
+              _refreshKey.currentState.show();
+            }
+          });
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+        borderSide: BorderSide(
+          color: HouseColor.gray,
+          width: 0.5,
+        ),
+        padding: EdgeInsets.only(left: 8, right: 8, bottom: 4),
+        child: Text(
+          HouseValue.of(context).modify,
+          style: createTextStyle(),
+        ),
       ),
     );
   }
@@ -290,5 +300,15 @@ class _CertificateListPageState
         pop(context);
         showToast(context, e.toString());
       });
+  }
+
+  _getStatusColor(TypeStatus data) {
+    if (data.value == 0) {
+      return HouseColor.yellow;
+    } else if (data.value == 1) {
+      return HouseColor.green;
+    } else {
+      return HouseColor.red;
+    }
   }
 }

@@ -18,17 +18,17 @@ void main() {
         backgroundColor: HouseColor.white,
         scaffoldBackgroundColor: HouseColor.white,
         dialogBackgroundColor: HouseColor.white,
-        buttonTheme: ButtonThemeData(
-          minWidth: 48,
-          height: 36,
-          padding: EdgeInsets.only(),
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        ),
-        textTheme: TextTheme(
-          caption: TextStyle(
-            color: HouseColor.gray,
-          ),
-        ),
+        buttonTheme: ThemeData.light().buttonTheme.copyWith(
+              minWidth: 48,
+              height: 36,
+              padding: EdgeInsets.only(),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+        textTheme: ThemeData.light().textTheme.copyWith(
+              caption: TextStyle(
+                color: HouseColor.gray,
+              ),
+            ),
       ),
       localizationsDelegates: [
         DefaultMaterialLocalizations.delegate,

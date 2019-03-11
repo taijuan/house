@@ -10,6 +10,11 @@ class Certificate {
   String certificateNo;
   File imgStr;
   String imageName;
+  //  待审核(0, "待审核"),
+  //	审核通过(1, "审核通过"),
+  //	即将过期(2, "即将过期"),
+  //  过期(3, "过期"),
+  //  删除(4, "删除")
   TypeStatus status;
 
   Certificate.fromJson(Map<String, dynamic> json) {
