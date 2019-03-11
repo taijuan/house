@@ -3,7 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:house/importLib.dart';
 
 void main() {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+  const SystemUiOverlayStyle dark = SystemUiOverlayStyle(
+    systemNavigationBarColor: HouseColor.transparent,
+    systemNavigationBarDividerColor: HouseColor.transparent,
+    statusBarColor: HouseColor.transparent,
+    systemNavigationBarIconBrightness: Brightness.light,
+    statusBarIconBrightness: Brightness.dark,
+    statusBarBrightness: Brightness.light,
+  );
+  SystemChrome.setSystemUIOverlayStyle(dark);
   return runApp(
     MaterialApp(
       theme: ThemeData.light().copyWith(

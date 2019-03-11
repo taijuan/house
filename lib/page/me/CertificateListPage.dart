@@ -125,6 +125,12 @@ class _CertificateListPageState
       decoration: BoxDecoration(
         color: HouseColor.white,
         borderRadius: BorderRadius.circular(4),
+        border: Border(
+          left: BorderSide(
+            color: HouseColor.green,
+            width: 8,
+          ),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -10,7 +10,7 @@ class Certificate {
   String certificateNo;
   File imgStr;
   String imageName;
-  dynamic status;
+  TypeStatus status;
 
   Certificate.fromJson(Map<String, dynamic> json) {
     id = json["id"];
@@ -20,7 +20,7 @@ class Certificate {
     certificateNo = json["certificateNo"];
     picUrl = json["picUrl"];
     thumbUrl = json["thumbUrl"];
-    status = json["status"];
+    status = TypeStatus.fromJson(json["status"] ?? {});
   }
 
   Map<String, dynamic> toJson() => {
