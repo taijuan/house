@@ -41,7 +41,7 @@ class HouseBigCard extends StatelessWidget {
                         ),
                       ),
                     )
-                  : Container(),
+                  : Container(width: 0, height: 0),
             ],
           ),
           SizedBox(

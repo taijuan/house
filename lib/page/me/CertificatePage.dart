@@ -224,7 +224,7 @@ class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
     } else if (DataUtils.getImageUrl(widget.data.picUrl).isNotEmpty) {
       return HouseCacheNetworkImage(DataUtils.getImageUrl(widget.data.picUrl));
     } else {
-      return Container();
+      return Container(width: 0, height: 0);
     }
   }
 

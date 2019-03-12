@@ -55,7 +55,7 @@ class _SignInAppBarState extends BaseState<SignInAppBar> {
                     ),
                   ),
                 )
-              : Container()
+              : Container(width: 0, height: 0)
         ],
       ),
     );

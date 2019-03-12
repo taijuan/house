@@ -26,7 +26,7 @@ class _LesseeHomeState extends BaseAppBarAndBodyState<LesseeHome> {
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
-      navigatorBack: Container(),
+      navigatorBack: Container(width: 0, height: 0),
       title: TitleAppBar.appBarTitle(
         HouseValue.of(context).identities[2],
         style: createTextStyle(

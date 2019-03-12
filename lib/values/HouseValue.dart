@@ -249,6 +249,8 @@ class En {
   String success = "Success";
   String delete = "Delete";
   String modify = "Modify";
-  String areYouSureToDeleteThisCertificate = "Are you sure to delete this certificate ?";
-  String areYouSureToModifyThisCertificate = "Are you sure to modify this certificate ?";
+  String areYouSureToDeleteThisCertificate =
+      "Are you sure to delete this certificate ?";
+  String areYouSureToModifyThisCertificate =
+      "Are you sure to modify this certificate ?";
 }

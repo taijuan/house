@@ -44,7 +44,7 @@ class _CheckInviteCodeTextFieldState
                   ),
                 ),
               ),
-              Expanded(child: Container()),
+              Expanded(child: Container(width: 0, height: 0)),
               Container(
                 width: 40,
                 height: 40,
@@ -62,7 +62,7 @@ class _CheckInviteCodeTextFieldState
                   ),
                 ),
               ),
-              Expanded(child: Container()),
+              Expanded(child: Container(width: 0, height: 0)),
               Container(
                 width: 40,
                 height: 40,
@@ -80,7 +80,7 @@ class _CheckInviteCodeTextFieldState
                   ),
                 ),
               ),
-              Expanded(child: Container()),
+              Expanded(child: Container(width: 0, height: 0)),
               Container(
                 width: 40,
                 height: 40,
@@ -98,7 +98,7 @@ class _CheckInviteCodeTextFieldState
                   ),
                 ),
               ),
-              Expanded(child: Container()),
+              Expanded(child: Container(width: 0, height: 0)),
               Container(
                 width: 40,
                 height: 40,
@@ -116,7 +116,7 @@ class _CheckInviteCodeTextFieldState
                   ),
                 ),
               ),
-              Expanded(child: Container()),
+              Expanded(child: Container(width: 0, height: 0)),
               Container(
                 width: 40,
                 height: 40,

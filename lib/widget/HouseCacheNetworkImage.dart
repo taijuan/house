@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:house/importLib.dart';
 
 class HouseCacheNetworkImage extends StatelessWidget {
+  static const AssetImage placeholder =
+      AssetImage("image/house_loading_image_placeholder.webp");
   final String data;
   final double aspectRatio;
   final double width;
@@ -23,7 +25,7 @@ class HouseCacheNetworkImage extends StatelessWidget {
         width: width,
         height: height,
         image: CachedNetworkImageProvider(data),
-        placeholder: AssetImage("image/house_loading_image_placeholder.webp"),
+        placeholder: placeholder,
         fit: fit,
       );
     } else {
@@ -31,7 +33,7 @@ class HouseCacheNetworkImage extends StatelessWidget {
         aspectRatio: aspectRatio,
         child: FadeInImage(
           image: CachedNetworkImageProvider(data),
-          placeholder: AssetImage("image/house_loading_image_placeholder.webp"),
+          placeholder: placeholder,
           fit: fit,
         ),
       );

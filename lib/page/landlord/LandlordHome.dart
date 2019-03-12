@@ -26,7 +26,7 @@ class _LandlordHomeState extends BaseAppBarAndBodyState<LandlordHome> {
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
-      navigatorBack: Container(),
+      navigatorBack: Container(width: 0, height: 0),
       title: TitleAppBar.appBarTitle(
         TypeStatus.userType[1].descEn,
         style: createTextStyle(

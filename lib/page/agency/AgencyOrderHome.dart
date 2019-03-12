@@ -5,7 +5,8 @@ class AgencyOrderHome extends BaseStatefulWidget {
   _AgencyOrderHomeState createState() => _AgencyOrderHomeState();
 }
 
-class _AgencyOrderHomeState extends BaseState<AgencyOrderHome> {
+class _AgencyOrderHomeState extends BaseState<AgencyOrderHome>
+    with AutomaticKeepAliveClientMixin<AgencyOrderHome> {
   bool _isShowPop = false;
   TypeStatus _curTypeStatus = TypeStatus.orderStatus[0];
 
@@ -129,4 +130,7 @@ class _AgencyOrderHomeState extends BaseState<AgencyOrderHome> {
       return SizedBox.shrink();
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

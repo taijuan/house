@@ -113,22 +113,22 @@ class _TitleAppBarState extends BaseState<TitleAppBar> {
           ),
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       width: MediaQuery.of(context).size.width,
-      height: 48.0 + MediaQuery.of(context).padding.top ,
+      height: 48.0 + MediaQuery.of(context).padding.top,
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          widget.title ?? Container(),
+          widget.title ?? Container(width: 0, height: 0),
           Positioned(
             top: 0,
             left: 0,
             height: 48,
-            child: widget.navigatorBack ?? Container(),
+            child: widget.navigatorBack ?? Container(width: 0, height: 0),
           ),
           Positioned(
             top: 0,
             right: 0,
             height: 48,
-            child: widget.menu ?? Container(),
+            child: widget.menu ?? Container(width: 0, height: 0),
           ),
         ],
       ),

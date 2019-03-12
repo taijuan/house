@@ -154,4 +154,7 @@ class _VendorListHomeState extends BaseAppBarAndBodyState<VendorListHome> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

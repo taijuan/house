@@ -123,4 +123,7 @@ class _MeHomeState extends BaseAppBarAndBodyState<MeHome> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -200,13 +200,15 @@ class _NoHaveInviteCodeSignUpState
       null,
       (index + 1).toString(),
       cancelToken: cancelToken,
-    )..then((user) {
-      user.saveUser();
-      loginSuccessToNavigator(context);
-    })..catchError((e) {
-      pop(context);
-      showToast(context, e.toString());
-    });
+    )
+      ..then((user) {
+        user.saveUser();
+        loginSuccessToNavigator(context);
+      })
+      ..catchError((e) {
+        pop(context);
+        showToast(context, e.toString());
+      });
   }
 
   bool _checkData({bool checkCode: true}) {

@@ -1,7 +1,7 @@
 import 'package:house/importLib.dart';
 
 abstract class BaseAppBarAndBodyState<T extends BaseStatefulWidget>
-    extends BaseState<T> {
+    extends BaseState<T> with AutomaticKeepAliveClientMixin<T> {
   Color backgroundColor;
 
   @override
@@ -31,4 +31,7 @@ abstract class BaseAppBarAndBodyState<T extends BaseStatefulWidget>
   Widget body(BuildContext context);
 
   Widget bottomNavigationBar(BuildContext context) => SizedBox.shrink();
+
+  @override
+  bool get wantKeepAlive => false;
 }

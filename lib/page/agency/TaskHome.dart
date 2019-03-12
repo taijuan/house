@@ -6,7 +6,8 @@ class TaskHome extends BaseStatefulWidget {
 }
 
 class _TaskHomeState extends BaseAppBarAndBodyState<TaskHome>
-    with SingleTickerProviderStateMixin<TaskHome> {
+    with
+        SingleTickerProviderStateMixin<TaskHome>{
   TabController _controller;
 
   @override
@@ -67,4 +68,7 @@ class _TaskHomeState extends BaseAppBarAndBodyState<TaskHome>
       controller: _controller,
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

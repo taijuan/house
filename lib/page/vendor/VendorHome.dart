@@ -15,13 +15,12 @@ class _VendorHomeState extends BaseAppBarAndBodyState<VendorHome> {
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
-      navigatorBack: Container(),
+      navigatorBack: Container(width: 0, height: 0),
       title: _buildTypeStatus(context),
       decoration: BoxDecoration(color: HouseColor.green),
       menu: TitleAppBar.menuToMe(context),
     );
   }
-
 
   @override
   Widget body(BuildContext context) {

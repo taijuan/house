@@ -35,7 +35,7 @@ class _ChangeNameState extends BaseAppBarAndBodyState<ChangeName> {
   @override
   Widget body(BuildContext context) {
     if (user == null) {
-      return Container();
+      return Container(width: 0, height: 0);
     }
     _mController =
         _mController ?? TextEditingController(text: user.firstName ?? "");

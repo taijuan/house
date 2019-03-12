@@ -6,66 +6,43 @@ class AgencyHome extends BaseStatefulWidget {
   _AgencyHomeState createState() => _AgencyHomeState();
 }
 
+const IconData home = IconData(0xe612, fontFamily: 'tabIcon');
+const IconData task = IconData(0xe607, fontFamily: 'tabIcon');
+const IconData vendor = IconData(0xe608, fontFamily: 'tabIcon');
+const IconData me = IconData(0xe606, fontFamily: 'tabIcon');
+
 class _AgencyHomeState extends BaseState<AgencyHome> {
-  int _index = 0;
-
-  BottomNavigationBarItem _tabItem(
-    String icon,
-    String activeIcon,
-    String text, {
-    bool showHot = false,
-  }) {
-    return BottomNavigationBarItem(
-      icon: Image.asset(icon),
-      activeIcon: Image.asset(activeIcon),
-      title: Text(
-        text,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: IndexedStack(
-        index: _index,
-        children: <Widget>[HouseHome(), TaskHome(), VendorListHome(), MeHome()],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        iconSize: 24.0,
-        fixedColor: HouseColor.green,
-        currentIndex: _index,
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          setState(() {
-            this._index = index;
-          });
-        },
+    return CupertinoTabScaffold(
+      tabBar: CupertinoTabBar(
+        iconSize: 28,
+        activeColor: HouseColor.green,
+        inactiveColor: HouseColor.gray,
+        backgroundColor: HouseColor.white,
+        border: Border(),
         items: [
-          _tabItem(
-            "image/house_agency_properties_gray.webp",
-            "image/house_agency_properties_green.webp",
-            HouseValue.of(context).properties,
+          BottomNavigationBarItem(
+            icon: Icon(home),
+            title: Text(HouseValue.of(context).properties),
           ),
-          _tabItem(
-            "image/house_agency_task_gray.webp",
-            "image/house_agency_task_green.webp",
-            HouseValue.of(context).task,
+          BottomNavigationBarItem(
+            icon: Icon(task),
+            title: Text(HouseValue.of(context).task),
           ),
-          _tabItem(
-            "image/house_agency_vendor_grey.webp",
-            "image/house_agency_vendor_green.webp",
-            HouseValue.of(context).vendor,
+          BottomNavigationBarItem(
+            icon: Icon(vendor),
+            title: Text(HouseValue.of(context).vendor),
           ),
-          _tabItem(
-            "image/house_agency_me_gray.webp",
-            "image/house_agency_me_green.webp",
-            HouseValue.of(context).me,
-            showHot: true,
+          BottomNavigationBarItem(
+            icon: Icon(me),
+            title: Text(HouseValue.of(context).me),
           ),
         ],
       ),
+      tabBuilder: (context, index) {
+        return [HouseHome(), TaskHome(), VendorListHome(), MeHome()][index];
+      },
     );
   }
 }

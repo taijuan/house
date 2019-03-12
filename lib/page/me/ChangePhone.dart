@@ -35,7 +35,7 @@ class _ChangePhoneState extends BaseAppBarAndBodyState<ChangePhone> {
   @override
   Widget body(BuildContext context) {
     if (user == null) {
-      return Container();
+      return Container(width: 0, height: 0);
     }
     controller = controller ?? TextEditingController(text: user.tel ?? "");
     return ListView(

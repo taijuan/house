@@ -73,7 +73,7 @@ class User {
 
   String getUserName() {
     if (DataUtils.isEmpty(firstName) && DataUtils.isEmpty(lastName)) {
-      return email??"";
+      return email ?? "";
     } else if (DataUtils.isEmpty(firstName)) {
       return lastName;
     } else if (DataUtils.isEmpty(lastName)) {

@@ -33,9 +33,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
       context: context,
       navigatorBack: TitleAppBar.navigatorBackBlack(context),
       title: TitleAppBar.appBarTitle(
-        HouseValue
-            .of(context)
-            .profile,
+        HouseValue.of(context).profile,
       ),
     );
   }
@@ -45,15 +43,12 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
     return ListView(
       padding: EdgeInsets.only(),
       children: [
-
         ///firstName
         _nameAndValue(
           onPressed: () {
             push(context, ChangeName()).whenComplete(_refresh);
           },
-          name: HouseValue
-              .of(context)
-              .firstName,
+          name: HouseValue.of(context).firstName,
           value: user.firstName,
         ),
 
@@ -62,9 +57,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
           onPressed: () {
             push(context, ChangeName()).whenComplete(_refresh);
           },
-          name: HouseValue
-              .of(context)
-              .lastName,
+          name: HouseValue.of(context).lastName,
           value: user.lastName,
         ),
 
@@ -73,9 +66,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
           onPressed: () {
             push(context, ChangeEmail()).whenComplete(_refresh);
           },
-          name: HouseValue
-              .of(context)
-              .email,
+          name: HouseValue.of(context).email,
           value: user.email,
         ),
 
@@ -84,9 +75,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
           onPressed: () {
             push(context, ChangePhone()).whenComplete(_refresh);
           },
-          name: HouseValue
-              .of(context)
-              .phone,
+          name: HouseValue.of(context).phone,
           value: user.tel,
         ),
 
@@ -95,9 +84,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
           onPressed: () {
             push(context, ChangePassword()).whenComplete(_refresh);
           },
-          name: HouseValue
-              .of(context)
-              .password,
+          name: HouseValue.of(context).password,
           value: "",
         ),
         _nameAndValue(
@@ -105,9 +92,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
             push(
               context,
               TextFieldPage(
-                HouseValue
-                    .of(context)
-                    .company,
+                HouseValue.of(context).company,
                 value: user.companyName,
                 maxLength: 100,
                 maxLines: 4,
@@ -118,9 +103,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
               }
             });
           },
-          name: HouseValue
-              .of(context)
-              .company,
+          name: HouseValue.of(context).company,
           value: user.companyName,
           showNull: user.type.value != TypeStatus.vendor.value,
         ),
@@ -142,9 +125,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
               }
             });
           },
-          name: HouseValue
-              .of(context)
-              .area,
+          name: HouseValue.of(context).area,
           value: _area,
           showNull: user.type.value != TypeStatus.vendor.value,
         ),
@@ -153,9 +134,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
             push(
               context,
               TextFieldPage(
-                HouseValue
-                    .of(context)
-                    .address,
+                HouseValue.of(context).address,
                 value: user.address,
                 maxLength: 100,
                 maxLines: 4,
@@ -166,9 +145,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
               }
             });
           },
-          name: HouseValue
-              .of(context)
-              .address,
+          name: HouseValue.of(context).address,
           value: user.address,
           showNull: user.type.value != TypeStatus.vendor.value,
         ),
@@ -177,9 +154,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
             push(
               context,
               TextFieldPage(
-                HouseValue
-                    .of(context)
-                    .companyInfo,
+                HouseValue.of(context).companyInfo,
                 value: user.companyProfile,
                 maxLength: 600,
                 maxLines: 10,
@@ -190,9 +165,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
               }
             });
           },
-          name: HouseValue
-              .of(context)
-              .companyInfo,
+          name: HouseValue.of(context).companyInfo,
           value: user.companyProfile,
           showNull: user.type.value != TypeStatus.vendor.value,
         ),
@@ -264,8 +237,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
       return "";
     } else {
       data.sort(
-            (a, b) =>
-            b.checked.toString().compareTo(
+        (a, b) => b.checked.toString().compareTo(
               a.checked.toString(),
             ),
       );

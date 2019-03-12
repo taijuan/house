@@ -33,14 +33,6 @@ flutter:
   - image/house_views_green.webp
   - image/house_views_gray.webp
   - image/house_about_me.webp
-  - image/house_agency_me_gray.webp
-  - image/house_agency_me_green.webp
-  - image/house_agency_properties_gray.webp
-  - image/house_agency_properties_green.webp
-  - image/house_agency_task_gray.webp
-  - image/house_agency_task_green.webp
-  - image/house_agency_vendor_green.webp
-  - image/house_agency_vendor_grey.webp
   - image/house_notification.webp
   - image/house_profile.webp
   - image/house_settings.webp
@@ -77,3 +69,7 @@ flutter:
   - family: LatoBold
     fonts:
     - asset: font/lato_bold.ttf
+  - family: tabIcon
+    fonts:
+    - asset: font/tab_icon.ttf
+

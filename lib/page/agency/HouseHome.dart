@@ -151,4 +151,7 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
       );
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

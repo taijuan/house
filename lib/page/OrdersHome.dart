@@ -166,7 +166,7 @@ class _OrdersHomeState extends BaseState<OrdersHome>
 
   Widget _getRepairStatus(Order data) {
     if (data.repairQuoteStatus.descEn == null) {
-      return Container();
+      return Container(width: 0, height: 0);
     }
     return Text(
       data.repairQuoteStatus.descEn,

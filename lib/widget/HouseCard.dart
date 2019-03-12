@@ -36,7 +36,8 @@ class HouseCard extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     data.address,
-                    style: createTextStyle(fontFamily: fontFamilySemiBold,height: 1),
+                    style: createTextStyle(
+                        fontFamily: fontFamilySemiBold, height: 1),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
