@@ -11,13 +11,10 @@ class MapHome extends BaseStatefulWidget {
 }
 
 class MapHomeState extends BaseState<MapHome> {
-  GoogleMapController _googleMapController;
-  LatLng _latLng;
   List<LatLonHouse> _data = [];
+  List<Marker> _markers = [];
 
-  @override
-  void initState() {
-    super.initState();
+  void _getPermission(GoogleMapController controller) {
     PermissionHandler().requestPermissions([
       PermissionGroup.location,
     ]).then((values) {
@@ -25,13 +22,8 @@ class MapHomeState extends BaseState<MapHome> {
         return status == PermissionStatus.granted;
       });
     }).then((granted) {
-      if (granted) {
-        _initLocation();
-      } else {
-        pop(context);
-      }
+      _initLocation(controller);
     });
-    queryHouse();
   }
 
   void queryHouse() {
@@ -39,21 +31,30 @@ class MapHomeState extends BaseState<MapHome> {
     queryHouseLocal(
       context,
       cancelToken: cancelToken,
-    ).then((data) {
-      if (data != null) {
-        this._data.clear();
-        this._data.addAll(data);
+    )
+      ..then((data) {
+        if (data != null) {
+          this._data.clear();
+          this._data.addAll(data);
+          pop(context);
+          _addMarkers();
+        }
+      })
+      ..catchError((e) {
+        showToast(context, e.toString());
         pop(context);
-        _addMarkers();
-      }
-    });
+      });
   }
 
-  _initLocation() {
+  _initLocation(GoogleMapController controller) {
     Location().getLocation().then((data) {
       if (data != null) {
-        _latLng = LatLng(data.latitude, data.longitude);
-        _addMarkers();
+        controller.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(data.latitude, data.longitude)),
+          ),
+        );
+        queryHouse();
       }
     });
   }
@@ -61,66 +62,41 @@ class MapHomeState extends BaseState<MapHome> {
   @override
   Widget build(BuildContext context) {
     return GoogleMap(
-      initialCameraPosition: CameraPosition(target: LatLng(0, 0)),
-      onMapCreated: _onMapCreated,
+      initialCameraPosition: CameraPosition(
+        target: LatLng(33.8688197000, 151.2092955000),
+      ),
+      onMapCreated: _getPermission,
+      myLocationEnabled: true,
+      markers: _markers.toSet(),
     );
   }
 
-  void _onMapCreated(GoogleMapController controller) {
-    _googleMapController = controller;
-    _googleMapController.onMarkerTapped.add(_getHouse);
-    _addMarkers();
-  }
-
   void _addMarkers() {
-    if (_googleMapController == null) return;
-    _googleMapController.clearMarkers();
+    _markers.clear();
     _data.forEach((v) {
-      var marker = MarkerOptions.defaultOptions.copyWith(
-        MarkerOptions(
-          icon: v.repairStatus.value == TypeStatus.houseOngoing.value
-              ? BitmapDescriptor.fromAsset("image/house_marker_red.webp")
-              : BitmapDescriptor.fromAsset("image/house_marker_green.webp"),
-          position: LatLng(double.tryParse(v.latitude) ?? 0.0,
-              double.tryParse(v.longitude) ?? 0.0),
+      var marker = Marker(
+        markerId: MarkerId(v.houseId),
+        position: LatLng(
+          double.tryParse(v.latitude) ?? 0.0,
+          double.tryParse(v.longitude) ?? 0.0,
         ),
+        icon: v.repairStatus.value == TypeStatus.houseOngoing.value
+            ? BitmapDescriptor.fromAsset("image/house_marker_red.webp")
+            : BitmapDescriptor.fromAsset("image/house_marker_green.webp"),
+        onTap: () {
+          _getHouse(v.houseId);
+        },
       );
-      _googleMapController.addMarker(marker).then((marker) {
-        LogUtils.log("zuiweng     ${marker.id}");
-        v.markerId = marker.id;
-      });
+      _markers.add(marker);
     });
-    if (_latLng != null) {
-      var marker = MarkerOptions.defaultOptions.copyWith(
-        MarkerOptions(
-          icon: BitmapDescriptor.defaultMarker,
-          position: _latLng,
-        ),
-      );
-      _googleMapController.addMarker(marker);
-      _googleMapController.animateCamera(
-        CameraUpdate.newLatLngZoom(
-          _latLng,
-          10,
-        ),
-      );
-    }
+    setState(() {});
   }
 
-  void _getHouse(Marker marker) {
+  void _getHouse(String houseId) {
     showLoadingDialog(context);
-    LatLonHouse a = _data.firstWhere((v) {
-      return v.markerId == marker.id;
-    }, orElse: () {
-      return null;
-    });
-    if (a == null) {
-      pop(context);
-      return;
-    }
     houseDetail(
       context,
-      a.houseId,
+      houseId,
       cancelToken: cancelToken,
     ).then((house) {
       pop(context);
@@ -132,13 +108,8 @@ class MapHomeState extends BaseState<MapHome> {
         child: HouseBigCard(house),
       );
     }).catchError((e) {
+      showToast(context, e.toString());
       pop(context);
     });
-  }
-
-  @override
-  void dispose() {
-    _googleMapController?.dispose();
-    super.dispose();
   }
 }
