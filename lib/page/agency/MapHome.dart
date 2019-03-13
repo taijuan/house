@@ -11,8 +11,9 @@ class MapHome extends BaseStatefulWidget {
 }
 
 class MapHomeState extends BaseState<MapHome> {
-  List<LatLonHouse> _data = [];
-  List<Marker> _markers = [];
+  final List<LatLonHouse> _data = [];
+  final List<Marker> _markers = [];
+  LatLng _current = LatLng(33.8688197000, 151.2092955000);
 
   void _getPermission(GoogleMapController controller) {
     PermissionHandler().requestPermissions([
@@ -49,11 +50,13 @@ class MapHomeState extends BaseState<MapHome> {
   _initLocation(GoogleMapController controller) {
     Location().getLocation().then((data) {
       if (data != null) {
+        _current = LatLng(data.latitude, data.longitude);
         controller.animateCamera(
           CameraUpdate.newCameraPosition(
-            CameraPosition(target: LatLng(data.latitude, data.longitude)),
+            CameraPosition(target: _current),
           ),
         );
+        setState(() {});
         queryHouse();
       }
     });
@@ -63,7 +66,7 @@ class MapHomeState extends BaseState<MapHome> {
   Widget build(BuildContext context) {
     return GoogleMap(
       initialCameraPosition: CameraPosition(
-        target: LatLng(33.8688197000, 151.2092955000),
+        target: _current,
       ),
       onMapCreated: _getPermission,
       myLocationEnabled: true,
@@ -84,6 +87,12 @@ class MapHomeState extends BaseState<MapHome> {
             ? BitmapDescriptor.fromAsset("image/house_marker_red.webp")
             : BitmapDescriptor.fromAsset("image/house_marker_green.webp"),
         onTap: () {
+          setState(() {
+            _current = LatLng(
+              double.tryParse(v.latitude) ?? 0.0,
+              double.tryParse(v.longitude) ?? 0.0,
+            );
+          });
           _getHouse(v.houseId);
         },
       );
