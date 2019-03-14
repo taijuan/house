@@ -38,7 +38,7 @@ class House {
   String createTime;
   String desc;
   String contractNo;
-  List<Order> repairOrderList;
+  List<Repair> repairOrderList;
 
   House.fromJson(Map<String, dynamic> json)
       : id = json["id"],
@@ -80,7 +80,7 @@ class House {
         desc = json["desc"],
         contractNo = json["contractNo"],
         repairOrderList = DataUtils.isList(json["repairOrderList"]).map((v) {
-          return Order.fromJson(v);
+          return Repair.fromJson(v);
         }).toList();
 
   String getLesseeName() {

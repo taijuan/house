@@ -103,3 +103,4 @@ export 'package:house/widget/UserServiceNotice.dart';
 export 'package:image_picker/image_picker.dart';
 export 'package:package_info/package_info.dart';
 export 'package:path_provider/path_provider.dart';
+export 'package:house/data/Repair.dart';

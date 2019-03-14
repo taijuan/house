@@ -13,6 +13,7 @@ class Order {
   String address;
   ImageContent photos;
   String transactor;
+  String createTime;
 
   Order.fromJson(Map<String, dynamic> json)
       : id = json["id"],
