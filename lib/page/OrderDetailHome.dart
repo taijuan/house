@@ -603,68 +603,61 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
         }
       }
       return SliverToBoxAdapter(
-        child: Container(
-          height: 80,
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (_, index) {
-              OrderLogs v = logs[index];
-              return SizedBox(
-                width: 100,
-                height: 80,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      width: double.infinity,
-                      height: 36,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.only(
-                                left: index == 0 ? 50 : 0,
-                                right: index == 4 ? 50 : 0),
-                            height: 2,
-                            child: Container(
-                              color: HouseColor.divider,
-                            ),
-                          ),
-                          Image.asset(
-                            v.checked
-                                ? "image/house_timeline.webp"
-                                : "image/house_timeline_nor.webp",
-                            height: 36,
-                            fit: BoxFit.none,
-                          )
-                        ],
-                      ),
-                    ),
-                    Text(
-                      v.name,
-                      style: createTextStyle(fontSize: 13),
-                    ),
-                    Text(
-                      v.dateTime ?? "",
-                      style: createTextStyle(
-                        color: HouseColor.gray,
-                        fontSize: 10,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              );
-            },
-            itemCount: logs.length,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildOrderLogItem(0, logs),
+              _buildOrderLogItem(1, logs),
+              _buildOrderLogItem(2, logs),
+              _buildOrderLogItem(3, logs),
+              _buildOrderLogItem(4, logs),
+            ],
           ),
         ),
       );
     } else {
       return SliverToBoxAdapter();
     }
+  }
+
+  Widget _buildOrderLogItem(int index, List<OrderLogs> logs) {
+    var data = logs[index];
+    return Expanded(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          CustomPaint(
+            size: Size.fromHeight(32),
+            painter: RepairLogIconPainter(
+              isDrawLeft: index != 0,
+              isDrawRight: index != 4,
+              isDrawImage: data.checked,
+            ),
+          ),
+          Container(height: 4),
+          Text(
+            data.name,
+            style: createTextStyle(
+              fontSize: 13,
+              height: 1,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          Container(height: 4),
+          Text(
+            "${data.dateTime}",
+            style: createTextStyle(
+              color: HouseColor.gray,
+              fontSize: 10,
+              height: 1,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildTitle(String title) {
@@ -972,5 +965,85 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
         ),
       );
     }
+  }
+}
+
+class RepairLogIconPainter extends CustomPainter {
+  final bool isDrawLeft, isDrawRight, isDrawImage;
+  final Paint dotPaint = Paint()
+    ..color = HouseColor.green
+    ..strokeWidth = 0
+    ..isAntiAlias = true;
+
+  final Paint dotHashPaint = Paint()
+    ..color = HouseColor.lightGreen
+    ..strokeWidth = 6
+    ..style = PaintingStyle.stroke
+    ..isAntiAlias = true;
+
+  final Paint linePaint = Paint()
+    ..color = HouseColor.lightGray
+    ..strokeWidth = 2
+    ..isAntiAlias = true;
+
+  final Paint whitePaint = Paint()
+    ..color = HouseColor.white
+    ..style = PaintingStyle.stroke
+    ..strokeCap = StrokeCap.round
+    ..strokeJoin = StrokeJoin.round
+    ..strokeWidth = 2
+    ..isAntiAlias = true;
+  Path path = Path();
+
+  RepairLogIconPainter({
+    this.isDrawImage,
+    this.isDrawLeft,
+    this.isDrawRight,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawLine(
+      Offset(
+        isDrawLeft ? 0 : size.width / 2,
+        size.height / 2,
+      ),
+      Offset(
+        isDrawRight ? size.width : size.width / 2,
+        size.height / 2,
+      ),
+      linePaint,
+    );
+    if (isDrawImage) {
+      canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2),
+        11,
+        dotPaint,
+      );
+      canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2),
+        14,
+        dotHashPaint,
+      );
+      path.moveTo(size.width / 2 - 6, size.height / 2 - 2);
+      path.lineTo(
+        size.width / 2 - 2,
+        size.height / 2 + 4,
+      );
+      path.lineTo(size.width / 2 + 6, size.height / 2 - 6);
+      canvas.drawPath(path, whitePaint);
+      //
+    } else {
+      canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2),
+        6,
+        dotPaint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return this != oldDelegate;
   }
 }
