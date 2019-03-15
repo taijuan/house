@@ -38,23 +38,26 @@ class _MeAppBarState extends BaseState<MeAppBar> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          TitleAppBar(
-            context: context,
-            foregroundDecoration: BoxDecoration(),
-            title: TitleAppBar.appBarTitle(
-              user.type.descEn,
-              style: createTextStyle(
-                color: HouseColor.white,
-                fontSize: 17,
-                fontFamily: fontFamilySemiBold,
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: TitleAppBar(
+              context: context,
+              foregroundDecoration: BoxDecoration(),
+              title: TitleAppBar.appBarTitle(
+                user.type.descEn,
+                style: createTextStyle(
+                  color: HouseColor.white,
+                  fontSize: 17,
+                  fontFamily: fontFamilySemiBold,
+                ),
               ),
+              navigatorBack: user.type.value != TypeStatus.agency.value
+                  ? TitleAppBar.navigatorBackBlack(
+                      context,
+                      back: Image.asset("image/house_back_white.webp"),
+                    )
+                  : SizedBox.shrink(),
             ),
-            navigatorBack: user.type.value != TypeStatus.agency.value
-                ? TitleAppBar.navigatorBackBlack(
-                    context,
-                    back: Image.asset("image/house_back_white.webp"),
-                  )
-                : SizedBox.shrink(),
           ),
           Spacer(),
           OutlineButton(
