@@ -13,7 +13,7 @@ class CertificatePage extends BaseStatefulWidget {
 
 class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
   @override
-  Widget appBar(BuildContext context) => TitleAppBar(
+  BaseAppBar appBar(BuildContext context) => TitleAppBar(
         context: context,
         navigatorBack: TitleAppBar.navigatorBackBlack(context),
         title: TitleAppBar.appBarTitle(HouseValue.of(context).certificate),

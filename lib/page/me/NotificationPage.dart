@@ -18,7 +18,7 @@ class _NotificationPageState extends BaseAppBarAndBodyState<NotificationPage> {
   }
 
   @override
-  Widget appBar(BuildContext context) {
+  BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
       navigatorBack: TitleAppBar.navigatorBackBlack(context),

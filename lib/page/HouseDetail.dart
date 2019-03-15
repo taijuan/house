@@ -72,10 +72,6 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
         });
   }
 
-  @override
-  Widget bottomNavigationBar(BuildContext context) {
-    return SizedBox.shrink();
-  }
 
   SliverToBoxAdapter _buildDivider() {
     return SliverToBoxAdapter(

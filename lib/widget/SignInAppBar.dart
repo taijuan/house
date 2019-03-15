@@ -10,13 +10,17 @@ class SignInAppBar extends BaseAppBar {
   _SignInAppBarState createState() {
     return _SignInAppBarState();
   }
+
+  @override
+  Size get preferredSize => Size.fromHeight(
+        MediaQuery.of(context).size.width * 582 / 1080,
+      );
 }
 
 class _SignInAppBarState extends BaseState<SignInAppBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width * 582 / 1080,
       decoration: BoxDecoration(
         image: DecorationImage(

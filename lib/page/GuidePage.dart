@@ -20,7 +20,7 @@ class _GuidePageState extends BaseAppBarAndBodyState<GuidePage> {
   }
 
   @override
-  Widget appBar(BuildContext context) => SizedBox.shrink();
+  BaseAppBar appBar(BuildContext context) => null;
 
   @override
   Widget body(BuildContext context) {

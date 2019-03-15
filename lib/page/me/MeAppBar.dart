@@ -11,6 +11,12 @@ class MeAppBar extends BaseAppBar {
   _MeAppBarState createState() {
     return _MeAppBarState();
   }
+
+  @override
+  Size get preferredSize => Size(
+        MediaQuery.of(context).size.width,
+        MediaQuery.of(context).size.width * 244 / 360,
+      );
 }
 
 class _MeAppBarState extends BaseState<MeAppBar> {
@@ -27,7 +33,6 @@ class _MeAppBarState extends BaseState<MeAppBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width * 244 / 360,
       color: HouseColor.green,
       child: Column(

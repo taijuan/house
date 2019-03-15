@@ -1,3 +1,7 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
+import 'package:flutter/services.dart';
 import 'package:house/importLib.dart';
 
 class OrderDetailHome extends BaseStatefulWidget {
@@ -13,9 +17,18 @@ class OrderDetailHome extends BaseStatefulWidget {
 class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
   final GlobalKey<RefreshIndicatorState> _globalKey =
       GlobalKey<RefreshIndicatorState>();
+  ui.Image image;
+
   final TextEditingController _messageController = TextEditingController();
   int _receiveUserType = TypeStatus.agency.value;
   OrderDetail _data;
+
+  Future<ui.Image> _getImage() async {
+    ByteData data = await rootBundle.load("image/3.0x/house_timeline.webp");
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
+    ui.FrameInfo frameInfo = await codec.getNextFrame();
+    return frameInfo.image;
+  }
 
   @override
   void initState() {
@@ -73,6 +86,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
                 ],
         ),
         onRefresh: () async {
+          image = await _getImage();
           await selectRepairOrderById(
             context,
             widget.id,
@@ -634,6 +648,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
               isDrawLeft: index != 0,
               isDrawRight: index != 4,
               isDrawImage: data.checked,
+              image: image,
             ),
           ),
           Container(height: 4),
@@ -755,7 +770,10 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
       return SliverToBoxAdapter();
     }
     int userType = User.getUserSync().type.value;
-    if (userType == TypeStatus.userType[3].value) {
+    if (userType == TypeStatus.lessee.value) {
+      return SliverToBoxAdapter();
+    }
+    if (userType == TypeStatus.landlord.value) {
       return SliverToBoxAdapter(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 12),
@@ -969,6 +987,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
 }
 
 class RepairLogIconPainter extends CustomPainter {
+  final ui.Image image;
   final bool isDrawLeft, isDrawRight, isDrawImage;
   final Paint dotPaint = Paint()
     ..color = HouseColor.green
@@ -977,7 +996,7 @@ class RepairLogIconPainter extends CustomPainter {
 
   final Paint dotHashPaint = Paint()
     ..color = HouseColor.lightGreen
-    ..strokeWidth = 6
+    ..strokeWidth = 4
     ..style = PaintingStyle.stroke
     ..isAntiAlias = true;
 
@@ -996,6 +1015,7 @@ class RepairLogIconPainter extends CustomPainter {
   Path path = Path();
 
   RepairLogIconPainter({
+    this.image,
     this.isDrawImage,
     this.isDrawLeft,
     this.isDrawRight,
@@ -1014,24 +1034,27 @@ class RepairLogIconPainter extends CustomPainter {
       ),
       linePaint,
     );
-    if (isDrawImage) {
-      canvas.drawCircle(
-        Offset(size.width / 2, size.height / 2),
-        11,
+    if (isDrawImage && image != null) {
+      double scale = 1;
+      double dw = size.width / image.width;
+      double dh = size.height / image.height;
+      scale = dw <= dh ? dw : dh;
+      canvas.drawImageRect(
+        image,
+        Rect.fromLTWH(
+          0,
+          0,
+          image.width.toDouble(),
+          image.height.toDouble(),
+        ),
+        Rect.fromLTWH(
+          size.width / 2 - image.width * scale / 2,
+          size.height / 2 - image.height * scale / 2,
+          image.width * scale,
+          image.height * scale,
+        ),
         dotPaint,
       );
-      canvas.drawCircle(
-        Offset(size.width / 2, size.height / 2),
-        14,
-        dotHashPaint,
-      );
-      path.moveTo(size.width / 2 - 6, size.height / 2 - 2);
-      path.lineTo(
-        size.width / 2 - 2,
-        size.height / 2 + 4,
-      );
-      path.lineTo(size.width / 2 + 6, size.height / 2 - 6);
-      canvas.drawPath(path, whitePaint);
       //
     } else {
       canvas.drawCircle(

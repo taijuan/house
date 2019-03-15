@@ -46,7 +46,7 @@ class TypeStatus {
 
   static final agency = TypeStatus(1, "中介", "Agency");
   static final landlord = TypeStatus(2, "房东", "Landlord");
-  static final lessee = TypeStatus(3, "房东", "Lessee");
+  static final lessee = TypeStatus(3, "房客", "Lessee");
   static final vendor = TypeStatus(4, "维修商", "Vendor");
   static final List<TypeStatus> userType = [
     agency,
