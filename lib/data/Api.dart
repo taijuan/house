@@ -475,6 +475,8 @@ Future<OrderDetail> selectRepairOrderById(
     data: {
       "orderId": DataUtils.isEmpty(repairQuoteId) ? orderId : null,
       "repairQuoteId": repairQuoteId,
+      "userType": (await User.getUser()).type.value,
+      "userId": (await User.getUser()).id,
     },
     cancelToken: cancelToken,
   );

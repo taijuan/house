@@ -54,7 +54,6 @@ flutter:
   - image/house_auth_select.webp
   - image/house_auth_unselect.webp
   - image/house_timeline.webp
-  - image/house_timeline_nor.webp
   - image/house_marker_green.webp
   - image/house_marker_red.webp
   - image/launch_background.webp
