@@ -5,7 +5,12 @@ class ImagePageView extends BaseStatefulWidget {
   final List<String> data;
   final VoidCallback onPressed;
 
-  ImagePageView(this.data, this.width, this.height, {this.onPressed});
+  ImagePageView(
+    this.data,
+    this.width,
+    this.height, {
+    this.onPressed,
+  });
 
   @override
   _ImagePageViewState createState() => _ImagePageViewState();
@@ -20,11 +25,20 @@ class _ImagePageViewState extends BaseState<ImagePageView> {
     if (_controller == null) {
       _controller = PageController(initialPage: index)
         ..addListener(() {
-          index = _controller.page.round();
-          setState(() {});
+          int _index = _controller.page.round();
+          if (index != _index) {
+            index = _index;
+            setState(() {});
+          }
         });
     }
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
   }
 
   @override
@@ -36,6 +50,7 @@ class _ImagePageViewState extends BaseState<ImagePageView> {
             PageView.builder(
               controller: _controller,
               itemBuilder: (context, index) {
+                print(DataUtils.getImageUrl(widget.data[index]));
                 return InkWell(
                   onTap: widget.onPressed,
                   child: HouseCacheNetworkImage(
