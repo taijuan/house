@@ -78,10 +78,12 @@ class _VendorDetailHomeState extends BaseAppBarAndBodyState<VendorDetailHome> {
                       style: createTextStyle(color: HouseColor.gray),
                     ),
                   ),
-                  Text(
-                    _getTags() ?? "",
-                    style: createTextStyle(fontFamily: fontFamilySemiBold),
-                  )
+                  Expanded(
+                    child: Text(
+                      _getTags() ?? "",
+                      style: createTextStyle(fontFamily: fontFamilySemiBold),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -106,10 +108,12 @@ class _VendorDetailHomeState extends BaseAppBarAndBodyState<VendorDetailHome> {
                       style: createTextStyle(color: HouseColor.gray),
                     ),
                   ),
-                  Text(
-                    _getAreaStr(_data.areaList),
-                    style: createTextStyle(fontFamily: fontFamilySemiBold),
-                  )
+                  Expanded(
+                    child: Text(
+                      _getAreaStr(_data.areaList),
+                      style: createTextStyle(fontFamily: fontFamilySemiBold),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -136,13 +140,15 @@ class _VendorDetailHomeState extends BaseAppBarAndBodyState<VendorDetailHome> {
                       style: createTextStyle(color: HouseColor.gray),
                     ),
                   ),
-                  Text(
-                    _data.tel ?? "",
-                    style: createTextStyle(
-                      fontSize: 17,
-                      fontFamily: fontFamilySemiBold,
+                  Expanded(
+                    child: Text(
+                      _data.tel ?? "",
+                      style: createTextStyle(
+                        fontSize: 17,
+                        fontFamily: fontFamilySemiBold,
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -169,13 +175,15 @@ class _VendorDetailHomeState extends BaseAppBarAndBodyState<VendorDetailHome> {
                       style: createTextStyle(color: HouseColor.gray),
                     ),
                   ),
-                  Text(
-                    _data.address ?? "",
-                    style: createTextStyle(
-                      fontSize: 17,
-                      fontFamily: fontFamilySemiBold,
+                  Expanded(
+                    child: Text(
+                      _data.address ?? "",
+                      style: createTextStyle(
+                        fontSize: 17,
+                        fontFamily: fontFamilySemiBold,
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -203,6 +211,11 @@ class _VendorDetailHomeState extends BaseAppBarAndBodyState<VendorDetailHome> {
                 _data.companyProfile ?? "",
                 style: createTextStyle(),
               ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              height: 8,
             ),
           ),
         ],
