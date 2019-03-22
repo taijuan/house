@@ -40,12 +40,6 @@ class _LandlordOrderListHomeState
     return RefreshWidget(
       key: _refreshKey,
       slivers: [
-        SliverPadding(
-          padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
-          sliver: SliverToBoxAdapter(
-            child: HouseCard(widget.data),
-          ),
-        ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
@@ -121,7 +115,7 @@ class _LandlordOrderListHomeState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          HouseValue.of(context).caseNo + data.orderNo,
+          HouseValue.of(context).orderNo + data.orderNo,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: createTextStyle(fontSize: 13),

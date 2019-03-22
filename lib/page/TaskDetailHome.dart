@@ -344,7 +344,7 @@ class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  HouseValue.of(context).caseNo + data.orderNo,
+                  HouseValue.of(context).orderNo + data.orderNo,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: createTextStyle(fontSize: 13),

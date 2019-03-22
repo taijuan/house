@@ -31,7 +31,7 @@ class _TaskListBarHomeState extends BaseAppBarAndBodyState<TaskListBarHome> {
       );
 
   Widget _addButton() {
-    if (User.getUserSync().type.value == TypeStatus.lessee.value) {
+    if (User.getUserSync().type.value == TypeStatus.tenant.value) {
       return Positioned(
         bottom: 24,
         child: FlatButton(
@@ -79,7 +79,6 @@ class _TaskListHomeState extends BaseState<TaskListHome>
     return RefreshWidget(
       key: _refreshKey,
       slivers: <Widget>[
-        _getHouseCard(),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
@@ -138,19 +137,6 @@ class _TaskListHomeState extends BaseState<TaskListHome>
         });
       },
     );
-  }
-
-  Widget _getHouseCard() {
-    if (widget.data == null) {
-      return SliverToBoxAdapter();
-    } else {
-      return SliverPadding(
-        padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
-        sliver: SliverToBoxAdapter(
-          child: HouseCard(widget.data),
-        ),
-      );
-    }
   }
 
   Widget _buildItem(Question data) {

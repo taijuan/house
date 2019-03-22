@@ -54,7 +54,7 @@ class HouseCard extends StatelessWidget {
   Widget _buildLesseeName() {
     int userType = User.getUserSync().type.value;
     if (userType == TypeStatus.vendor.value ||
-        userType == TypeStatus.lessee.value ||
+        userType == TypeStatus.tenant.value ||
         DataUtils.isEmpty(data.getLesseeName())) {
       return SizedBox.shrink();
     } else {
@@ -62,7 +62,7 @@ class HouseCard extends StatelessWidget {
         alignment: Alignment.centerLeft,
         margin: EdgeInsets.only(top: 4),
         child: Text(
-          "${TypeStatus.lessee.descEn} : ${data.getLesseeName()}",
+          "${TypeStatus.tenant.descEn} : ${data.getLesseeName()}",
           style: createTextStyle(color: HouseColor.gray, fontSize: 13),
         ),
       );

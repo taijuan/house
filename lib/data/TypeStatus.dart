@@ -34,7 +34,7 @@ class TypeStatus {
   TypeStatus.fromJson(Map<String, dynamic> json)
       : value = json["value"],
         desc = json["desc"],
-        descEn = json["descEn"],
+        descEn = json["descEn"] == "Lessee" ? "Tenant" : json["descEn"],
         checked = json["checked"] ?? false;
 
   Map<String, dynamic> toJson() => {
@@ -46,12 +46,12 @@ class TypeStatus {
 
   static final agency = TypeStatus(1, "中介", "Agency");
   static final landlord = TypeStatus(2, "房东", "Landlord");
-  static final lessee = TypeStatus(3, "房客", "Lessee");
+  static final tenant = TypeStatus(3, "房客", "Tenant");
   static final vendor = TypeStatus(4, "维修商", "Vendor");
   static final List<TypeStatus> userType = [
     agency,
     landlord,
-    lessee,
+    tenant,
     vendor,
   ];
   static final List<TypeStatus> userStatus = [

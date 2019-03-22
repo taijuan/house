@@ -33,7 +33,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
   @override
   void initState() {
     if (User.getUserSync().type.value == TypeStatus.agency.value) {
-      _receiveUserType = TypeStatus.lessee.value;
+      _receiveUserType = TypeStatus.tenant.value;
     }
     Future.delayed(Duration()).whenComplete(() {
       _globalKey.currentState.show();
@@ -120,8 +120,8 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
               ),
               RawMaterialButton(
                 onPressed: () {
-                  if (_receiveUserType != TypeStatus.lessee.value) {
-                    _receiveUserType = TypeStatus.lessee.value;
+                  if (_receiveUserType != TypeStatus.tenant.value) {
+                    _receiveUserType = TypeStatus.tenant.value;
                     setState(() {});
                   }
                 },
@@ -133,12 +133,12 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
                   maxHeight: 30,
                 ),
                 padding: EdgeInsets.only(bottom: 2),
-                fillColor: _receiveUserType == TypeStatus.lessee.value
+                fillColor: _receiveUserType == TypeStatus.tenant.value
                     ? HouseColor.black
                     : HouseColor.white,
                 child: Text(
                   TypeStatus.userType[2].descEn,
-                  style: _receiveUserType == TypeStatus.lessee.value
+                  style: _receiveUserType == TypeStatus.tenant.value
                       ? createTextStyle(color: HouseColor.white)
                       : createTextStyle(),
                 ),
@@ -199,7 +199,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
           ),
         ),
       );
-    } else if (userType == TypeStatus.lessee.value) {
+    } else if (userType == TypeStatus.tenant.value) {
       return SliverToBoxAdapter(
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -591,10 +591,11 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
         OrderLogs a;
         if (length > i) {
           a = _data.repairOrderLogs[i];
-          a.checked = true;
+          a.status = 1;
           logs.add(a);
         } else {
           a = OrderLogs.fromJson({});
+          a.status = length == i ? 2 : 0;
           logs.add(a);
         }
         switch (i) {
@@ -647,25 +648,16 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
             painter: RepairLogIconPainter(
               isDrawLeft: index != 0,
               isDrawRight: index != 4,
-              isDrawImage: data.checked,
+              status: data.status,
               image: image,
             ),
           ),
           Container(height: 4),
           Text(
-            data.name,
-            style: createTextStyle(
-              fontSize: 13,
-              height: 1,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          Container(height: 4),
-          Text(
-            "${data.dateTime}",
+            data.name.toUpperCase(),
             style: createTextStyle(
               color: HouseColor.gray,
-              fontSize: 10,
+              fontSize: 8,
               height: 1,
             ),
             textAlign: TextAlign.center,
@@ -770,7 +762,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
       return SliverToBoxAdapter();
     }
     int userType = User.getUserSync().type.value;
-    if (userType == TypeStatus.lessee.value) {
+    if (userType == TypeStatus.tenant.value) {
       return SliverToBoxAdapter();
     }
     if (userType == TypeStatus.landlord.value) {
@@ -988,7 +980,8 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
 
 class RepairLogIconPainter extends CustomPainter {
   final ui.Image image;
-  final bool isDrawLeft, isDrawRight, isDrawImage;
+  final bool isDrawLeft, isDrawRight;
+  final int status;
   final Paint dotPaint = Paint()
     ..color = HouseColor.green
     ..strokeWidth = 0
@@ -1016,7 +1009,7 @@ class RepairLogIconPainter extends CustomPainter {
 
   RepairLogIconPainter({
     this.image,
-    this.isDrawImage,
+    this.status,
     this.isDrawLeft,
     this.isDrawRight,
   });
@@ -1034,7 +1027,13 @@ class RepairLogIconPainter extends CustomPainter {
       ),
       linePaint,
     );
-    if (isDrawImage && image != null) {
+    if (status == 1) {
+      canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2),
+        6,
+        dotPaint,
+      );
+    } else if (status == 2 && image != null) {
       double scale = 1;
       double dw = size.width / image.width;
       double dh = size.height / image.height;
@@ -1055,12 +1054,16 @@ class RepairLogIconPainter extends CustomPainter {
         ),
         dotPaint,
       );
-      //
     } else {
       canvas.drawCircle(
         Offset(size.width / 2, size.height / 2),
-        6,
-        dotPaint,
+        4,
+        dotHashPaint,
+      );
+      canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2),
+        3,
+        linePaint,
       );
     }
   }

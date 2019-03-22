@@ -116,7 +116,7 @@ class _OrdersHomeState extends BaseState<OrdersHome>
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Text(
-          HouseValue.of(context).caseNo + data.orderNo,
+          HouseValue.of(context).orderNo + data.orderNo,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: createTextStyle(fontSize: 13, height: 1),

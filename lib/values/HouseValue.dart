@@ -157,7 +157,7 @@ class En {
   String privacyPolicy = " Privacy Policy ";
   String and = "and";
   String conditionsOfUse = " Conditions of Use.";
-  List<String> identities = ["Agency", "Landlord", "Lessee", "Vendor"];
+  List<String> identities = ["Agency", "Landlord", "Tenant", "Vendor"];
   String systemException = "System exception";
   String properties = "Properties";
   String task = "Task";
@@ -242,7 +242,7 @@ class En {
   String vendorDetail = "Vendor Detail";
   String message = "Message";
   String leaveAMessage = "leave a message: ";
-  String caseNo = "Case No. ";
+  String orderNo = "Order No. ";
   String areYouOkToExitTheApplication = "Are you ok to exit the application？";
   String areYouOk = "Are you ok to #？";
   String skip = "Skip";

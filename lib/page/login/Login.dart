@@ -127,6 +127,62 @@ class _LoginState extends BaseAppBarAndBodyState<Login> {
               ),
             ),
           ],
+        ),
+        Container(
+          height: 16,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            FlatButton(
+              onPressed: () {
+                setState(() {
+                  _userNameController.text = "agency@qq.com";
+                  _userPwdController.text = "123456";
+                });
+              },
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              textColor:  HouseColor.white,
+              child: Text(TypeStatus.agency.descEn),
+              color: HouseColor.green,
+            ),
+            FlatButton(
+              onPressed: () {
+                setState(() {
+                  _userNameController.text = "landlord@qq.com";
+                  _userPwdController.text = "123456";
+                });
+              },
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              textColor:  HouseColor.white,
+              child: Text(TypeStatus.landlord.descEn),
+              color: HouseColor.green,
+            ),
+            FlatButton(
+              onPressed: () {
+                setState(() {
+                  _userNameController.text = "lessee@qq.com";
+                  _userPwdController.text = "123456";
+                });
+              },
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              textColor:  HouseColor.white,
+              child: Text(TypeStatus.tenant.descEn),
+              color: HouseColor.green,
+            ),
+            FlatButton(
+              onPressed: () {
+                setState(() {
+                  _userNameController.text = "vendor@qq.com";
+                  _userPwdController.text = "123456";
+                });
+              },
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              textColor:  HouseColor.white,
+              child: Text(TypeStatus.vendor.descEn),
+              color: HouseColor.green,
+            ),
+          ],
         )
       ],
     );
