@@ -7,6 +7,13 @@ showToast(BuildContext context, String msg) {
   );
 }
 
+showToastSuccess(BuildContext context, {String msg}) {
+  Toast.show(
+    context,
+    msg ?? "Submitted successfully",
+  );
+}
+
 class Toast {
   static const int LENGTH_SHORT = 3;
   static const int LENGTH_LONG = 5;

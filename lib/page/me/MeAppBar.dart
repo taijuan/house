@@ -51,12 +51,6 @@ class _MeAppBarState extends BaseState<MeAppBar> {
                   fontFamily: fontFamilySemiBold,
                 ),
               ),
-              navigatorBack: user.type.value != TypeStatus.agency.value
-                  ? TitleAppBar.navigatorBackBlack(
-                      context,
-                      back: Image.asset("image/house_back_white.webp"),
-                    )
-                  : SizedBox.shrink(),
             ),
           ),
           Spacer(),

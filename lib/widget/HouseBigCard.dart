@@ -106,7 +106,12 @@ class HouseBigCard extends StatelessWidget {
           alignment: AlignmentDirectional.topEnd,
           child: OutlineButton(
             onPressed: () {
-              push(context, TaskListBarHome(data));
+              push(
+                context,
+                CasesPage(
+                  data: data,
+                ),
+              );
             },
             padding: EdgeInsets.symmetric(horizontal: 12),
             highlightedBorderColor: HouseColor.green,

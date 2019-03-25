@@ -99,25 +99,17 @@ class TypeStatus {
     TypeStatus(3, "别墅", "Townhouse"),
   ];
 
-  static final List<TypeStatus> vendorOrderStatus = [
-    TypeStatus(-1, "待报价", "To Quote"),
-    TypeStatus(0, "待确认", "Pending"),
-    TypeStatus(1, "维修中", "Processing"),
-    TypeStatus(2, "拒绝", "Rejected"),
-    TypeStatus(3, "待中介确认维修结果", "To be confirmed by agency"),
-    TypeStatus(4, "已完成", "Finished"),
-    TypeStatus(5, "中止", "Closed"),
-  ];
-
-  static final repairPending = TypeStatus(0, "待确认", "PENDING");
-  static final repairProcessing = TypeStatus(1, "维修中", "PROCESSING");
-  static final repairRejected = TypeStatus(2, "拒绝", "REJECTED");
+  static final repairToQuote = TypeStatus(-1, "待确认", "To Quote");
+  static final repairPending = TypeStatus(0, "待确认", "Pending");
+  static final repairProcessing = TypeStatus(1, "维修中", "Processing");
+  static final repairRejected = TypeStatus(2, "拒绝", "Rejected");
   static final repairConfirm =
-      TypeStatus(3, "待中介确认维修结果", "TO BE CONFIRMED BY AGENCY");
-  static final repairFinished = TypeStatus(4, "已完成", "FINISHED");
-  static final repairClosed = TypeStatus(5, "中止", "CLOSED");
+      TypeStatus(3, "待中介确认维修结果", "To be confirmed by agency");
+  static final repairFinished = TypeStatus(4, "已完成", "Finished");
+  static final repairClosed = TypeStatus(5, "中止", "Closed");
 
-  static final repairStatus = [
+  static final repairOrderStatus = [
+    repairToQuote,
     repairPending,
     repairProcessing,
     repairRejected,

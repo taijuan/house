@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:house/importLib.dart';
 
 class UserNameTextField extends BaseStatefulWidget {
@@ -63,6 +64,7 @@ class _UserNameTextFieldState extends BaseState<UserNameTextField> {
             borderRadius: BorderRadius.all(Radius.circular(0)),
           ),
         ),
+        inputFormatters: [LengthLimitingTextInputFormatter(64)],
         style: createTextStyle(),
         onEditingComplete: widget.onEditingComplete,
         textInputAction: widget.textInputAction,

@@ -119,13 +119,17 @@ class _TagHomeState extends BaseAppBarAndBodyState<TagHome> {
               style: createTextStyle(),
             ),
           ),
-          Image.asset(
-            data.checked
-                ? "image/house_auth_select.webp"
-                : "image/house_auth_unselect.webp",
-            width: 18,
-            height: 18,
-          ),
+          data.checked
+              ? Icon(
+                  HouseIcons.checkOkIcon,
+                  color: HouseColor.green,
+                  size: 18,
+                )
+              : Icon(
+                  HouseIcons.unCheckIcon,
+                  color: HouseColor.gray,
+                  size: 18,
+                ),
         ],
       ),
     );

@@ -28,7 +28,11 @@ class _WebPageState extends BaseState<WebPage> {
               onPressed: () {
                 pop(context);
               },
-              child: Image.asset("image/house_back_black.webp"),
+              child: Icon(
+                HouseIcons.backIcon,
+                color: HouseColor.black,
+                size: 18,
+              ),
             ),
           )
         ],

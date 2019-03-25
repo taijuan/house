@@ -141,8 +141,12 @@ class _SettingsState extends BaseAppBarAndBodyState<Settings> {
                   ),
                 ),
                 Transform.rotate(
-                  angle: pi / 2,
-                  child: Image.asset("image/house_fold.webp"),
+                  angle: pi,
+                  child: Icon(
+                    HouseIcons.backIcon,
+                    color: HouseColor.gray,
+                    size: 14,
+                  ),
                 ),
               ],
             ),
@@ -173,8 +177,12 @@ class _SettingsState extends BaseAppBarAndBodyState<Settings> {
                   ),
                 ),
                 Transform.rotate(
-                  angle: pi / 2,
-                  child: Image.asset("image/house_fold.webp"),
+                  angle: pi,
+                  child: Icon(
+                    HouseIcons.backIcon,
+                    color: HouseColor.gray,
+                    size: 14,
+                  ),
                 ),
               ],
             ),

@@ -132,20 +132,25 @@ class _QuotationListHomeState
             disabledColor: HouseColor.white,
             child: Row(
               children: <Widget>[
-                Expanded(
+                Padding(
+                  padding: EdgeInsets.only(bottom: 4),
                   child: Text(
                     HouseValue.of(context).authorizedAgency,
                     style: createTextStyle(fontFamily: fontFamilySemiBold),
                   ),
                 ),
-                SizedBox(
-                  width: 12,
-                ),
-                Image.asset(
-                  _isAuth()
-                      ? "image/house_auth_select.webp"
-                      : "image/house_auth_unselect.webp",
-                ),
+                Spacer(),
+                _isAuth()
+                    ? Icon(
+                        HouseIcons.checkOkIcon,
+                        color: HouseColor.green,
+                        size: 20,
+                      )
+                    : Icon(
+                        HouseIcons.unCheckIcon,
+                        color: HouseColor.gray,
+                        size: 20,
+                      ),
               ],
             ),
           ),

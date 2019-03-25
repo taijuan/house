@@ -157,8 +157,12 @@ class _FilterPageState extends BaseAppBarAndBodyState<FilterPage> {
                 ),
               ),
               Transform.rotate(
-                angle: pi / 2,
-                child: Image.asset("image/house_fold.webp"),
+                angle: pi,
+                child: Icon(
+                  HouseIcons.backIcon,
+                  color: HouseColor.gray,
+                  size: 14,
+                ),
               )
             ],
           ),
@@ -204,8 +208,12 @@ class _FilterPageState extends BaseAppBarAndBodyState<FilterPage> {
                 ),
               ),
               Transform.rotate(
-                angle: pi / 2,
-                child: Image.asset("image/house_fold.webp"),
+                angle: pi,
+                child: Icon(
+                  HouseIcons.backIcon,
+                  color: HouseColor.gray,
+                  size: 14,
+                ),
               )
             ],
           ),
@@ -251,8 +259,12 @@ class _FilterPageState extends BaseAppBarAndBodyState<FilterPage> {
                 ),
               ),
               Transform.rotate(
-                angle: pi / 2,
-                child: Image.asset("image/house_fold.webp"),
+                angle: pi,
+                child: Icon(
+                  HouseIcons.backIcon,
+                  color: HouseColor.gray,
+                  size: 14,
+                ),
               )
             ],
           ),

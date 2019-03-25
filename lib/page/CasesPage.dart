@@ -1,23 +1,31 @@
 import 'package:house/importLib.dart';
 
-class TaskListBarHome extends BaseStatefulWidget {
+class CasesPage extends BaseStatefulWidget {
   final House data;
 
-  TaskListBarHome(this.data);
+  CasesPage({
+    this.data,
+  });
 
   @override
-  _TaskListBarHomeState createState() => _TaskListBarHomeState();
+  _CasesPageState createState() => _CasesPageState();
 }
 
-class _TaskListBarHomeState extends BaseAppBarAndBodyState<TaskListBarHome> {
+class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
+  final List<Question> _data = [];
+  final GlobalKey<RefreshWidgetState> _refreshKey =
+      GlobalKey<RefreshWidgetState>();
+  int _curPage = 1;
+
   @override
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
       title: TitleAppBar.appBarTitle(
-        HouseValue.of(context).taskList,
+        HouseValue.of(context).cases,
       ),
-      navigatorBack: TitleAppBar.navigatorBackBlack(context),
+      navigatorBack:
+          widget.data == null ? null : TitleAppBar.navigatorBackBlack(context),
     );
   }
 
@@ -25,21 +33,26 @@ class _TaskListBarHomeState extends BaseAppBarAndBodyState<TaskListBarHome> {
   Widget body(BuildContext context) => Stack(
         alignment: AlignmentDirectional.bottomCenter,
         children: <Widget>[
-          TaskListHome(data: widget.data),
+          _buildRefresh(),
           _addButton(),
         ],
       );
 
   Widget _addButton() {
-    if (User.getUserSync().type.value == TypeStatus.tenant.value) {
+    if (User.getUserSync().type.value == TypeStatus.tenant.value &&
+        widget.data != null) {
       return Positioned(
         bottom: 24,
         child: FlatButton(
           onPressed: () {
             push(
               context,
-              PublishQuestionHome(widget.data),
-            );
+              PublishCasePage(widget.data),
+            ).then((isRefresh) {
+              if (isRefresh == true) {
+                _refreshKey.currentState?.show();
+              }
+            });
           },
           child: Image.asset("image/house_add.webp"),
         ),
@@ -48,23 +61,6 @@ class _TaskListBarHomeState extends BaseAppBarAndBodyState<TaskListBarHome> {
       return SizedBox.shrink();
     }
   }
-}
-
-class TaskListHome extends BaseStatefulWidget {
-  final House data;
-
-  TaskListHome({this.data});
-
-  @override
-  _TaskListHomeState createState() => _TaskListHomeState();
-}
-
-class _TaskListHomeState extends BaseState<TaskListHome>
-    with AutomaticKeepAliveClientMixin<TaskListHome> {
-  final List<Question> _data = [];
-  final GlobalKey<RefreshWidgetState> _refreshKey =
-      GlobalKey<RefreshWidgetState>();
-  int _curPage = 1;
 
   @override
   void initState() {
@@ -74,8 +70,7 @@ class _TaskListHomeState extends BaseState<TaskListHome>
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  _buildRefresh() {
     return RefreshWidget(
       key: _refreshKey,
       slivers: <Widget>[

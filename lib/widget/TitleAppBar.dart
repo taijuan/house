@@ -44,7 +44,12 @@ class TitleAppBar extends BaseAppBar {
         height: 48,
         padding: EdgeInsets.symmetric(horizontal: 12),
         alignment: Alignment.center,
-        child: back ?? Image.asset("image/house_back_black.webp"),
+        child: back ??
+            Icon(
+              HouseIcons.backIcon,
+              color: HouseColor.black,
+              size: 18,
+            ),
       ),
     );
   }
@@ -63,36 +68,6 @@ class TitleAppBar extends BaseAppBar {
               HouseValue.of(context).save,
               style: createTextStyle(color: HouseColor.green),
             ),
-      ),
-    );
-  }
-
-  static Widget menuToMe(BuildContext context) {
-    return FlatButton(
-      onPressed: () {
-        push(context, MeHome());
-      },
-      child: Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          Padding(
-            child: Image.asset("image/house_about_me.webp"),
-            padding: EdgeInsets.all(2),
-          ),
-          Positioned(
-            child: Container(
-              width: 8,
-              height: 8,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: HouseColor.red,
-              ),
-              alignment: AlignmentDirectional.center,
-            ),
-            top: 0,
-            right: 0,
-          ),
-        ],
       ),
     );
   }

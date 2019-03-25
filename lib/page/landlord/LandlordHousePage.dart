@@ -1,16 +1,17 @@
 import 'package:house/importLib.dart';
 
-class LesseeHome extends BaseStatefulWidget {
+class LandlordHousePage extends BaseStatefulWidget {
   @override
-  _LesseeHomeState createState() {
-    return _LesseeHomeState();
+  _LandlordHousePageState createState() {
+    return _LandlordHousePageState();
   }
 }
 
-class _LesseeHomeState extends BaseAppBarAndBodyState<LesseeHome> {
-  final List<House> _data = [];
+class _LandlordHousePageState
+    extends BaseAppBarAndBodyState<LandlordHousePage> {
   final GlobalKey<RefreshWidgetState> _refreshKey =
       GlobalKey<RefreshWidgetState>();
+  final List<House> _data = [];
   int _curPage = 1;
 
   @override
@@ -26,17 +27,9 @@ class _LesseeHomeState extends BaseAppBarAndBodyState<LesseeHome> {
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
-      navigatorBack: Container(width: 0, height: 0),
       title: TitleAppBar.appBarTitle(
-        HouseValue.of(context).identities[2],
-        style: createTextStyle(
-          color: HouseColor.white,
-          fontSize: 17,
-          fontFamily: fontFamilySemiBold,
-        ),
+        TypeStatus.landlord.descEn,
       ),
-      decoration: BoxDecoration(color: HouseColor.green),
-      menu: TitleAppBar.menuToMe(context),
     );
   }
 
@@ -55,7 +48,12 @@ class _LesseeHomeState extends BaseAppBarAndBodyState<LesseeHome> {
                   child: HouseBigCard(
                     data,
                     onPressed: () {
-                      push(context, TaskListBarHome(data));
+                      push(
+                        context,
+                        LandlordOrdersPage(
+                          data: data,
+                        ),
+                      );
                     },
                   ),
                 );
@@ -109,4 +107,7 @@ class _LesseeHomeState extends BaseAppBarAndBodyState<LesseeHome> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

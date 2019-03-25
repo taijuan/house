@@ -74,20 +74,16 @@ class _UserPasswordTextField extends BaseState<UserPasswordTextField> {
             onEditingComplete: widget.onEditingComplete,
             textInputAction: widget.textInputAction,
           ),
-          Container(
-            width: 48,
-            alignment: Alignment.center,
-            child: FlatButton(
-              padding: EdgeInsets.only(),
-              onPressed: () {
-                _obscureText = !_obscureText;
-                setState(() {});
-              },
-              child: _obscureText
-                  ? Image.asset("image/house_views_gray.webp")
-                  : Image.asset("image/house_views_green.webp"),
+          FlatButton(
+            onPressed: () {
+              _obscureText = !_obscureText;
+              setState(() {});
+            },
+            child: Icon(
+              HouseIcons.eyesIcon,
+              color: _obscureText ? HouseColor.lightGray : HouseColor.green,
             ),
-          )
+          ),
         ],
       ),
     );

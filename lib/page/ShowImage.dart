@@ -63,7 +63,11 @@ class _ShowImageState extends BaseState<ShowImage> {
                   width: 48,
                   height: 48,
                   alignment: Alignment.center,
-                  child: Image.asset("image/house_back_white.webp"),
+                  child: Icon(
+                    HouseIcons.backIcon,
+                    color: HouseColor.white,
+                    size: 18,
+                  ),
                 ),
               ),
             ),

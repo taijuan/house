@@ -1,16 +1,18 @@
 import 'package:house/importLib.dart';
 
-class LandlordOrderListHome extends BaseStatefulWidget {
+class LandlordOrdersPage extends BaseStatefulWidget {
   final House data;
 
-  LandlordOrderListHome(this.data);
+  LandlordOrdersPage({
+    this.data,
+  });
 
   @override
-  _LandlordOrderListHomeState createState() => _LandlordOrderListHomeState();
+  _LandlordOrdersPageState createState() => _LandlordOrdersPageState();
 }
 
-class _LandlordOrderListHomeState
-    extends BaseAppBarAndBodyState<LandlordOrderListHome> {
+class _LandlordOrdersPageState
+    extends BaseAppBarAndBodyState<LandlordOrdersPage> {
   final GlobalKey<RefreshWidgetState> _refreshKey =
       GlobalKey<RefreshWidgetState>();
   final List<Order> _data = [];
@@ -29,9 +31,10 @@ class _LandlordOrderListHomeState
     return TitleAppBar(
       context: context,
       title: TitleAppBar.appBarTitle(
-        HouseValue.of(context).orderList,
+        HouseValue.of(context).orders,
       ),
-      navigatorBack: TitleAppBar.navigatorBackBlack(context),
+      navigatorBack:
+          widget.data == null ? null : TitleAppBar.navigatorBackBlack(context),
     );
   }
 
@@ -60,7 +63,7 @@ class _LandlordOrderListHomeState
         await selectRepairOrderPageList(
           context,
           1,
-          houseId: widget.data.id,
+          houseId: widget.data?.id,
           cancelToken: cancelToken,
         ).then((data) {
           _data.clear();
@@ -80,7 +83,7 @@ class _LandlordOrderListHomeState
         await selectRepairOrderPageList(
           context,
           _curPage + 1,
-          houseId: widget.data.id,
+          houseId: widget.data?.id,
           cancelToken: cancelToken,
         ).then((data) {
           _data.addAll(data);
@@ -209,4 +212,7 @@ class _LandlordOrderListHomeState
     );
     return a;
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

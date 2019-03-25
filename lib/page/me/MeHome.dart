@@ -1,20 +1,15 @@
 import 'package:house/importLib.dart';
 import 'package:house/page/me/NotificationPage.dart';
 
-class MeHome extends BaseStatefulWidget {
+class MeHome extends StatelessWidget {
   @override
-  _MeHomeState createState() {
-    return _MeHomeState();
-  }
-}
-
-class _MeHomeState extends BaseAppBarAndBodyState<MeHome> {
-  @override
-  BaseAppBar appBar(BuildContext context) {
-    return MeAppBar(context);
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: MeAppBar(context),
+      body: body(context),
+    );
   }
 
-  @override
   Widget body(BuildContext context) {
     return ListView(
       padding: EdgeInsets.only(),
@@ -26,7 +21,7 @@ class _MeHomeState extends BaseAppBarAndBodyState<MeHome> {
           onPressed: () {
             push(context, ProfileHome());
           },
-          iconPath: "image/house_profile.webp",
+          icon: HouseIcons.profileIcon,
           name: HouseValue.of(context).profile,
         ),
 
@@ -36,7 +31,7 @@ class _MeHomeState extends BaseAppBarAndBodyState<MeHome> {
                 onPressed: () {
                   push(context, CertificateListPage());
                 },
-                iconPath: "image/house_profile.webp",
+                icon: HouseIcons.certificationIcon,
                 name: HouseValue.of(context).certificate,
               )
             : SizedBox.shrink(),
@@ -46,7 +41,7 @@ class _MeHomeState extends BaseAppBarAndBodyState<MeHome> {
           onPressed: () {
             push(context, Settings());
           },
-          iconPath: "image/house_settings.webp",
+          icon: HouseIcons.settingsIcon,
           name: HouseValue.of(context).settings,
         ),
 
@@ -55,7 +50,7 @@ class _MeHomeState extends BaseAppBarAndBodyState<MeHome> {
           onPressed: () {
             push(context, NotificationPage());
           },
-          iconPath: "image/house_notification.webp",
+          icon: HouseIcons.notificationIcon,
           name: HouseValue.of(context).notifications,
           hotNum: 100,
         ),
@@ -65,22 +60,25 @@ class _MeHomeState extends BaseAppBarAndBodyState<MeHome> {
 
   FlatButton _buildIconNameHot({
     VoidCallback onPressed,
-    @required String iconPath,
+    @required IconData icon,
     @required String name,
     int hotNum = 0,
   }) {
     hotNum = hotNum > 99 ? 99 : hotNum;
     return FlatButton(
       onPressed: onPressed,
-      //Image.asset("image/house_notification.webp")
+      shape: RoundedRectangleBorder(),
       child: Container(
         width: 160,
         height: 48,
         child: Row(
           children: <Widget>[
-            Image.asset(iconPath),
+            Icon(
+              icon,
+              color: HouseColor.gray,
+            ),
             SizedBox(
-              width: 16,
+              width: 12,
             ),
             Padding(
               child: Text(
@@ -117,13 +115,10 @@ class _MeHomeState extends BaseAppBarAndBodyState<MeHome> {
                       ),
                     ),
                     padding: EdgeInsets.only(bottom: 1),
-                  )
+                  ),
           ],
         ),
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

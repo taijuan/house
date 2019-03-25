@@ -61,7 +61,7 @@ Widget route(User user) {
     case 2:
       return LandlordHome();
     case 3:
-      return LesseeHome();
+      return TenantHome();
     case 4:
       return VendorHome();
   }

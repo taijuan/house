@@ -156,8 +156,12 @@ class _CityAreaHomeListState extends BaseAppBarAndBodyState<CityAreaHome> {
             ),
           ),
           Transform.rotate(
-            angle: pi / 2,
-            child: Image.asset("image/house_fold.webp"),
+            angle: pi,
+            child: Icon(
+              HouseIcons.backIcon,
+              color: HouseColor.gray,
+              size: 14,
+            ),
           )
         ],
       ),
@@ -189,19 +193,26 @@ class _CityAreaHomeListState extends BaseAppBarAndBodyState<CityAreaHome> {
       child: Row(
         mainAxisSize: widget.pid == null ? MainAxisSize.min : MainAxisSize.max,
         children: <Widget>[
-          Image.asset(
-            data.checked
-                ? "image/house_auth_select.webp"
-                : "image/house_auth_unselect.webp",
-            width: 18,
-            height: 18,
-          ),
+          data.checked
+              ? Icon(
+                  HouseIcons.checkOkIcon,
+                  color: HouseColor.green,
+                  size: 18,
+                )
+              : Icon(
+                  HouseIcons.unCheckIcon,
+                  color: HouseColor.gray,
+                  size: 18,
+                ),
           SizedBox(
             width: 8,
           ),
-          Text(
-            data.name,
-            style: createTextStyle(),
+          Padding(
+            padding: EdgeInsets.only(bottom: 2),
+            child: Text(
+              data.name,
+              style: createTextStyle(),
+            ),
           )
         ],
       ),

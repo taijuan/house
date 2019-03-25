@@ -17,7 +17,6 @@ class _VendorRepairResultsState
     extends BaseAppBarAndBodyState<VendorRepairResults> {
   final TextEditingController _controller = TextEditingController();
   final List<File> _images = [];
-  int _status = 1;
 
   @override
   BaseAppBar appBar(BuildContext context) {
@@ -48,7 +47,6 @@ class _VendorRepairResultsState
   Widget body(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
-        _buildRadioBt(),
         SliverToBoxAdapter(
           child: Container(
             color: HouseColor.lightGray,
@@ -134,67 +132,12 @@ class _VendorRepairResultsState
     );
   }
 
-  Widget _buildRadioBt() {
-    return SliverToBoxAdapter(
-      child: Row(
-        children: <Widget>[
-          ///完成结果1.完成 2.未完成
-          Expanded(
-            child: Container(
-              height: 64,
-              alignment: Alignment.center,
-              child: FlatButton.icon(
-                onPressed: () {
-                  if (_status == 2) {
-                    _status = 1;
-                    setState(() {});
-                  }
-                },
-                icon: Image.asset(_status == 1
-                    ? "image/house_auth_select.webp"
-                    : "image/house_auth_unselect.webp"),
-                label: Text(
-                  HouseValue.of(context).finished,
-                  style: createTextStyle(
-                      fontSize: 17, fontFamily: fontFamilySemiBold),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              height: 64,
-              alignment: Alignment.center,
-              child: FlatButton.icon(
-                onPressed: () {
-                  if (_status == 1) {
-                    _status = 2;
-                    setState(() {});
-                  }
-                },
-                icon: Image.asset(_status == 2
-                    ? "image/house_auth_select.webp"
-                    : "image/house_auth_unselect.webp"),
-                label: Text(
-                  HouseValue.of(context).unFinished,
-                  style: createTextStyle(
-                      fontSize: 17, fontFamily: fontFamilySemiBold),
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
   void _repairQuoteResultSubmit() async {
     showLoadingDialog(context);
     await repairQuoteResultSubmit(
       context,
       widget.orderId,
       widget.repairQuoteId,
-      _status,
       _controller.text,
       _images,
       cancelToken: cancelToken,

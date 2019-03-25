@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/services.dart';
 import 'package:house/importLib.dart';
 
 class PublishOrderHome extends BaseStatefulWidget {
@@ -27,7 +26,12 @@ class _PublishOrderHomeState extends BaseAppBarAndBodyState<PublishOrderHome> {
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
-      navigatorBack: TitleAppBar.navigatorBackBlack(context),
+      navigatorBack: TitleAppBar.navigatorBackBlack(context, onPressed: () {
+        pop(
+          context,
+          result: _data.any((a) => !a.isEnable),
+        );
+      }),
       title: TitleAppBar.appBarTitle(
         HouseValue.of(context).publish,
       ),
@@ -134,17 +138,19 @@ class _PublishOrderItemState extends BaseState<_PublishOrderItem> {
             height: 48,
             child: FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              onPressed: () {
-                push<List<Tag>>(
-                  context,
-                  TagHome(selectData: widget.data.tags),
-                ).then((tags) {
-                  if (tags != null) {
-                    widget.data.tags = tags;
-                    setState(() {});
-                  }
-                });
-              },
+              onPressed: widget.data.isEnable
+                  ? () {
+                      push<List<Tag>>(
+                        context,
+                        TagHome(selectData: widget.data.tags),
+                      ).then((tags) {
+                        if (tags != null) {
+                          widget.data.tags = tags;
+                          setState(() {});
+                        }
+                      });
+                    }
+                  : null,
               child: Row(
                 children: <Widget>[
                   Text(
@@ -162,8 +168,12 @@ class _PublishOrderItemState extends BaseState<_PublishOrderItem> {
                     ),
                   ),
                   Transform.rotate(
-                    angle: pi / 2,
-                    child: Image.asset("image/house_fold.webp"),
+                    angle: pi,
+                    child: Icon(
+                      HouseIcons.backIcon,
+                      color: HouseColor.gray,
+                      size: 14,
+                    ),
                   )
                 ],
               ),
@@ -202,9 +212,7 @@ class _PublishOrderItemState extends BaseState<_PublishOrderItem> {
               ),
               style: createTextStyle(),
               maxLines: 3,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(100),
-              ],
+              maxLength: 100,
             ),
           ),
 
@@ -226,18 +234,17 @@ class _PublishOrderItemState extends BaseState<_PublishOrderItem> {
               borderRadius: BorderRadius.circular(4),
             ),
             child: TextFormField(
+              enabled: widget.data.isEnable,
+              controller: _desController,
+              decoration: InputDecoration(
                 enabled: widget.data.isEnable,
-                controller: _desController,
-                decoration: InputDecoration(
-                  enabled: widget.data.isEnable,
-                  contentPadding: EdgeInsets.all(8),
-                  border: InputBorder.none,
-                ),
-                style: createTextStyle(),
-                maxLines: 10,
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(400),
-                ]),
+                contentPadding: EdgeInsets.all(8),
+                border: InputBorder.none,
+              ),
+              style: createTextStyle(),
+              maxLines: 9,
+              maxLength: 300,
+            ),
           ),
 
           ///
@@ -293,8 +300,10 @@ class _PublishOrderItemState extends BaseState<_PublishOrderItem> {
       cancelToken: cancelToken,
     ).then((v) {
       pop(context);
-      widget.data.isEnable = false;
-      setState(() {});
+      showToastSuccess(context);
+      setState(() {
+        widget.data.isEnable = false;
+      });
     }).catchError((e) {
       pop(context);
       showToast(context, e.toString());

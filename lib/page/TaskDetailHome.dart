@@ -75,7 +75,16 @@ class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
             child: OutlineButton(
               borderSide: BorderSide(color: HouseColor.green),
               onPressed: () {
-                push(context, PublishOrderHome(widget.data.id));
+                push(
+                  context,
+                  PublishOrderHome(widget.data.id),
+                ).then((isRefresh) {
+                  if (isRefresh) {
+                    setState(() {
+                      _globalKey.currentState.show();
+                    });
+                  }
+                });
               },
               child: Text(
                 "+",
@@ -164,7 +173,16 @@ class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
             child: FlatButton(
               color: HouseColor.green,
               onPressed: () {
-                push(context, PublishOrderHome(widget.data.id));
+                push(
+                  context,
+                  PublishOrderHome(widget.data.id),
+                ).then((isRefresh) {
+                  if (isRefresh) {
+                    setState(() {
+                      _globalKey.currentState.show();
+                    });
+                  }
+                });
               },
               child: Text(
                 HouseValue.of(context).publish,

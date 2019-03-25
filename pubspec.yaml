@@ -26,16 +26,8 @@ dependencies:
 flutter:
   #图片资源
   assets:
-  - image/house_back_black.webp
-  - image/house_back_white.webp
   - image/house_email_sent_ok.webp
   - image/house_signup_image.webp
-  - image/house_views_green.webp
-  - image/house_views_gray.webp
-  - image/house_about_me.webp
-  - image/house_notification.webp
-  - image/house_profile.webp
-  - image/house_settings.webp
   - image/house_photo.webp
   - image/house_loading_image_placeholder.webp
   - image/house_add.webp
@@ -46,14 +38,7 @@ flutter:
   - image/house_built.webp
   - image/house_bed.webp
   - image/house_bath.webp
-  - image/house_email.webp
-  - image/house_phone.webp
-  - image/house_fold.webp
   - image/house_search.webp
-  - image/house_unfold_white.webp
-  - image/house_auth_select.webp
-  - image/house_auth_unselect.webp
-  - image/house_timeline.webp
   - image/house_marker_green.webp
   - image/house_marker_red.webp
   - image/launch_background.webp
@@ -68,7 +53,7 @@ flutter:
   - family: LatoBold
     fonts:
     - asset: font/lato_bold.ttf
-  - family: tabIcon
+  - family: iconfont
     fonts:
-    - asset: font/tab_icon.ttf
+    - asset: font/iconfont.ttf
 

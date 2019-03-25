@@ -1,47 +1,47 @@
 import 'package:flutter/cupertino.dart';
 import 'package:house/importLib.dart';
 
-class AgencyHome extends BaseStatefulWidget {
-  @override
-  _AgencyHomeState createState() => _AgencyHomeState();
-}
-
-const IconData home = IconData(0xe612, fontFamily: 'tabIcon');
-const IconData task = IconData(0xe607, fontFamily: 'tabIcon');
-const IconData vendor = IconData(0xe608, fontFamily: 'tabIcon');
-const IconData me = IconData(0xe606, fontFamily: 'tabIcon');
-
-class _AgencyHomeState extends BaseState<AgencyHome> {
+class AgencyHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        iconSize: 28,
+        iconSize: 24,
         activeColor: HouseColor.green,
         inactiveColor: HouseColor.gray,
         backgroundColor: HouseColor.white,
         border: Border(),
         items: [
           BottomNavigationBarItem(
-            icon: Icon(home),
+            icon: Icon(HouseIcons.homeIcon),
             title: Text(HouseValue.of(context).properties),
           ),
           BottomNavigationBarItem(
-            icon: Icon(task),
-            title: Text(HouseValue.of(context).task),
+            icon: Icon(HouseIcons.caseIcon),
+            title: Text(HouseValue.of(context).cases),
           ),
           BottomNavigationBarItem(
-            icon: Icon(vendor),
+            icon: Icon(HouseIcons.orderIcon),
+            title: Text(HouseValue.of(context).orders),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(HouseIcons.vendorIcon),
             title: Text(HouseValue.of(context).vendor),
           ),
           BottomNavigationBarItem(
-            icon: Icon(me),
+            icon: Icon(HouseIcons.meIcon),
             title: Text(HouseValue.of(context).me),
           ),
         ],
       ),
       tabBuilder: (context, index) {
-        return [HouseHome(), TaskHome(), VendorListHome(), MeHome()][index];
+        return [
+          HouseHome(),
+          CasesPage(),
+          AgencyOrderPage(),
+          VendorListHome(),
+          MeHome(),
+        ][index];
       },
     );
   }

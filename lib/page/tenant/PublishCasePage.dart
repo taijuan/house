@@ -1,18 +1,17 @@
 import 'package:house/importLib.dart';
 
-class PublishQuestionHome extends BaseStatefulWidget {
+class PublishCasePage extends BaseStatefulWidget {
   final House data;
 
-  PublishQuestionHome(this.data);
+  PublishCasePage(this.data);
 
   @override
-  _PublishQuestionHomeState createState() {
-    return _PublishQuestionHomeState();
+  _PublishCasePageState createState() {
+    return _PublishCasePageState();
   }
 }
 
-class _PublishQuestionHomeState
-    extends BaseAppBarAndBodyState<PublishQuestionHome> {
+class _PublishCasePageState extends BaseAppBarAndBodyState<PublishCasePage> {
   List<File> images = [];
   TextEditingController controller = TextEditingController();
 
@@ -73,7 +72,7 @@ class _PublishQuestionHomeState
             ),
             style: createTextStyle(),
             maxLines: 10,
-            maxLength: 400,
+            maxLength: 300,
           ),
           top: 0,
           bottom: 12,
@@ -219,16 +218,19 @@ class _PublishQuestionHomeState
     showLoadingDialog(context);
     insertQuestionInfo(
       context,
-      widget.data.id,
+      widget.data?.id,
       description,
       images,
       cancelToken: cancelToken,
-    ).then((value) {
-      pop(context);
-      pop(context);
-    }).catchError((e) {
-      pop(context);
-      showToast(context, e.toString());
-    });
+    )
+      ..then((value) {
+        pop(context);
+        showToastSuccess(context);
+        pop(context, result: true);
+      })
+      ..catchError((e) {
+        pop(context);
+        showToast(context, e.toString());
+      });
   }
 }

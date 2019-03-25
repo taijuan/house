@@ -55,7 +55,11 @@ class _SignInAppBarState extends BaseState<SignInAppBar> {
                     child: Container(
                       width: 48,
                       height: 48,
-                      child: Image.asset("image/house_back_white.webp"),
+                      child: Icon(
+                        HouseIcons.backIcon,
+                        color: HouseColor.black,
+                        size: 18,
+                      ),
                     ),
                   ),
                 )

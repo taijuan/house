@@ -563,16 +563,12 @@ Future<dynamic> repairQuoteResultSubmit(
   BuildContext context,
   String orderId,
   String repairOrderId,
-
-  ///完成结果1.完成 2.未完成
-  int status,
   String desc,
   List<File> images, {
   CancelToken cancelToken,
 }) async {
   Map<String, dynamic> data = {
     "id": orderId,
-    "resultStatus": status,
     "repairOrderId": repairOrderId,
     "resultDesc": desc,
   };

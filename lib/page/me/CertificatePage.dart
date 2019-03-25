@@ -207,8 +207,12 @@ class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
           ),
           Container(width: 8),
           Transform.rotate(
-            angle: pi / 2,
-            child: Image.asset("image/house_fold.webp"),
+            angle: pi,
+            child: Icon(
+              HouseIcons.backIcon,
+              color: HouseColor.gray,
+              size: 14,
+            ),
           )
         ],
       ),

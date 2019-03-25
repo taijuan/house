@@ -56,8 +56,12 @@ class _UserIdentityTextFieldState extends BaseState<UserIdentityTextField> {
                   alignment: AlignmentDirectional.center,
                   width: 48,
                   child: Transform.rotate(
-                    angle: pi / 2,
-                    child: Image.asset("image/house_fold.webp"),
+                    angle: pi,
+                    child: Icon(
+                      HouseIcons.backIcon,
+                      color: HouseColor.gray,
+                      size: 14,
+                    ),
                   ),
                 )
               ],

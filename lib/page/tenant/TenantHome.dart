@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:house/importLib.dart';
 
-class LandlordHome extends StatelessWidget {
+class TenantHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
@@ -17,8 +17,8 @@ class LandlordHome extends StatelessWidget {
             title: Text(HouseValue.of(context).properties),
           ),
           BottomNavigationBarItem(
-            icon: Icon(HouseIcons.orderIcon),
-            title: Text(HouseValue.of(context).orders),
+            icon: Icon(HouseIcons.caseIcon),
+            title: Text(HouseValue.of(context).cases),
           ),
           BottomNavigationBarItem(
             icon: Icon(HouseIcons.meIcon),
@@ -28,8 +28,8 @@ class LandlordHome extends StatelessWidget {
       ),
       tabBuilder: (context, index) {
         return [
-          LandlordHousePage(),
-          LandlordOrdersPage(),
+          TenantHousePage(),
+          CasesPage(),
           MeHome(),
         ][index];
       },

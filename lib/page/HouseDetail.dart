@@ -72,7 +72,6 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
         });
   }
 
-
   SliverToBoxAdapter _buildDivider() {
     return SliverToBoxAdapter(
       child: Container(
@@ -320,7 +319,11 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
                         SizedBox(
                           width: 12,
                         ),
-                        Image.asset("image/house_phone.webp"),
+                        Icon(
+                          HouseIcons.phoneIcon,
+                          color: HouseColor.green,
+                          size: 18,
+                        ),
                       ],
                     ),
                   ),
@@ -347,7 +350,11 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
                   SizedBox(
                     width: 12,
                   ),
-                  Image.asset("image/house_email.webp"),
+                  Icon(
+                    HouseIcons.mailIcon,
+                    color: HouseColor.green,
+                    size: 18,
+                  ),
                 ],
               ),
             )

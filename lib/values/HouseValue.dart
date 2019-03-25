@@ -110,7 +110,7 @@ class Zh extends En {
   String taskDescription = "Question Description";
   String byPass = "Bypass";
   String finished = "Finish";
-  String caseStr = "Case";
+  String cases = "Case";
   String orders = "Orders";
   String orderDetail = "Order Detail";
   String referenceOfAgency = "Reference of Agency";
@@ -219,7 +219,7 @@ class En {
   String finished = "Finished";
   String close = "Close";
   String unFinished = "Unfinished";
-  String caseStr = "Case";
+  String cases = "Cases";
   String orders = "Orders";
   String orderDetail = "Order Detail";
   String referenceOfAgency = "Reference of Agency";

@@ -140,14 +140,19 @@ class _VendorDetailHomeState extends BaseAppBarAndBodyState<VendorDetailHome> {
                       style: createTextStyle(color: HouseColor.gray),
                     ),
                   ),
-                  Expanded(
-                    child: Text(
-                      _data.tel ?? "",
-                      style: createTextStyle(
-                        fontSize: 17,
-                        fontFamily: fontFamilySemiBold,
-                      ),
+                  Text(
+                    _data.tel ?? "",
+                    style: createTextStyle(
+                      fontSize: 17,
+                      fontFamily: fontFamilySemiBold,
                     ),
+                  ),
+                  Container(
+                    width: 8,
+                  ),
+                  Icon(
+                    HouseIcons.phoneIcon,
+                    color: HouseColor.green,
                   ),
                 ],
               ),

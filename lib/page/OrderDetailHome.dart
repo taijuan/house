@@ -1,6 +1,3 @@
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-
 import 'package:flutter/services.dart';
 import 'package:house/importLib.dart';
 
@@ -17,18 +14,10 @@ class OrderDetailHome extends BaseStatefulWidget {
 class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
   final GlobalKey<RefreshIndicatorState> _globalKey =
       GlobalKey<RefreshIndicatorState>();
-  ui.Image image;
 
   final TextEditingController _messageController = TextEditingController();
   int _receiveUserType = TypeStatus.agency.value;
   OrderDetail _data;
-
-  Future<ui.Image> _getImage() async {
-    ByteData data = await rootBundle.load("image/3.0x/house_timeline.webp");
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
-    ui.FrameInfo frameInfo = await codec.getNextFrame();
-    return frameInfo.image;
-  }
 
   @override
   void initState() {
@@ -86,7 +75,6 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
                 ],
         ),
         onRefresh: () async {
-          image = await _getImage();
           await selectRepairOrderById(
             context,
             widget.id,
@@ -649,7 +637,6 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
               isDrawLeft: index != 0,
               isDrawRight: index != 4,
               status: data.status,
-              image: image,
             ),
           ),
           Container(height: 4),
@@ -979,7 +966,6 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
 }
 
 class RepairLogIconPainter extends CustomPainter {
-  final ui.Image image;
   final bool isDrawLeft, isDrawRight;
   final int status;
   final Paint dotPaint = Paint()
@@ -1008,7 +994,6 @@ class RepairLogIconPainter extends CustomPainter {
   Path path = Path();
 
   RepairLogIconPainter({
-    this.image,
     this.status,
     this.isDrawLeft,
     this.isDrawRight,
@@ -1033,26 +1018,16 @@ class RepairLogIconPainter extends CustomPainter {
         6,
         dotPaint,
       );
-    } else if (status == 2 && image != null) {
-      double scale = 1;
-      double dw = size.width / image.width;
-      double dh = size.height / image.height;
-      scale = dw <= dh ? dw : dh;
-      canvas.drawImageRect(
-        image,
-        Rect.fromLTWH(
-          0,
-          0,
-          image.width.toDouble(),
-          image.height.toDouble(),
-        ),
-        Rect.fromLTWH(
-          size.width / 2 - image.width * scale / 2,
-          size.height / 2 - image.height * scale / 2,
-          image.width * scale,
-          image.height * scale,
-        ),
+    } else if (status == 2) {
+      canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2),
+        6,
         dotPaint,
+      );
+      canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2),
+        3,
+        linePaint,
       );
     } else {
       canvas.drawCircle(

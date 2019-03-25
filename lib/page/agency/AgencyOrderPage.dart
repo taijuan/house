@@ -1,17 +1,26 @@
 import 'package:house/importLib.dart';
 
-class AgencyOrderHome extends BaseStatefulWidget {
+class AgencyOrderPage extends BaseStatefulWidget {
   @override
-  _AgencyOrderHomeState createState() => _AgencyOrderHomeState();
+  _AgencyOrderPageState createState() => _AgencyOrderPageState();
 }
 
-class _AgencyOrderHomeState extends BaseState<AgencyOrderHome>
-    with AutomaticKeepAliveClientMixin<AgencyOrderHome> {
+class _AgencyOrderPageState extends BaseAppBarAndBodyState<AgencyOrderPage> {
   bool _isShowPop = false;
-  TypeStatus _curTypeStatus = TypeStatus.orderStatus[0];
+  TypeStatus _curTypeStatus = TypeStatus.orderWaiting;
 
   @override
-  Widget build(BuildContext context) {
+  BaseAppBar appBar(BuildContext context) {
+    return TitleAppBar(
+      context: context,
+      title: TitleAppBar.appBarTitle(
+        HouseValue.of(context).orders,
+      ),
+    );
+  }
+
+  @override
+  Widget body(BuildContext context) {
     return Column(
       children: <Widget>[
         _buildTypeStatus(context),
@@ -52,20 +61,27 @@ class _AgencyOrderHomeState extends BaseState<AgencyOrderHome>
               width: 32,
             ),
             Expanded(
-              child: Text(
-                _curTypeStatus.descEn,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: createTextStyle(fontFamily: fontFamilySemiBold),
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 4),
+                child: Text(
+                  _curTypeStatus.descEn,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: createTextStyle(fontFamily: fontFamilySemiBold),
+                ),
               ),
             ),
             SizedBox(
               width: 8,
             ),
             Transform.rotate(
-              angle: _isShowPop ? pi / 2 : pi,
-              child: Image.asset("image/house_fold.webp"),
+              angle: _isShowPop ? pi : pi + pi / 2,
+              child: Icon(
+                HouseIcons.backIcon,
+                color: HouseColor.gray,
+                size: 14,
+              ),
             ),
           ],
         ),
