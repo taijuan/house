@@ -34,24 +34,33 @@ class TitleAppBar extends BaseAppBar {
 
   static Widget navigatorBackBlack(BuildContext context,
       {VoidCallback onPressed, Widget back}) {
-    return FlatButton(
-      onPressed: onPressed ??
-          () {
-            pop(context);
-          },
-      padding: EdgeInsets.only(),
-      child: Container(
-        height: 48,
-        padding: EdgeInsets.symmetric(horizontal: 12),
-        alignment: Alignment.center,
-        child: back ??
-            Icon(
-              HouseIcons.backIcon,
-              color: HouseColor.black,
-              size: 18,
-            ),
-      ),
-    );
+    return WillPopScope(
+        child: FlatButton(
+          onPressed: onPressed ??
+              () {
+                pop(context);
+              },
+          padding: EdgeInsets.only(),
+          child: Container(
+            height: 48,
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            alignment: Alignment.center,
+            child: back ??
+                Icon(
+                  HouseIcons.backIcon,
+                  color: HouseColor.black,
+                  size: 18,
+                ),
+          ),
+        ),
+        onWillPop: () async {
+          if (onPressed == null) {
+            return true;
+          } else {
+            onPressed();
+            return false;
+          }
+        });
   }
 
   static Widget appBarMenu(BuildContext context,

@@ -96,7 +96,6 @@ class _OrdersHomeState extends BaseState<OrdersHome>
   bool get wantKeepAlive => true;
 
   Widget _buildOrderItem(Order data) {
-    LogUtils.log(data.typeNames);
     return FlatButton(
       onPressed: () {
         push(

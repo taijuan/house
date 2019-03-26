@@ -7,7 +7,7 @@ import 'package:meta/meta.dart';
 
 class HttpManager {
 //  static const String DNS = "http://192.168.2.28/";
-  static const String DNS = "http://poc.fleica.com/";
+  static const String DNS = "http://192.168.2.102:8080/";
   static const String BASE_URL = "${DNS}house-api";
 
   const HttpManager();
@@ -32,7 +32,7 @@ class HttpManager {
       return value == null;
     });
     LogUtils.log(data);
-    LogUtils.log(path);
+    LogUtils.log(BASE_URL + path);
     LogUtils.log("#######################################");
     Response response = await dio.post(
       path,

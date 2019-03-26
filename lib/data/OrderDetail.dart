@@ -7,6 +7,7 @@ class OrderDetail {
   Quotation repairQuote;
   List<Message> repairMessages;
   List<OrderLogs> repairOrderLogs;
+  List<RepairResult> repairQuoteResults;
 
   OrderDetail.fromJson(Map<String, dynamic> json) {
     repairOrder = Order.fromJson(json["repairOrder"]);
@@ -20,6 +21,9 @@ class OrderDetail {
     }).toList();
     repairOrderLogs = DataUtils.isList(json["repairOrderLogs"]).map((v) {
       return OrderLogs.fromJson(v);
+    }).toList();
+    repairQuoteResults = DataUtils.isList(json["repairQuoteResults"]).map((v) {
+      return RepairResult.fromJson(v);
     }).toList();
   }
 }

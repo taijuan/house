@@ -135,53 +135,80 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
   }
 
   Widget _buildItem(Question data) {
-    return FlatButton(
-      onPressed: () async {
-        await push(context, TaskDetailHome(data));
+    return InkWell(
+      onTap: () {
+        push(
+          context,
+          CaseDetailPage(data),
+        )..then((isRefresh) {
+            if (isRefresh == true) {
+              _refreshKey.currentState.show();
+            }
+          });
       },
-      padding: EdgeInsets.all(12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          HouseCacheNetworkImage(
-            DataUtils.getFirstImage(data.photos.content),
-            width: 60,
-            height: 60,
-          ),
-          Container(
-            width: 12,
-          ),
-          Expanded(
-            child: SizedBox(
+      onLongPress: () {
+        if (User.getUserSync().type.value != TypeStatus.tenant.value) {
+          return;
+        }
+        if (data.status.value != TypeStatus.questionNew.value) {
+          return;
+        }
+        showAlertDialog(
+          context,
+          content: HouseValue.of(context).areYouSureToDeleteThisCase.replaceAll(
+                "#",
+                data.description,
+              ),
+          onOkPressed: () {
+            _deleteQuestionInfoById(data);
+          },
+        );
+      },
+      child: Padding(
+        padding: EdgeInsets.all(12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            HouseCacheNetworkImage(
+              DataUtils.getFirstImage(data.photos.content),
+              width: 60,
               height: 60,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    data.description,
-                    style: createTextStyle(height: 1),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      _getQuestionStatus(data),
-                      SizedBox(width: 12),
-                      Text(
-                        data.createDate,
-                        style: createTextStyle(
-                            color: HouseColor.gray, fontSize: 10),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  )
-                ],
+            ),
+            Container(
+              width: 12,
+            ),
+            Expanded(
+              child: SizedBox(
+                height: 60,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      data.description,
+                      style: createTextStyle(height: 1),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        _getQuestionStatus(data),
+                        SizedBox(width: 12),
+                        Text(
+                          data.createDate,
+                          style: createTextStyle(
+                              color: HouseColor.gray, fontSize: 10),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -209,4 +236,24 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
 
   @override
   bool get wantKeepAlive => true;
+
+  _deleteQuestionInfoById(Question data) {
+    showLoadingDialog(context);
+    deleteQuestionInfoById(
+      context: context,
+      id: data.id,
+      cancelToken: cancelToken,
+    )
+      ..then((v) {
+        showToastSuccess(context);
+        pop(context);
+        setState(() {
+          _data.remove(data);
+        });
+      })
+      ..catchError((e) {
+        showToast(context, e.toString());
+        pop(context);
+      });
+  }
 }

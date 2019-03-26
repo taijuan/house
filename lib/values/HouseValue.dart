@@ -253,4 +253,8 @@ class En {
       "Are you sure to delete this certificate ?";
   String areYouSureToModifyThisCertificate =
       "Are you sure to modify this certificate ?";
+
+  String areYouSureToDeleteThisCase = "Are you sure to delete this case ?\n#";
+
+  String areYouSureToDeleteThisOrder = "Are you sure to delete this order ?\n#";
 }

@@ -22,4 +22,8 @@ class HouseIcons {
 
   static const IconData phoneIcon = IconData(0xe66f, fontFamily: "iconfont");
   static const IconData mailIcon = IconData(0xe884, fontFamily: "iconfont");
+
+  static const IconData deleteIcon = IconData(0xe613, fontFamily: "iconfont");
+  static const IconData rightIcon = IconData(0xe714, fontFamily: "iconfont");
+  static const IconData wrongIcon = IconData(0xe711, fontFamily: "iconfont");
 }

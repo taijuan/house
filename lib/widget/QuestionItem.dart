@@ -16,7 +16,7 @@ class _QuestionItemState extends BaseState<QuestionItem> {
   Widget build(BuildContext context) {
     return FlatButton(
       onPressed: () async {
-        await push(context, TaskDetailHome(widget.data));
+        await push(context, CaseDetailPage(widget.data));
       },
       padding: EdgeInsets.symmetric(vertical: 12),
       child: SizedBox(

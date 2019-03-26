@@ -11,6 +11,7 @@ class Message {
   String firstName;
   String headImg;
   TypeStatus userType;
+  TypeStatus receiveUserType;
 
   Message.fromJson(Map<String, dynamic> json) {
     id = json["id"];
@@ -18,10 +19,12 @@ class Message {
     message = json["message"];
     sendUserId = json["sendUserId"];
     receiveUserId = json["receiveUserId"];
-    createTime = json["createTime"];
+    createTime = json["createTime"] ?? "";
     lastName = json["lastName"];
     firstName = json["firstName"];
     headImg = json["headImg"];
     userType = TypeStatus.fromJson(DataUtils.isMap(json["userType"]));
+    receiveUserType =
+        TypeStatus.fromJson(DataUtils.isMap(json["receiveUserType"]));
   }
 }

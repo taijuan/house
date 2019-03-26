@@ -648,7 +648,8 @@ Future<List<CityArea>> getCityList(
 Future<dynamic> finishOrCloseRepairOrderStatus(
   BuildContext context,
   String id,
-  int status, {
+  int status,
+  String content, {
   CancelToken cancelToken,
 }) async {
   BaseRes res = await HttpManager.post(
@@ -657,6 +658,7 @@ Future<dynamic> finishOrCloseRepairOrderStatus(
     data: {
       "id": id,
       "status": status,
+      "content": content,
     },
     cancelToken: cancelToken,
   );
@@ -941,6 +943,48 @@ Future<dynamic> saveCertificate({
       "type": type,
       "certificateNo": certificateNo,
       "imgStr": await FileUtils.compressWithFileToBase64(imgStr),
+    },
+    cancelToken: cancelToken,
+  );
+  if (res.code == "200") {
+    return res;
+  } else {
+    throw FlutterError(res.msg.msgEn);
+  }
+}
+
+Future<dynamic> deleteQuestionInfoById({
+  BuildContext context,
+  String id,
+  CancelToken cancelToken,
+}) async {
+  BaseRes res = await HttpManager.post(
+    context,
+    path: "/deleteQuestionInfoById",
+    data: {
+      "id": id,
+      "userId": (await User.getUser()).id,
+    },
+    cancelToken: cancelToken,
+  );
+  if (res.code == "200") {
+    return res;
+  } else {
+    throw FlutterError(res.msg.msgEn);
+  }
+}
+
+Future<dynamic> deleteRepairOrderById({
+  BuildContext context,
+  String id,
+  CancelToken cancelToken,
+}) async {
+  BaseRes res = await HttpManager.post(
+    context,
+    path: "/deleteRepairOrderById",
+    data: {
+      "id": id,
+      "userId": (await User.getUser()).id,
     },
     cancelToken: cancelToken,
   );

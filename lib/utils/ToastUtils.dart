@@ -10,7 +10,7 @@ showToast(BuildContext context, String msg) {
 showToastSuccess(BuildContext context, {String msg}) {
   Toast.show(
     context,
-    msg ?? "Submitted successfully",
+    msg ?? "successfully",
   );
 }
 

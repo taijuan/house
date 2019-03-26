@@ -49,16 +49,23 @@ class _VendorRepairResultsState
       slivers: <Widget>[
         SliverToBoxAdapter(
           child: Container(
-            color: HouseColor.lightGray,
+            margin: EdgeInsets.all(16),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: HouseColor.lightGray,
+              borderRadius: BorderRadius.circular(4),
+            ),
             child: TextFormField(
               enabled: true,
               controller: _controller,
               maxLines: 12,
+              maxLength: 400,
               style: createTextStyle(),
               decoration: InputDecoration(
                 enabled: true,
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.all(16),
+                contentPadding: EdgeInsets.all(8),
+                hintText: "Please enter description"
               ),
             ),
           ),

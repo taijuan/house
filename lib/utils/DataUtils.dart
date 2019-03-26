@@ -42,7 +42,6 @@ class DataUtils {
   static String getFirstImage(List<ImageData> data) {
     var a = getFirst(data);
     String url = HttpManager.BASE_URL + (a?.picUrl ?? "");
-    LogUtils.log(url);
     return url;
   }
 

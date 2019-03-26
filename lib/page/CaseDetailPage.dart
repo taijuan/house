@@ -1,19 +1,20 @@
 import 'package:house/importLib.dart';
 
-class TaskDetailHome extends BaseStatefulWidget {
+class CaseDetailPage extends BaseStatefulWidget {
   final Question data;
 
-  TaskDetailHome(this.data);
+  CaseDetailPage(this.data);
 
   @override
-  _TaskDetailHomeState createState() {
-    return _TaskDetailHomeState();
+  _CaseDetailPageState createState() {
+    return _CaseDetailPageState();
   }
 }
 
-class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
+class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
   final GlobalKey<RefreshIndicatorState> _globalKey =
       GlobalKey<RefreshIndicatorState>();
+  bool isRefresh = false;
   QuestionDetail _data;
 
   @override
@@ -28,7 +29,9 @@ class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
-      navigatorBack: TitleAppBar.navigatorBackBlack(context),
+      navigatorBack: TitleAppBar.navigatorBackBlack(context, onPressed: () {
+        pop(context, result: isRefresh);
+      }),
       title: TitleAppBar.appBarTitle(
         HouseValue.of(context).taskDescription,
       ),
@@ -80,6 +83,7 @@ class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
                   PublishOrderHome(widget.data.id),
                 ).then((isRefresh) {
                   if (isRefresh) {
+                    this.isRefresh = isRefresh;
                     setState(() {
                       _globalKey.currentState.show();
                     });
@@ -178,6 +182,7 @@ class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
                   PublishOrderHome(widget.data.id),
                 ).then((isRefresh) {
                   if (isRefresh) {
+                    this.isRefresh = isRefresh;
                     setState(() {
                       _globalKey.currentState.show();
                     });
@@ -200,7 +205,6 @@ class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
       int status = v.status.value;
       return status == 4 || status == 5;
     });
-    LogUtils.log("zuiweng      " + a.toString());
     return a;
   }
 
@@ -332,10 +336,7 @@ class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             if (index.isEven) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                child: _buildOrderItem(_data.repairOrders[index ~/ 2]),
-              );
+              return _buildOrderItem(_data.repairOrders[index ~/ 2]);
             } else {
               return SizedBox(
                 height: (index + 1 == _data.repairOrders.length * 2) ? 0 : 8,
@@ -349,15 +350,18 @@ class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
   }
 
   Widget _buildOrderItem(Order data) {
-    return MaterialButton(
-      padding: EdgeInsets.fromLTRB(8, 8, 8, 12),
-      onPressed: () {
-        push(context, OrderDetailHome(data.id));
-      },
-      color: _getBgColor(data),
-      child: Row(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12),
+      child: Stack(
+        fit: StackFit.loose,
+        alignment: AlignmentDirectional.centerStart,
         children: <Widget>[
-          Expanded(
+          MaterialButton(
+            padding: EdgeInsets.fromLTRB(8, 8, 48, 12),
+            onPressed: () {
+              push(context, OrderDetailHome(data.id));
+            },
+            color: _getBgColor(data),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -367,7 +371,7 @@ class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
                   overflow: TextOverflow.ellipsis,
                   style: createTextStyle(fontSize: 13),
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: 8, width: double.infinity),
                 Text(
                   data.title,
                   overflow: TextOverflow.ellipsis,
@@ -376,39 +380,62 @@ class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
                     fontSize: 15,
                     fontFamily: "LatoSemibold",
                   ),
-                  maxLines: 10,
+                  maxLines: 3,
                 ),
               ],
             ),
           ),
-          SizedBox(width: 8),
-          _getOrderStatus(data),
+          Positioned(
+            right: 0,
+            width: 48,
+            height: 48,
+            child: _getOrderStatus(data),
+          )
         ],
       ),
     );
   }
 
-  Text _getOrderStatus(Order data) {
+  Widget _getOrderStatus(Order data) {
     if (data.status.value == TypeStatus.orderFinished.value) {
-      return Text(
-        "√",
-        style: TextStyle(
-          color: HouseColor.green,
-          fontSize: 17,
-          fontFamily: "LatoSemibold",
-        ),
+      return Icon(
+        HouseIcons.rightIcon,
+        color: HouseColor.green,
       );
     } else if (data.status.value == TypeStatus.orderRejected.value) {
-      return Text(
-        "X",
-        style: TextStyle(
-          color: HouseColor.red,
-          fontSize: 17,
-          fontFamily: "LatoSemibold",
+      return Icon(
+        HouseIcons.wrongIcon,
+        color: HouseColor.red,
+      );
+    } else if (data.status.value == TypeStatus.orderWaiting.value ||
+        data.status.value == TypeStatus.orderSelecting.value) {
+      return FlatButton(
+        onPressed: () {
+          if (User.getUserSync().type.value != TypeStatus.agency.value) {
+            return;
+          }
+          showAlertDialog(
+            context,
+            content:
+                HouseValue.of(context).areYouSureToDeleteThisOrder.replaceAll(
+                      "#",
+                      data.title,
+                    ),
+            onOkPressed: () {
+              _deleteRepairOrderById(data);
+            },
+          );
+        },
+        child: Icon(
+          HouseIcons.deleteIcon,
+          color: HouseColor.gray,
         ),
       );
     } else {
-      return Text("");
+      return Container(
+        width: 0,
+        height: 0,
+      );
     }
   }
 
@@ -430,5 +457,24 @@ class _TaskDetailHomeState extends BaseAppBarAndBodyState<TaskDetailHome> {
     } else {
       return HouseColor.yellow;
     }
+  }
+
+  _deleteRepairOrderById(Order data) {
+    showLoadingDialog(context);
+    deleteRepairOrderById(
+      context: context,
+      id: data.id,
+      cancelToken: cancelToken,
+    )
+      ..then((v) {
+        showToastSuccess(context);
+        pop(context);
+        this.isRefresh = true;
+        _globalKey.currentState.show();
+      })
+      ..catchError((e) {
+        showToast(context, e.toString());
+        pop(context);
+      });
   }
 }
