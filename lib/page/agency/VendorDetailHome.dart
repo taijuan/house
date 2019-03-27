@@ -67,7 +67,9 @@ class _VendorDetailHomeState extends BaseAppBarAndBodyState<VendorDetailHome> {
           ),
           SliverToBoxAdapter(
             child: FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                push(context, CertificateListPage(userId: _data.id));
+              },
               padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               child: Row(
                 children: <Widget>[
@@ -82,6 +84,14 @@ class _VendorDetailHomeState extends BaseAppBarAndBodyState<VendorDetailHome> {
                     child: Text(
                       _getTags() ?? "",
                       style: createTextStyle(fontFamily: fontFamilySemiBold),
+                    ),
+                  ),
+                  Transform.rotate(
+                    angle: pi,
+                    child: Icon(
+                      HouseIcons.backIcon,
+                      size: 16,
+                      color: HouseColor.gray,
                     ),
                   ),
                 ],

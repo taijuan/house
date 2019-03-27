@@ -1,6 +1,10 @@
 import 'package:house/importLib.dart';
 
 class CertificateListPage extends BaseStatefulWidget {
+  final String userId;
+
+  CertificateListPage({this.userId});
+
   @override
   _CertificateListPageState createState() {
     return _CertificateListPageState();
@@ -41,6 +45,7 @@ class _CertificateListPageState
         await selectCertificatePageList(
           context,
           cancelToken: cancelToken,
+          userId: widget.userId,
         ).then((data) {
           setState(() {
             _data.clear();
@@ -67,6 +72,14 @@ class _CertificateListPageState
   }
 
   _buildAddCertificate() {
+    if (widget.userId != null) {
+      return SliverToBoxAdapter(
+        child: Container(
+          width: 0,
+          height: 0,
+        ),
+      );
+    }
     return SliverPadding(
       padding: EdgeInsets.all(16),
       sliver: SliverToBoxAdapter(
@@ -188,26 +201,8 @@ class _CertificateListPageState
               child: Row(
                 children: <Widget>[
                   Spacer(),
-                  Container(
-                    height: 28,
-                    child: OutlineButton(
-                      onPressed: () {
-                        _deleteDialog(id: data.id);
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      borderSide: BorderSide(
-                        color: HouseColor.gray,
-                        width: 0.5,
-                      ),
-                      padding: EdgeInsets.only(left: 8, right: 8, bottom: 4),
-                      child: Text(
-                        HouseValue.of(context).delete,
-                        style: createTextStyle(),
-                      ),
-                    ),
-                  ),
+                  _buildDeleteBtn(data),
+                  _buildViewBtn(data),
                   _buildModifyBtn(data),
                 ],
               ),
@@ -218,13 +213,40 @@ class _CertificateListPageState
     );
   }
 
+  Container _buildDeleteBtn(Certificate data) {
+    if (widget.userId != null) {
+      return Container(width: 0, height: 0);
+    }
+    return Container(
+      height: 28,
+      child: OutlineButton(
+        onPressed: () {
+          _deleteDialog(id: data.id);
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+        borderSide: BorderSide(
+          color: HouseColor.gray,
+          width: 0.5,
+        ),
+        padding: EdgeInsets.only(left: 8, right: 8, bottom: 4),
+        child: Text(
+          HouseValue.of(context).delete,
+          style: createTextStyle(),
+        ),
+      ),
+    );
+  }
+
   Widget _buildModifyBtn(Certificate data) {
-    if (data.status.value == 1) {
+    if (widget.userId != null) {
+      return Container(width: 0, height: 0);
+    } else if (data.status.value == 1) {
       return SizedBox.shrink();
     }
     return Container(
       height: 28,
-      margin: EdgeInsets.only(left: 12),
       child: OutlineButton(
         onPressed: () {
           push<bool>(
@@ -246,6 +268,42 @@ class _CertificateListPageState
         padding: EdgeInsets.only(left: 8, right: 8, bottom: 4),
         child: Text(
           HouseValue.of(context).modify,
+          style: createTextStyle(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildViewBtn(Certificate data) {
+    if (widget.userId == null) {
+      return Container(width: 12);
+    }
+    return Container(
+      height: 28,
+      child: OutlineButton(
+        onPressed: () {
+          push<bool>(
+            context,
+            CertificatePage(
+              data: data,
+              isShowSubmit: false,
+            ),
+          ).then((refreshState) {
+            if (refreshState == true) {
+              _refreshKey.currentState.show();
+            }
+          });
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+        borderSide: BorderSide(
+          color: HouseColor.gray,
+          width: 0.5,
+        ),
+        padding: EdgeInsets.only(left: 8, right: 8, bottom: 4),
+        child: Text(
+          "View",
           style: createTextStyle(),
         ),
       ),

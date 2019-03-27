@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 
 class CertificatePage extends BaseStatefulWidget {
   final Certificate data;
+  final bool isShowSubmit;
 
-  CertificatePage({this.data});
+  CertificatePage({this.data, this.isShowSubmit = true});
 
   @override
   BaseState createState() => _CertificatePageState();
@@ -17,14 +18,16 @@ class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
         context: context,
         navigatorBack: TitleAppBar.navigatorBackBlack(context),
         title: TitleAppBar.appBarTitle(HouseValue.of(context).certificate),
-        menu: TitleAppBar.appBarMenu(
-          context,
-          onPressed: _saveCertificateDialog,
-          menu: Text(
-            HouseValue.of(context).submit,
-            style: createTextStyle(color: HouseColor.green),
-          ),
-        ),
+        menu: widget.isShowSubmit
+            ? TitleAppBar.appBarMenu(
+                context,
+                onPressed: _saveCertificateDialog,
+                menu: Text(
+                  HouseValue.of(context).submit,
+                  style: createTextStyle(color: HouseColor.green),
+                ),
+              )
+            : null,
       );
 
   _saveCertificateDialog() {
@@ -182,7 +185,7 @@ class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       constraints: BoxConstraints(maxWidth: 0, minHeight: 48),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      onPressed: onPressed,
+      onPressed: widget.isShowSubmit ? onPressed : null,
       shape: Border(
         bottom: BorderSide(
           color: HouseColor.divider,

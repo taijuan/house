@@ -869,10 +869,11 @@ Future<List<LatLonHouse>> queryHouseLocal(
 
 Future<List<Certificate>> selectCertificatePageList(
   BuildContext context, {
+  String userId,
   CancelToken cancelToken,
 }) async {
   Map<String, dynamic> data = {
-    "userId": (await User.getUser()).id,
+    "userId": userId ?? (await User.getUser()).id,
     "status": 4,
   };
   BaseRes res = await HttpManager.post(
