@@ -10,6 +10,7 @@ class UserNameTextField extends BaseStatefulWidget {
   final FocusNode focusNode;
   final VoidCallback onEditingComplete;
   final TextInputAction textInputAction;
+  final int maxLength;
 
   UserNameTextField({
     this.userNameController,
@@ -23,6 +24,7 @@ class UserNameTextField extends BaseStatefulWidget {
     this.bottom = 0,
     this.onEditingComplete,
     this.textInputAction = TextInputAction.done,
+    this.maxLength = 64,
   });
 
   @override
@@ -64,7 +66,7 @@ class _UserNameTextFieldState extends BaseState<UserNameTextField> {
             borderRadius: BorderRadius.all(Radius.circular(0)),
           ),
         ),
-        inputFormatters: [LengthLimitingTextInputFormatter(64)],
+        inputFormatters: [LengthLimitingTextInputFormatter(widget.maxLength)],
         style: createTextStyle(),
         onEditingComplete: widget.onEditingComplete,
         textInputAction: widget.textInputAction,

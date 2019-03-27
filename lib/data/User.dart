@@ -20,23 +20,21 @@ class User {
   String companyProfile;
   List<Certificate> certificateList;
   List<CityArea> areaList;
-  String typeValues;
 
   User.fromJson(Map<String, dynamic> json)
       : id = json["id"],
-        account = json["account"],
+        account = json["account"] ?? "",
         password = json["password"],
         headImage = json["headImage"] ?? "",
         firstName = json["firstName"] ?? "",
-        lastName = json["lastName"],
+        lastName = json["lastName"] ?? "",
         email = json["email"],
         type = TypeStatus.fromJson(DataUtils.isMap(json["type"])),
         status = TypeStatus.fromJson(DataUtils.isMap(json["status"])),
         companyName = json["companyName"],
-        address = json["address"],
-        tel = json["tel"],
-        typeValues = json["typeValues"],
-        companyProfile = json["companyProfile"],
+        address = json["address"] ?? "",
+        tel = json["tel"] ?? "",
+        companyProfile = json["companyProfile"] ?? "",
         certificateList = DataUtils.isList(json["certificateList"]).map((a) {
           return Certificate.fromJson(a);
         }).toList(),
@@ -60,7 +58,6 @@ class User {
         "companyProfile": companyProfile,
         "certificateList": certificateList,
         "areaList": areaList,
-        "typeValues": typeValues,
       };
 
   static User user;

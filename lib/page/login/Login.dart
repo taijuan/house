@@ -83,51 +83,69 @@ class _LoginState extends BaseAppBarAndBodyState<Login> {
         ),
 
         ///忘记密码
+
         Container(
-          alignment: Alignment.centerRight,
-          padding: EdgeInsets.symmetric(horizontal: 36),
-          margin: EdgeInsets.only(bottom: 54),
-          height: 24,
-          child: FlatButton(
-            onPressed: () {
-              push(context, ForgerPassword());
-            },
-            color: HouseColor.transparent,
-            child: Text(
-              HouseValue.of(context).forgetPassword,
-              style: createTextStyle(color: HouseColor.green, fontSize: 13),
-            ),
-            padding: EdgeInsets.only(),
+          height: 16,
+        ),
+        RawMaterialButton(
+          onPressed: () {
+            push(context, ForgerPassword());
+          },
+          fillColor: HouseColor.transparent,
+          elevation: 0,
+          highlightElevation: 0,
+          disabledElevation: 0,
+          constraints: BoxConstraints(),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          child: Text(
+            HouseValue.of(context).forgetPassword,
+            style: createTextStyle(color: HouseColor.green, fontSize: 13),
           ),
+          padding: EdgeInsets.only(bottom: 2),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         ),
 
-        ///注册
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              HouseValue.of(context).doNotHaveAnAccount,
-              style: createTextStyle(),
-            ),
-            Container(
-              alignment: Alignment.centerRight,
-              width: 60,
-              height: 24,
-              child: FlatButton(
-                onPressed: () {
-                  push(context, CheckInviteCode());
-                },
-                color: HouseColor.transparent,
-                child: Text(
-                  HouseValue.of(context).signUp,
-                  style: createTextStyle(color: HouseColor.green, fontSize: 13),
-                ),
-                padding: EdgeInsets.only(),
-              ),
-            ),
-          ],
+        Container(
+          height: 8,
         ),
+        RawMaterialButton(
+          onPressed: () {
+            push(context, CheckInviteCode());
+          },
+          fillColor: HouseColor.transparent,
+          elevation: 0,
+          highlightElevation: 0,
+          disabledElevation: 0,
+          constraints: BoxConstraints(),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          child: Text(
+            HouseValue.of(context).signUpFromCode,
+            style: createTextStyle(color: HouseColor.green, fontSize: 13),
+          ),
+          padding: EdgeInsets.only(bottom: 2),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        ),
+
+        Container(
+          height: 8,
+        ),
+        RawMaterialButton(
+          onPressed: () {
+            push(context, NoHaveInviteCodeSignUp());
+          },
+          constraints: BoxConstraints(),
+          elevation: 0,
+          fillColor: HouseColor.transparent,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          highlightElevation: 0,
+          child: Text(
+            HouseValue.of(context).signUpForVendor,
+            style: createTextStyle(color: HouseColor.green, fontSize: 13),
+          ),
+          padding: EdgeInsets.only(bottom: 2, left: 4, right: 4),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        ),
+
         Container(
           height: 16,
         ),
@@ -142,7 +160,7 @@ class _LoginState extends BaseAppBarAndBodyState<Login> {
                 });
               },
               padding: EdgeInsets.symmetric(horizontal: 8),
-              textColor:  HouseColor.white,
+              textColor: HouseColor.white,
               child: Text(TypeStatus.agency.descEn),
               color: HouseColor.green,
             ),
@@ -154,7 +172,7 @@ class _LoginState extends BaseAppBarAndBodyState<Login> {
                 });
               },
               padding: EdgeInsets.symmetric(horizontal: 8),
-              textColor:  HouseColor.white,
+              textColor: HouseColor.white,
               child: Text(TypeStatus.landlord.descEn),
               color: HouseColor.green,
             ),
@@ -166,7 +184,7 @@ class _LoginState extends BaseAppBarAndBodyState<Login> {
                 });
               },
               padding: EdgeInsets.symmetric(horizontal: 8),
-              textColor:  HouseColor.white,
+              textColor: HouseColor.white,
               child: Text(TypeStatus.tenant.descEn),
               color: HouseColor.green,
             ),
@@ -178,7 +196,7 @@ class _LoginState extends BaseAppBarAndBodyState<Login> {
                 });
               },
               padding: EdgeInsets.symmetric(horizontal: 8),
-              textColor:  HouseColor.white,
+              textColor: HouseColor.white,
               child: Text(TypeStatus.vendor.descEn),
               color: HouseColor.green,
             ),

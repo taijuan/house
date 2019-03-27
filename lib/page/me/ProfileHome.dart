@@ -92,7 +92,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
             push(
               context,
               TextFieldPage(
-                HouseValue.of(context).company,
+                HouseValue.of(context).companyName,
                 value: user.companyName,
                 maxLength: 100,
                 maxLines: 4,
@@ -103,7 +103,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
               }
             });
           },
-          name: HouseValue.of(context).company,
+          name: HouseValue.of(context).companyName,
           value: user.companyName,
           showNull: user.type.value != TypeStatus.vendor.value,
         ),

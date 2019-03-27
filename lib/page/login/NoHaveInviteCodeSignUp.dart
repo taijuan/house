@@ -12,12 +12,18 @@ class _NoHaveInviteCodeSignUpState
   final TextEditingController _userNameController = TextEditingController(),
       _userPwd1Controller = TextEditingController(),
       _userPwd2Controller = TextEditingController(),
-      _userCodeController = TextEditingController();
+      _userCodeController = TextEditingController(),
+      _firstNameController = TextEditingController(),
+      _lastNameController = TextEditingController(),
+      _companyNameController = TextEditingController();
+
   final FocusNode _userPwd1FocusNode = FocusNode(),
       _userPwd2FocusNode = FocusNode(),
-      _userCodeFocusNode = FocusNode();
+      _userCodeFocusNode = FocusNode(),
+      _firstNameFocusNode = FocusNode(),
+      _lastNameFocusNode = FocusNode(),
+      _companyNameFocusNode = FocusNode();
   VoidCallback _listener;
-  int index = -1;
   String emailCode;
 
   @override
@@ -30,6 +36,9 @@ class _NoHaveInviteCodeSignUpState
       _userPwd1Controller.addListener(_listener);
       _userPwd2Controller.addListener(_listener);
       _userCodeController.addListener(_listener);
+      _firstNameController.addListener(_listener);
+      _lastNameController.addListener(_listener);
+      _companyNameController.addListener(_listener);
     }
     super.initState();
   }
@@ -40,10 +49,16 @@ class _NoHaveInviteCodeSignUpState
     _userPwd1Controller.removeListener(_listener);
     _userPwd2Controller.removeListener(_listener);
     _userCodeController.removeListener(_listener);
+    _firstNameController.removeListener(_listener);
+    _lastNameController.removeListener(_listener);
+    _companyNameController.removeListener(_listener);
     _userNameController.dispose();
     _userPwd1Controller.dispose();
     _userPwd2Controller.dispose();
     _userCodeController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _companyNameController.dispose();
     super.dispose();
   }
 
@@ -51,7 +66,7 @@ class _NoHaveInviteCodeSignUpState
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
-      title: TitleAppBar.appBarTitle(HouseValue.of(context).signUp),
+      title: TitleAppBar.appBarTitle(HouseValue.of(context).signUpForVendor),
       navigatorBack: TitleAppBar.navigatorBackBlack(context),
     );
   }
@@ -61,17 +76,43 @@ class _NoHaveInviteCodeSignUpState
     return ListView(
       padding: EdgeInsets.only(),
       children: <Widget>[
-        UserIdentityTextField(
-          (index) {
-            this.index = index;
-          },
-          this.index,
-        ),
-
         ///输入Email
         UserNameTextField(
           title: HouseValue.of(context).email,
           userNameController: _userNameController,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () {
+            FocusScope.of(context).requestFocus(_firstNameFocusNode);
+          },
+        ),
+
+        ///输入FirstName
+        UserNameTextField(
+          focusNode: _firstNameFocusNode,
+          title: HouseValue.of(context).firstName,
+          userNameController: _firstNameController,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () {
+            FocusScope.of(context).requestFocus(_lastNameFocusNode);
+          },
+        ),
+
+        ///输入LastName
+        UserNameTextField(
+          focusNode: _lastNameFocusNode,
+          title: HouseValue.of(context).lastName,
+          userNameController: _lastNameController,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () {
+            FocusScope.of(context).requestFocus(_companyNameFocusNode);
+          },
+        ),
+
+        ///输入CompanyName
+        UserNameTextField(
+          focusNode: _companyNameFocusNode,
+          title: HouseValue.of(context).companyName,
+          userNameController: _companyNameController,
           textInputAction: TextInputAction.next,
           onEditingComplete: () {
             FocusScope.of(context).requestFocus(_userPwd1FocusNode);
@@ -110,7 +151,7 @@ class _NoHaveInviteCodeSignUpState
         ///登录按钮
         UserButton(
           _checkData(checkCode: false) ? _register : null,
-          HouseValue.of(context).signUp,
+          HouseValue.of(context).signUpForVendor,
         ),
         UserServiceNotice()
       ],
@@ -125,7 +166,7 @@ class _NoHaveInviteCodeSignUpState
       showToast(context, HouseValue.of(context).typeYourEmailAddress);
       return;
     }
-    if (!DataUtils.checkEmail(account)) {
+    if (account.isEmpty) {
       showToast(context, HouseValue.of(context).isNotEmail);
       return;
     }
@@ -163,10 +204,9 @@ class _NoHaveInviteCodeSignUpState
     String password1 = _userPwd1Controller.text;
     String password2 = _userPwd2Controller.text;
     String code = _userCodeController.text;
-    if (index == -1) {
-      showToast(context, HouseValue.of(context).chooseYourIdentity);
-      return;
-    }
+    String firstName = _firstNameController.text;
+    String lastName = _lastNameController.text;
+    String companyName = _companyNameController.text;
     if (account.isEmpty) {
       showToast(context, HouseValue.of(context).typeYourEmailAddress);
       return;
@@ -194,11 +234,12 @@ class _NoHaveInviteCodeSignUpState
     showLoadingDialog(context);
     register(
       context,
-      null,
-      account,
-      password1,
-      null,
-      (index + 1).toString(),
+      account: account,
+      password: password1,
+      firstName: firstName,
+      lastName: lastName,
+      type: 4,
+      companyName: companyName,
       cancelToken: cancelToken,
     )
       ..then((user) {
@@ -215,17 +256,24 @@ class _NoHaveInviteCodeSignUpState
     String account = _userNameController.text;
     String password1 = _userPwd1Controller.text;
     String password2 = _userPwd2Controller.text;
+    String firstName = _firstNameController.text;
+    String lastName = _lastNameController.text;
+    String companyName = _companyNameController.text;
     if (checkCode) {
-      return index != -1 &&
-          account.isNotEmpty &&
-          password1.isNotEmpty &&
-          password2.isNotEmpty;
-    } else {
-      String code = _userCodeController.text;
-      return index != -1 &&
-          account.isNotEmpty &&
+      return account.isNotEmpty &&
           password1.isNotEmpty &&
           password2.isNotEmpty &&
+          firstName.isNotEmpty &&
+          lastName.isNotEmpty &&
+          companyName.isNotEmpty;
+    } else {
+      String code = _userCodeController.text;
+      return account.isNotEmpty &&
+          password1.isNotEmpty &&
+          password2.isNotEmpty &&
+          firstName.isNotEmpty &&
+          lastName.isNotEmpty &&
+          companyName.isNotEmpty &&
           code.isNotEmpty;
     }
   }

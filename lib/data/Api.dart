@@ -69,33 +69,28 @@ Future<String> sendEmail(
 }
 
 Future<User> register(
-  BuildContext context,
+  BuildContext context, {
   String id,
   String account,
   String password,
-  String headImage,
-  String type, {
+  int type,
+  String firstName,
+  String lastName,
+  String companyName,
   CancelToken cancelToken,
 }) async {
-  Map<String, dynamic> data;
-  if (id == null) {
-    data = {
-      "account": account,
-      "password": password,
-      "headImage": headImage,
-      "type": type,
-    };
-  } else {
-    data = {
-      "id": id,
-      "account": account,
-      "password": password,
-    };
-  }
   BaseRes res = await HttpManager.post(
     context,
     path: "/register",
-    data: data,
+    data: {
+      "id": id,
+      "account": account,
+      "password": password,
+      "firstName": firstName,
+      "lastName": lastName,
+      "companyName": companyName,
+      "type": type,
+    },
     cancelToken: cancelToken,
   );
   if (res.code == "200") {
@@ -481,7 +476,6 @@ Future<OrderDetail> selectRepairOrderById(
     cancelToken: cancelToken,
   );
   if (res.code == "200") {
-    LogUtils.log("repairOrderLogs   ${res.data["repairOrderLogs"]}");
     return OrderDetail.fromJson(res.data);
   } else {
     throw FlutterError(res.msg.msgEn);
@@ -658,7 +652,7 @@ Future<dynamic> finishOrCloseRepairOrderStatus(
     data: {
       "id": id,
       "status": status,
-      "content": content,
+      "resultDesc": content,
     },
     cancelToken: cancelToken,
   );

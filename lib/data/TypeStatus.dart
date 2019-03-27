@@ -93,10 +93,13 @@ class TypeStatus {
   static final houseOngoing = TypeStatus(1, "维修中", "ongoing");
   static final List<TypeStatus> houseStatus = [houseNormal, houseOngoing];
 
+  ///House，Apartment，Townhouse，Land，Rural
   static final List<TypeStatus> houseType = [
     TypeStatus(1, "房子", "House"),
     TypeStatus(2, "公寓", "Apartment"),
-    TypeStatus(3, "别墅", "Townhouse"),
+    TypeStatus(3, "联排别墅", "Townhouse"),
+    TypeStatus(4, "农场房", "Land"),
+    TypeStatus(5, "城镇房", "Rural"),
   ];
 
   static final repairToQuote = TypeStatus(-1, "待确认", "To Quote");

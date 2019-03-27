@@ -106,7 +106,14 @@ class _LandlordOrdersPageState
     LogUtils.log(data.typeNames);
     return FlatButton(
       onPressed: () {
-        push(context, OrderDetailHome(data.id));
+        push(
+          context,
+          OrderDetailHome(data.id),
+        )..then((isRefresh) {
+            if (isRefresh == true) {
+              _refreshKey.currentState.show();
+            }
+          });
       },
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       child: _build(data),

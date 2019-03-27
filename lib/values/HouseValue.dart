@@ -26,7 +26,7 @@ class Zh extends En {
   String retypeYourPassword = "请再输入密码";
   String forgetPassword = "忘记密码?";
   String doNotHaveAnAccount = "没有账户?";
-  String signUp = "注册";
+  String signUpForVendor = "注册";
   String send = "发送";
   String sendEmailNotice = "输入您的电子邮件地址，我们会给您发送一封带有密码的电子邮件。";
   String emailSent = "邮件发送";
@@ -134,7 +134,8 @@ class En {
   String retypeYourPassword = "Retype your password";
   String forgetPassword = "Forget password?";
   String doNotHaveAnAccount = "Don’t have an account?";
-  String signUp = "Sign up";
+  String signUpForVendor = "Sign up for vendor?";
+  String signUpFromCode = "Sign up from invitation code?";
   String send = "Send";
   String sendEmailNotice =
       "Enter your email address and we will send you an email with password.";
@@ -174,7 +175,7 @@ class En {
   String clearCache = "Clear Cache";
   String aboutUs = "About Us";
   String logOut = "Log Out";
-  String company = "Company";
+  String companyName = "Company Name";
   String companyInfo = "Company Info";
   String photo = "Photo";
   String name = "Name";

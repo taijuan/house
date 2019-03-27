@@ -551,6 +551,6 @@ class RepairListIconPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
+    return this != oldDelegate;
   }
 }

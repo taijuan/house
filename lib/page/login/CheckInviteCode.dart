@@ -22,7 +22,7 @@ class _CheckInviteCodeState extends BaseAppBarAndBodyState<CheckInviteCode> {
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
-      title: TitleAppBar.appBarTitle(HouseValue.of(context).signUp),
+      title: TitleAppBar.appBarTitle(HouseValue.of(context).signUpForVendor),
       navigatorBack: TitleAppBar.navigatorBackBlack(context),
     );
   }
@@ -51,20 +51,6 @@ class _CheckInviteCodeState extends BaseAppBarAndBodyState<CheckInviteCode> {
           top: 54,
           right: 0,
         ),
-        Container(
-          margin: EdgeInsets.only(top: 36),
-          height: 24,
-          alignment: Alignment.center,
-          child: FlatButton(
-            onPressed: () {
-              pushReplacement(context, NoHaveInviteCodeSignUp());
-            },
-            child: Text(
-              HouseValue.of(context).doNotHaveARegistrationCode,
-              style: createTextStyle(),
-            ),
-          ),
-        )
       ],
     );
   }
@@ -79,7 +65,16 @@ class _CheckInviteCodeState extends BaseAppBarAndBodyState<CheckInviteCode> {
     )
       ..then((user) {
         pop(context);
-        pushReplacement(context, HaveInviteCodeSignUp(user.id, user.email));
+        pushReplacement(
+          context,
+          HaveInviteCodeSignUp(
+            user.id,
+            user.email,
+            user.type.value,
+            user.firstName,
+            user.lastName,
+          ),
+        );
       })
       ..catchError((e) {
         pop(context);

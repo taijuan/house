@@ -19,6 +19,8 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
   TypeStatus _receiveUserType = TypeStatus.agency;
   OrderDetail _data;
 
+  bool isRefresh = false;
+
   @override
   void initState() {
     if (User.getUserSync().type.value == TypeStatus.agency.value) {
@@ -37,7 +39,9 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
       title: TitleAppBar.appBarTitle(
         HouseValue.of(context).orderDetail,
       ),
-      navigatorBack: TitleAppBar.navigatorBackBlack(context),
+      navigatorBack: TitleAppBar.navigatorBackBlack(context, onPressed: () {
+        pop(context, result: isRefresh);
+      }),
     );
   }
 
@@ -60,13 +64,12 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
                   _buildTagList(),
                   _buildTitle(HouseValue.of(context).photo),
                   _buildPhotoList(),
-                  _data.repairQuote == null
-                      ? SliverToBoxAdapter()
-                      : _buildTitle(
-                          TypeStatus.vendor.descEn,
-                        ),
+                  _buildQuotationTitle(),
                   _buildQuotation(),
+                  _buildRepairResultsViewTitle(),
                   _buildRepairResultsView(),
+                  _buildRepairResultDescTitle(_data.repairOrder),
+                  _buildRepairResultDesc(_data.repairOrder),
                   _buildMessageTitle(),
                   _buildMessage(),
                   _buildMessageList(),
@@ -217,9 +220,15 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
       return SliverToBoxAdapter();
     } else if (_data.repairOrder.status.value ==
         TypeStatus.orderFinished.value) {
+      if (!DataUtils.isEmptyList(_data.repairMessages)) {
+        return _buildTitle("Messages");
+      }
       return SliverToBoxAdapter();
     } else if (_data.repairOrder.status.value ==
         TypeStatus.orderRejected.value) {
+      if (!DataUtils.isEmptyList(_data.repairMessages)) {
+        return _buildTitle("Messages");
+      }
       return SliverToBoxAdapter();
     } else {
       return SliverToBoxAdapter(
@@ -333,7 +342,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
   }
 
   Widget _buildMessageList() {
-    if (User.getUserSync().type.value == TypeStatus.userType[3].value) {
+    if (User.getUserSync().type.value == TypeStatus.vendor.value) {
       return SliverToBoxAdapter();
     } else if (_data.repairMessages.isEmpty) {
       return SliverToBoxAdapter(
@@ -475,7 +484,9 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
                       cancelToken: cancelToken,
                     ).then((v) {
                       pop(context);
-                      pop(context);
+                      showToastSuccess(context);
+                      isRefresh = true;
+                      _globalKey.currentState.show();
                     }).catchError((e) {
                       pop(context);
                       showToast(context, e.toString());
@@ -509,7 +520,8 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
                       cancelToken: cancelToken,
                     ).then((v) {
                       pop(context);
-                      pop(context);
+                      _globalKey.currentState.show();
+                      isRefresh = true;
                       showToastSuccess(context);
                     }).catchError((e) {
                       pop(context);
@@ -535,14 +547,17 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
       height: 48,
       color: HouseColor.green,
       child: FlatButton(
-        onPressed: () async {
-          await pushReplacement(
+        onPressed: () {
+          push(
             context,
             VendorRepairResults(
               _data.repairQuote.id,
               _data.repairQuote.repairOrderId,
             ),
-          );
+          )..then((v) {
+              isRefresh = true;
+              _globalKey.currentState.show();
+            });
         },
         child: Text(
           HouseValue.of(context).submitRepairResults,
@@ -557,13 +572,16 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
       height: 48,
       color: HouseColor.green,
       child: FlatButton(
-        onPressed: () async {
-          await pushReplacement(
+        onPressed: () {
+          push(
             context,
             VendorQuoteHome(
               _data.repairOrder.id,
             ),
-          );
+          )..then((v) {
+              isRefresh = true;
+              _globalKey.currentState.show();
+            });
         },
         child: Text(
           HouseValue.of(context).quote,
@@ -578,13 +596,16 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
       height: 48,
       color: HouseColor.green,
       child: FlatButton(
-        onPressed: () async {
-          await pushReplacement(
+        onPressed: () {
+          push(
             context,
             QuotationListHome(
               _data.repairOrder,
             ),
-          );
+          )..then((v) {
+              isRefresh = true;
+              _globalKey.currentState.show();
+            });
         },
         child: Text(
           HouseValue.of(context).chooseAVendor,
@@ -777,6 +798,14 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
     );
   }
 
+  Widget _buildQuotationTitle() {
+    if (_data.repairQuote == null) {
+      return SliverToBoxAdapter();
+    } else {
+      return _buildTitle("Maintenance quotation");
+    }
+  }
+
   Widget _buildQuotation() {
     if (_data.repairQuote == null) {
       return SliverToBoxAdapter();
@@ -785,12 +814,15 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
     if (userType == TypeStatus.tenant.value) {
       return SliverToBoxAdapter();
     }
-    if (userType == TypeStatus.landlord.value) {
+    if (userType == TypeStatus.vendor.value) {
       return SliverToBoxAdapter(
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 12),
+          margin: EdgeInsets.fromLTRB(12, 8, 12, 0),
           padding: EdgeInsets.all(12),
-          color: HouseColor.lightGray,
+          decoration: BoxDecoration(
+            color: HouseColor.lightGray,
+            borderRadius: BorderRadius.circular(4),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -815,7 +847,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
     } else {
       return SliverToBoxAdapter(
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 12),
+          margin: EdgeInsets.fromLTRB(12, 8, 12, 0),
           decoration: BoxDecoration(
             color: HouseColor.lightGray,
             borderRadius: BorderRadius.circular(4),
@@ -900,6 +932,14 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
     }
   }
 
+  _buildRepairResultsViewTitle() {
+    if (DataUtils.isEmptyList(_data?.repairQuoteResults)) {
+      return SliverToBoxAdapter();
+    } else {
+      return _buildTitle("Maintenance results from vendor");
+    }
+  }
+
   Widget _buildRepairResultsView() {
     if (DataUtils.isEmptyList(_data?.repairQuoteResults)) {
       return SliverToBoxAdapter();
@@ -973,6 +1013,34 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
             itemCount: data.image.content.length,
           ),
         ],
+      ),
+    );
+  }
+
+  _buildRepairResultDescTitle(Order data) {
+    if (data.resultDesc.isEmpty) {
+      return SliverToBoxAdapter();
+    } else {
+      return _buildTitle("Maintenance results confirmed by agency");
+    }
+  }
+
+  _buildRepairResultDesc(Order data) {
+    if (data.resultDesc.isEmpty) {
+      return SliverToBoxAdapter();
+    }
+    return SliverToBoxAdapter(
+      child: Container(
+        decoration: BoxDecoration(
+          color: HouseColor.lightGray,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        margin: EdgeInsets.only(left: 12, right: 12, top: 8),
+        padding: EdgeInsets.all(12),
+        child: Text(
+          data.resultDesc,
+          style: createTextStyle(height: 1, fontFamily: fontFamilySemiBold),
+        ),
       ),
     );
   }

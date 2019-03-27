@@ -10,9 +10,6 @@ class Quotation {
   String lastName;
   String firstName;
   String headImg;
-  int resultStatus;
-  String resultDesc;
-  ImageContent photos;
 
   Quotation.fromJson(Map<String, dynamic> json) {
     id = json["id"];
@@ -24,8 +21,5 @@ class Quotation {
     lastName = json["lastName"];
     firstName = json["firstName"];
     headImg = json["headImg"];
-    resultStatus = json["resultStatus"];
-    resultDesc = json["resultDesc"];
-    photos = ImageContent.fromJson(DataUtils.isMap(json["photos"]));
   }
 }

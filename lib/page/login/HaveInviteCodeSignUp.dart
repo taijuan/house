@@ -3,8 +3,16 @@ import 'package:house/importLib.dart';
 class HaveInviteCodeSignUp extends BaseStatefulWidget {
   final String id;
   final String email;
+  final int type;
+  final String firstName, lastName;
 
-  HaveInviteCodeSignUp(this.id, this.email);
+  HaveInviteCodeSignUp(
+    this.id,
+    this.email,
+    this.type,
+    this.firstName,
+    this.lastName,
+  );
 
   @override
   _HaveInviteCodeSignUpState createState() {
@@ -16,9 +24,14 @@ class _HaveInviteCodeSignUpState
     extends BaseAppBarAndBodyState<HaveInviteCodeSignUp> {
   TextEditingController _userNameController = TextEditingController(),
       _userPwd1Controller = TextEditingController(),
-      _userPwd2Controller = TextEditingController();
+      _userPwd2Controller = TextEditingController(),
+      _firstNameController = TextEditingController(),
+      _lastNameController = TextEditingController();
+
   final FocusNode _userPwd1FocusNode = FocusNode(),
-      _userPwd2FocusNode = FocusNode();
+      _userPwd2FocusNode = FocusNode(),
+      _firstNameFocusNode = FocusNode(),
+      _lastNameFocusNode = FocusNode();
   VoidCallback _listener;
 
   @override
@@ -30,6 +43,8 @@ class _HaveInviteCodeSignUpState
       _userNameController.addListener(_listener);
       _userPwd1Controller.addListener(_listener);
       _userPwd2Controller.addListener(_listener);
+      _firstNameController.addListener(_listener);
+      _lastNameController.addListener(_listener);
     }
     super.initState();
   }
@@ -39,9 +54,13 @@ class _HaveInviteCodeSignUpState
     _userNameController.removeListener(_listener);
     _userPwd1Controller.removeListener(_listener);
     _userPwd2Controller.removeListener(_listener);
+    _firstNameController.removeListener(_listener);
+    _lastNameController.removeListener(_listener);
     _userNameController.dispose();
     _userPwd1Controller.dispose();
     _userPwd2Controller.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     super.dispose();
   }
 
@@ -49,7 +68,7 @@ class _HaveInviteCodeSignUpState
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
-      title: TitleAppBar.appBarTitle(HouseValue.of(context).signUp),
+      title: TitleAppBar.appBarTitle(HouseValue.of(context).signUpFromCode),
       navigatorBack: TitleAppBar.navigatorBackBlack(context),
     );
   }
@@ -70,6 +89,28 @@ class _HaveInviteCodeSignUpState
           userNameController: _userNameController,
           enabled: false,
           top: 16,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () {
+            FocusScope.of(context).requestFocus(_firstNameFocusNode);
+          },
+        ),
+
+        ///输入FirstName
+        UserNameTextField(
+          focusNode: _firstNameFocusNode,
+          title: HouseValue.of(context).firstName,
+          userNameController: _firstNameController,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () {
+            FocusScope.of(context).requestFocus(_lastNameFocusNode);
+          },
+        ),
+
+        ///输入LastName
+        UserNameTextField(
+          focusNode: _lastNameFocusNode,
+          title: HouseValue.of(context).lastName,
+          userNameController: _lastNameController,
           textInputAction: TextInputAction.next,
           onEditingComplete: () {
             FocusScope.of(context).requestFocus(_userPwd1FocusNode);
@@ -96,8 +137,8 @@ class _HaveInviteCodeSignUpState
 
         ///登录按钮
         UserButton(
-          _checkData() ? _register() : null,
-          HouseValue.of(context).signUp,
+          _checkData() ? _register : null,
+          HouseValue.of(context).signUpForVendor,
         ),
 
         UserServiceNotice(),
@@ -109,13 +150,21 @@ class _HaveInviteCodeSignUpState
     String account = _userNameController.text;
     String password1 = _userPwd1Controller.text;
     String password2 = _userPwd2Controller.text;
-    return account.isNotEmpty && password1.isNotEmpty && password2.isNotEmpty;
+    String firstName = _firstNameController.text;
+    String lastName = _lastNameController.text;
+    return account.isNotEmpty &&
+        password1.isNotEmpty &&
+        password2.isNotEmpty &&
+        firstName.isNotEmpty &&
+        lastName.isNotEmpty;
   }
 
   _register() {
     String account = _userNameController.text;
     String password1 = _userPwd1Controller.text;
     String password2 = _userPwd2Controller.text;
+    String firstName = _firstNameController.text;
+    String lastName = _lastNameController.text;
     if (account.isEmpty) {
       showToast(context, HouseValue.of(context).typeYourEmailAddress);
       return;
@@ -135,16 +184,17 @@ class _HaveInviteCodeSignUpState
     showLoadingDialog(context);
     register(
       context,
-      widget.id,
-      widget.email,
-      password1,
-      null,
-      null,
+      id: widget.id,
+      account: widget.email,
+      password: password1,
+      firstName: firstName,
+      lastName: lastName,
+      type: widget.type,
       cancelToken: cancelToken,
     )
       ..then((user) {
-        pop(context);
-        pop(context);
+        user.saveUser();
+        loginSuccessToNavigator(context);
       })
       ..catchError((e) {
         pop(context);

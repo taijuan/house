@@ -103,23 +103,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
             child: FlatButton(
               color: HouseColor.green,
               disabledColor: HouseColor.divider,
-              onPressed: !_isAllFinishOrClose()
-                  ? null
-                  : () async {
-                      showLoadingDialog(context);
-                      await finishOrRejectQuestionInfoStatus(
-                        context,
-                        _data.questionInfo.id,
-                        2,
-                        cancelToken: cancelToken,
-                      ).then((v) {
-                        pop(context);
-                        pop(context);
-                      }).catchError((e) {
-                        pop(context);
-                        showToast(context, e.toString());
-                      });
-                    },
+              onPressed: _isAllFinishOrClose() ? _showConformDialog : null,
               child: Text(
                 HouseValue.of(context).finished,
                 style: createTextStyle(color: HouseColor.white),
@@ -128,6 +112,33 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
           ),
         ],
       ),
+    );
+  }
+
+  _showConformDialog() {
+    showAlertDialog(
+      context,
+      content: HouseValue.of(context).areYouOk.replaceAll(
+            "#",
+            "finish this case",
+          ),
+      onOkPressed: () {
+        showLoadingDialog(context);
+        finishOrRejectQuestionInfoStatus(
+          context,
+          _data.questionInfo.id,
+          2,
+          cancelToken: cancelToken,
+        ).then((v) {
+          pop(context);
+          showToastSuccess(context);
+          this.isRefresh = true;
+          _globalKey.currentState.show();
+        }).catchError((e) {
+          pop(context);
+          showToast(context, e.toString());
+        });
+      },
     );
   }
 
@@ -158,7 +169,9 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
                   cancelToken: cancelToken,
                 ).then((v) {
                   pop(context);
-                  pop(context);
+                  showToastSuccess(context);
+                  this.isRefresh = true;
+                  _globalKey.currentState.show();
                 }).catchError((e) {
                   pop(context);
                   showToast(context, e.toString());
@@ -236,6 +249,11 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
           _buildDescription(),
           _buildTitle(HouseValue.of(context).photo),
           _buildPhotoList(),
+          SliverToBoxAdapter(
+            child: Container(
+              height: 12,
+            ),
+          ),
         ],
       ),
     );
@@ -359,7 +377,15 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
           MaterialButton(
             padding: EdgeInsets.fromLTRB(8, 8, 48, 12),
             onPressed: () {
-              push(context, OrderDetailHome(data.id));
+              push(
+                context,
+                OrderDetailHome(data.id),
+              )..then((isRefresh) {
+                  if (isRefresh == true) {
+                    this.isRefresh = true;
+                    _globalKey.currentState.show();
+                  }
+                });
             },
             color: _getBgColor(data),
             child: Column(

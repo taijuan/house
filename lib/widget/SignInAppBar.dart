@@ -57,7 +57,7 @@ class _SignInAppBarState extends BaseState<SignInAppBar> {
                       height: 48,
                       child: Icon(
                         HouseIcons.backIcon,
-                        color: HouseColor.black,
+                        color: HouseColor.white,
                         size: 18,
                       ),
                     ),

@@ -36,7 +36,7 @@ Future showAlertDialog(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Container(
-          padding: EdgeInsets.symmetric(vertical: 24,horizontal: 8),
+          padding: EdgeInsets.symmetric(vertical: 24, horizontal: 8),
           alignment: AlignmentDirectional.center,
           child: Text(
             content,
@@ -157,6 +157,7 @@ Future showInputDialog(
                   if (onCancelPressed != null) {
                     onCancelPressed();
                   }
+                  controller.dispose();
                 },
                 child: Text(
                   HouseValue.of(context).cancel,
@@ -179,6 +180,7 @@ Future showInputDialog(
                   if (onOkPressed != null && !DataUtils.isEmpty(content)) {
                     onOkPressed(content);
                   }
+                  controller.dispose();
                 },
                 child: Text(
                   HouseValue.of(context).ok,
