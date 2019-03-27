@@ -14,8 +14,8 @@ class HttpManager {
 
   static final dio = Dio(
     BaseOptions(
-      receiveTimeout: 5000,
-      connectTimeout: 5000,
+      receiveTimeout: 30000,
+      connectTimeout: 30000,
       baseUrl: BASE_URL,
       responseType: ResponseType.json,
       contentType: ContentType.parse("application/x-www-form-urlencoded"),
