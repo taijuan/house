@@ -10,12 +10,15 @@ class HouseIcons {
   static const IconData eyesIcon = IconData(0xe6f3, fontFamily: "iconfont");
   static const IconData quoteIcon = IconData(0xe601, fontFamily: 'iconfont');
   static const IconData pendingIcon = IconData(0xe64c, fontFamily: "iconfont");
-  static const IconData processingIcon = IconData(0xe640, fontFamily: "iconfont");
+  static const IconData processingIcon =
+      IconData(0xe640, fontFamily: "iconfont");
   static const IconData allIcon = IconData(0xe83c, fontFamily: "iconfont");
-  static const IconData certificationIcon = IconData(0xe609, fontFamily: 'iconfont');
+  static const IconData certificationIcon =
+      IconData(0xe609, fontFamily: 'iconfont');
   static const IconData profileIcon = IconData(0xe665, fontFamily: "iconfont");
   static const IconData settingsIcon = IconData(0xe676, fontFamily: "iconfont");
-  static const IconData notificationIcon = IconData(0xe639, fontFamily: "iconfont");
+  static const IconData notificationIcon =
+      IconData(0xe639, fontFamily: "iconfont");
 
   static const IconData checkOkIcon = IconData(0xe60a, fontFamily: "iconfont");
   static const IconData unCheckIcon = IconData(0xe61f, fontFamily: "iconfont");

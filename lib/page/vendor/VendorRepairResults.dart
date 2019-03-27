@@ -62,11 +62,10 @@ class _VendorRepairResultsState
               maxLength: 400,
               style: createTextStyle(),
               decoration: InputDecoration(
-                enabled: true,
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.all(8),
-                hintText: "Please enter description"
-              ),
+                  enabled: true,
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(8),
+                  hintText: "Please enter description"),
             ),
           ),
         ),

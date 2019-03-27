@@ -30,6 +30,6 @@ class Order {
     address = json["address"];
     photos = ImageContent.fromJson(DataUtils.isMap(json["photos"]));
     transactor = json["transactor"];
-    resultDesc = json["resultDesc"]??"";
+    resultDesc = json["resultDesc"] ?? "";
   }
 }
