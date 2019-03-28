@@ -73,7 +73,7 @@ class _QuotationListHomeState
           if (_data.length >= 10) {
             _refreshKey.currentState.more();
           } else {
-            _refreshKey.currentState.noMore();
+            _refreshKey.currentState.refreshNoData();
           }
           _currentPage = 1;
           setState(() {});
@@ -93,7 +93,7 @@ class _QuotationListHomeState
           if (_data.length >= 10) {
             _refreshKey.currentState.more();
           } else {
-            _refreshKey.currentState.noMore();
+            _refreshKey.currentState.loadMoreNoData();
           }
           _currentPage++;
           setState(() {});
@@ -237,32 +237,36 @@ class _QuotationListHomeState
             height: 1,
             color: HouseColor.divider,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                OutlineButton(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Container(
+                height: 28,
+                margin: EdgeInsets.symmetric(vertical: 12),
+                child: OutlineButton(
+                  padding:EdgeInsets.symmetric(horizontal: 8),
                   onPressed: () {
                     _showDetailDialog(data);
                   },
                   borderSide: BorderSide(color: HouseColor.divider),
                   highlightedBorderColor: HouseColor.divider,
-                  padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
                     HouseValue.of(context).detail,
-                    style: createTextStyle(fontFamily: fontFamilySemiBold),
+                    style: createTextStyle(
+                        fontFamily: fontFamilySemiBold, height: 1),
                   ),
                 ),
-                SizedBox(
-                  width: 12,
-                ),
-                OutlineButton(
+              ),
+
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                height: 28,
+                child: OutlineButton(
+                  padding:EdgeInsets.symmetric(horizontal: 8),
                   borderSide: BorderSide(color: HouseColor.green),
                   highlightedBorderColor: HouseColor.green,
                   disabledBorderColor: HouseColor.divider,
                   disabledTextColor: HouseColor.divider,
-                  padding: EdgeInsets.symmetric(horizontal: 12),
                   onPressed: _isAuth()
                       ? null
                       : () {
@@ -270,12 +274,12 @@ class _QuotationListHomeState
                         },
                   child: Text(
                     HouseValue.of(context).accept,
-                    style: createTextStyle(color: HouseColor.green),
+                    style: TextStyle(fontSize: 15),
                   ),
                 ),
-              ],
-            ),
-          )
+              )
+            ],
+          ),
         ],
       ),
     );

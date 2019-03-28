@@ -21,7 +21,6 @@ class House {
   String tenantPhone;
   ImageContent coverImg;
   ImageContent image;
-  int status;
   TypeStatus repairStatus;
   int bedroomNum;
   int bathroomNum;
@@ -60,7 +59,6 @@ class House {
         tenantPhone = json["tenantPhone"] ?? "",
         coverImg = ImageContent.fromJson(DataUtils.isMap(json["coverImg"])),
         image = ImageContent.fromJson(DataUtils.isMap(json["image"])),
-        status = json["stauts"] ?? 0,
         repairStatus =
             TypeStatus.fromJson(DataUtils.isMap(json["repairStatus"])),
         bedroomNum = json["bedroomNum"],

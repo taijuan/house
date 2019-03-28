@@ -169,7 +169,7 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
             if (data.length >= 10) {
               _refreshKey.currentState.more();
             } else {
-              _refreshKey.currentState.noMore();
+              _refreshKey.currentState.refreshNoData();
             }
             _curPage = 1;
             setState(() {});
@@ -188,7 +188,7 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
             if (data.length >= 10) {
               _refreshKey.currentState.more();
             } else {
-              _refreshKey.currentState.noMore();
+              _refreshKey.currentState.loadMoreNoData();
             }
             _curPage++;
             setState(() {});

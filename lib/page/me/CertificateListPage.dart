@@ -275,11 +275,9 @@ class _CertificateListPageState
   }
 
   Widget _buildViewBtn(Certificate data) {
-    if (widget.userId == null) {
-      return Container(width: 12);
-    }
     return Container(
       height: 28,
+      margin: EdgeInsets.symmetric(horizontal: 8),
       child: OutlineButton(
         onPressed: () {
           push<bool>(

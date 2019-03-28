@@ -56,6 +56,7 @@ class RefreshWidgetState extends State<RefreshWidget> {
         child: _buildLoadMore(),
       ),
     );
+
     return RefreshIndicator(
       key: _refreshKey,
       semanticsLabel: "",
@@ -82,13 +83,26 @@ class RefreshWidgetState extends State<RefreshWidget> {
       return Container(
         height: 48,
         alignment: Alignment.center,
-//        child: Text("more"),
       );
-    } else if (refreshMode == RefreshMode.noMore) {
+    } else if (refreshMode == RefreshMode.loadMoreNoData) {
       return Container(
         height: 48,
         alignment: Alignment.center,
-//        child: Text("no more"),
+      );
+    } else if (refreshMode == RefreshMode.refreshNoData) {
+      return AspectRatio(
+        aspectRatio: 1,
+        child: Container(
+          alignment: AlignmentDirectional.center,
+          child: Text(
+            "There's no data...",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+            ),
+          ),
+        ),
       );
     } else if (refreshMode == RefreshMode.loading) {
       return Container(
@@ -127,8 +141,12 @@ class RefreshWidgetState extends State<RefreshWidget> {
     refreshMode = RefreshMode.more;
   }
 
-  void noMore() {
-    refreshMode = RefreshMode.noMore;
+  void loadMoreNoData() {
+    refreshMode = RefreshMode.loadMoreNoData;
+  }
+
+  void refreshNoData() {
+    refreshMode = RefreshMode.refreshNoData;
   }
 
   void error() {
@@ -142,6 +160,7 @@ enum RefreshMode {
   refreshing,
   loading,
   more,
-  noMore,
+  refreshNoData,
+  loadMoreNoData,
   error,
 }

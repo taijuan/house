@@ -125,7 +125,13 @@ class _SettingsState extends BaseAppBarAndBodyState<Settings> {
         ///隐私条款
         FlatButton(
           onPressed: () {
-            push(context, WebPage("https://www.baidu.com/"));
+            push(
+              context,
+              WebPage(
+                "https://www.baidu.com/",
+                title: HouseValue.of(context).privacyPolicy,
+              ),
+            );
           },
           padding: EdgeInsets.symmetric(horizontal: 16),
           color: HouseColor.white,
@@ -161,7 +167,13 @@ class _SettingsState extends BaseAppBarAndBodyState<Settings> {
         ///关于我们
         FlatButton(
           onPressed: () {
-            push(context, WebPage("https://www.baidu.com/"));
+            push(
+              context,
+              WebPage(
+                "https://www.baidu.com/",
+                title: HouseValue.of(context).aboutUs,
+              ),
+            );
           },
           padding: EdgeInsets.symmetric(horizontal: 16),
           color: HouseColor.white,

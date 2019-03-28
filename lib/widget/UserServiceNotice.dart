@@ -15,10 +15,22 @@ class _UserServiceNoticeState extends BaseState<UserServiceNotice> {
   @override
   Widget build(BuildContext context) {
     privacyPolicyTap.onTap = () {
-      push(context, WebPage("https://www.baidu.com/"));
+      push(
+        context,
+        WebPage(
+          "https://www.baidu.com/",
+          title: HouseValue.of(context).privacyPolicy,
+        ),
+      );
     };
     conditionsOfUseTap.onTap = () {
-      push(context, WebPage("https://www.baidu.com/"));
+      push(
+        context,
+        WebPage(
+          "https://www.baidu.com/",
+          title: HouseValue.of(context).conditionsOfUse,
+        ),
+      );
     };
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 36),

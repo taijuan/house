@@ -45,6 +45,7 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
           slivers: <Widget>[
             _buildViewPager(),
             _buildMap(),
+            _buildHouseType(),
             _buildBasic(),
             _buildLandlord(),
             _buildLessee(),
@@ -182,6 +183,18 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  _buildHouseType() {
+    return SliverPadding(
+      padding: EdgeInsets.only(left: 12, top: 12, right: 12),
+      sliver: SliverToBoxAdapter(
+        child: Text(
+          "HouseType：${_data.type.descEn}",
+          style: createTextStyle(fontFamily: fontFamilyBold),
         ),
       ),
     );
