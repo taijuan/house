@@ -66,7 +66,13 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
                   _buildDescription(_data.repairOrder.desc),
                   _buildTitle(HouseValue.of(context).type),
                   _buildTagList(),
-                  _buildTitle(HouseValue.of(context).photo),
+                  _buildTitle(
+                    "${HouseValue.of(context).description} from ${TypeStatus.tenant.descEn}",
+                  ),
+                  _buildDescription(_data.questionInfo.description),
+                  _buildTitle(
+                    "${HouseValue.of(context).photo} from ${TypeStatus.tenant.descEn}",
+                  ),
                   _buildPhotoList(),
                   _buildQuotationTitle(),
                   _buildQuotation(),
@@ -108,7 +114,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
     } else if (userType == TypeStatus.agency.value) {
       return SliverToBoxAdapter(
         child: Container(
-          padding: EdgeInsets.fromLTRB(16, 24, 16, 16),
+          padding: EdgeInsets.fromLTRB(12, 24, 12, 12),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -191,7 +197,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
     } else if (userType == TypeStatus.landlord.value) {
       return SliverToBoxAdapter(
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
           child: Text(
             HouseValue.of(context).message,
             style: createTextStyle(
@@ -204,7 +210,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
     } else if (userType == TypeStatus.tenant.value) {
       return SliverToBoxAdapter(
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
           child: Text(
             HouseValue.of(context).message,
             style: createTextStyle(
@@ -237,7 +243,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
     } else {
       return SliverToBoxAdapter(
         child: Container(
-          margin: EdgeInsets.fromLTRB(16, 0, 16, 12),
+          margin: EdgeInsets.fromLTRB(12, 0, 12, 12),
           decoration: BoxDecoration(
             color: HouseColor.lightGray,
             borderRadius: BorderRadius.circular(4),
