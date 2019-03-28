@@ -73,7 +73,7 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
               borderRadius: BorderRadius.circular(4),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: HouseColor.gray, width: 0.5),
+              borderSide: BorderSide(color: HouseColor.lightGreen, width: 0.5),
               borderRadius: BorderRadius.circular(4),
             ),
             hintText: String.fromCharCode(
@@ -99,6 +99,7 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
             });
           },
           onEditingComplete: () {
+            FocusScope.of(context).detach();
             if (_isShowMap) {
               _refreshMapKey.currentState.queryHouse();
             } else {
