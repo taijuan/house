@@ -32,35 +32,44 @@ class TitleAppBar extends BaseAppBar {
     );
   }
 
-  static Widget navigatorBackBlack(BuildContext context,
-      {VoidCallback onPressed, Widget back}) {
-    return WillPopScope(
-        child: FlatButton(
-          onPressed: onPressed ??
-              () {
-                pop(context);
-              },
-          padding: EdgeInsets.only(),
-          child: Container(
-            height: 48,
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            alignment: Alignment.center,
-            child: back ??
-                Icon(
-                  HouseIcons.backIcon,
-                  color: HouseColor.black,
-                  size: 18,
-                ),
-          ),
-        ),
-        onWillPop: () async {
-          if (onPressed == null) {
-            return true;
-          } else {
+  static Widget navigatorBackBlack(
+    BuildContext context, {
+    VoidCallback onPressed,
+    Widget back,
+    bool willPop = false,
+  }) {
+    if (willPop && onPressed != null) {
+      return WillPopScope(
+          child: _back(onPressed, context, back),
+          onWillPop: () async {
             onPressed();
             return false;
-          }
-        });
+          });
+    } else {
+      return _back(onPressed, context, back);
+    }
+  }
+
+  static FlatButton _back(
+      VoidCallback onPressed, BuildContext context, Widget back) {
+    return FlatButton(
+      onPressed: onPressed ??
+          () {
+            pop(context);
+          },
+      padding: EdgeInsets.only(),
+      child: Container(
+        height: 48,
+        padding: EdgeInsets.symmetric(horizontal: 12),
+        alignment: Alignment.center,
+        child: back ??
+            Icon(
+              HouseIcons.backIcon,
+              color: HouseColor.black,
+              size: 18,
+            ),
+      ),
+    );
   }
 
   static Widget appBarMenu(BuildContext context,

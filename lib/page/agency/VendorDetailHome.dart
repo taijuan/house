@@ -1,9 +1,9 @@
 import 'package:house/importLib.dart';
 
 class VendorDetailHome extends BaseStatefulWidget {
-  final User data;
+  final String userId;
 
-  VendorDetailHome(this.data);
+  VendorDetailHome(this.userId);
 
   @override
   _VendorDetailHomeState createState() => _VendorDetailHomeState();
@@ -16,7 +16,6 @@ class _VendorDetailHomeState extends BaseAppBarAndBodyState<VendorDetailHome> {
 
   @override
   void initState() {
-    _data = widget.data;
     Future.delayed(Duration()).whenComplete(() {
       _refreshKey.currentState.show();
     });
@@ -40,7 +39,7 @@ class _VendorDetailHomeState extends BaseAppBarAndBodyState<VendorDetailHome> {
       onRefresh: () async {
         await getUserDetail(
           context,
-          _data.id,
+          widget.userId,
           cancelToken: cancelToken,
         ).then((user) {
           _data = user;
@@ -48,192 +47,196 @@ class _VendorDetailHomeState extends BaseAppBarAndBodyState<VendorDetailHome> {
         });
       },
       child: CustomScrollView(
-        slivers: <Widget>[
-          SliverPadding(
-            padding: EdgeInsets.all(16),
-            sliver: SliverToBoxAdapter(
-              child: Text(
-                DataUtils.isEmpty(_data.companyName)
-                    ? (DataUtils.isEmpty(_data.firstName)
-                        ? _data.email
-                        : _data.firstName)
-                    : _data.companyName,
-                style: createTextStyle(
-                  fontSize: 17,
-                  fontFamily: fontFamilySemiBold,
-                ),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: FlatButton(
-              onPressed: () {
-                push(context, CertificateListPage(userId: _data.id));
-              },
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 80,
+        slivers: _data == null
+            ? []
+            : [
+                SliverPadding(
+                  padding: EdgeInsets.all(16),
+                  sliver: SliverToBoxAdapter(
                     child: Text(
-                      HouseValue.of(context).type,
-                      style: createTextStyle(color: HouseColor.gray),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      _getTags() ?? "",
-                      style: createTextStyle(fontFamily: fontFamilySemiBold),
-                    ),
-                  ),
-                  Transform.rotate(
-                    angle: pi,
-                    child: Icon(
-                      HouseIcons.backIcon,
-                      size: 16,
-                      color: HouseColor.gray,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 1,
-              color: HouseColor.divider,
-              margin: EdgeInsets.symmetric(horizontal: 16),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: FlatButton(
-              onPressed: () {},
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 80,
-                    child: Text(
-                      HouseValue.of(context).area,
-                      style: createTextStyle(color: HouseColor.gray),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      _getAreaStr(_data.areaList),
-                      style: createTextStyle(fontFamily: fontFamilySemiBold),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 1,
-              color: HouseColor.divider,
-              margin: EdgeInsets.symmetric(horizontal: 16),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: FlatButton(
-              onPressed: () {
-                IntentUtils.tel(_data.tel);
-              },
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 80,
-                    child: Text(
-                      HouseValue.of(context).phone,
-                      style: createTextStyle(color: HouseColor.gray),
-                    ),
-                  ),
-                  Text(
-                    _data.tel ?? "",
-                    style: createTextStyle(
-                      fontSize: 17,
-                      fontFamily: fontFamilySemiBold,
-                    ),
-                  ),
-                  Container(
-                    width: 8,
-                  ),
-                  Icon(
-                    HouseIcons.phoneIcon,
-                    color: HouseColor.green,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 1,
-              color: HouseColor.divider,
-              margin: EdgeInsets.symmetric(horizontal: 16),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: FlatButton(
-              onPressed: () {
-                IntentUtils.geo(_data.address);
-              },
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 80,
-                    child: Text(
-                      HouseValue.of(context).address,
-                      style: createTextStyle(color: HouseColor.gray),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      _data.address ?? "",
+                      DataUtils.isEmpty(_data.companyName)
+                          ? (DataUtils.isEmpty(_data.firstName)
+                              ? _data.email
+                              : _data.firstName)
+                          : _data.companyName,
                       style: createTextStyle(
                         fontSize: 17,
                         fontFamily: fontFamilySemiBold,
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 1,
-              color: HouseColor.divider,
-              margin: EdgeInsets.symmetric(horizontal: 16),
-            ),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.all(16),
-            sliver: SliverToBoxAdapter(
-              child: Text(
-                HouseValue.of(context).description,
-                style: createTextStyle(fontFamily: fontFamilySemiBold),
-              ),
-            ),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            sliver: SliverToBoxAdapter(
-              child: Text(
-                _data.companyProfile ?? "",
-                style: createTextStyle(),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 8,
-            ),
-          ),
-        ],
+                ),
+                SliverToBoxAdapter(
+                  child: FlatButton(
+                    onPressed: () {
+                      push(context, CertificateListPage(userId: _data.id));
+                    },
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 80,
+                          child: Text(
+                            HouseValue.of(context).type,
+                            style: createTextStyle(color: HouseColor.gray),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            _getTags() ?? "",
+                            style:
+                                createTextStyle(fontFamily: fontFamilySemiBold),
+                          ),
+                        ),
+                        Transform.rotate(
+                          angle: pi,
+                          child: Icon(
+                            HouseIcons.backIcon,
+                            size: 16,
+                            color: HouseColor.gray,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    height: 1,
+                    color: HouseColor.divider,
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: FlatButton(
+                    onPressed: () {},
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 80,
+                          child: Text(
+                            HouseValue.of(context).area,
+                            style: createTextStyle(color: HouseColor.gray),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            _getAreaStr(_data.areaList),
+                            style:
+                                createTextStyle(fontFamily: fontFamilySemiBold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    height: 1,
+                    color: HouseColor.divider,
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: FlatButton(
+                    onPressed: () {
+                      IntentUtils.tel(_data.tel);
+                    },
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 80,
+                          child: Text(
+                            HouseValue.of(context).phone,
+                            style: createTextStyle(color: HouseColor.gray),
+                          ),
+                        ),
+                        Text(
+                          _data.tel ?? "",
+                          style: createTextStyle(
+                            fontSize: 17,
+                            fontFamily: fontFamilySemiBold,
+                          ),
+                        ),
+                        Container(
+                          width: 8,
+                        ),
+                        Icon(
+                          HouseIcons.phoneIcon,
+                          color: HouseColor.green,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    height: 1,
+                    color: HouseColor.divider,
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: FlatButton(
+                    onPressed: () {
+                      IntentUtils.geo(_data.address);
+                    },
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 80,
+                          child: Text(
+                            HouseValue.of(context).address,
+                            style: createTextStyle(color: HouseColor.gray),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            _data.address ?? "",
+                            style: createTextStyle(
+                              fontSize: 17,
+                              fontFamily: fontFamilySemiBold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    height: 1,
+                    color: HouseColor.divider,
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.all(16),
+                  sliver: SliverToBoxAdapter(
+                    child: Text(
+                      HouseValue.of(context).description,
+                      style: createTextStyle(fontFamily: fontFamilySemiBold),
+                    ),
+                  ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  sliver: SliverToBoxAdapter(
+                    child: Text(
+                      _data.companyProfile ?? "",
+                      style: createTextStyle(),
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    height: 8,
+                  ),
+                ),
+              ],
       ),
     );
   }

@@ -1,5 +1,7 @@
+import 'package:flutter/services.dart';
 import 'package:house/importLib.dart';
 import 'package:house/page/agency/MapHome.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HouseHome extends BaseStatefulWidget {
   @override
@@ -15,6 +17,7 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
       GlobalKey<RefreshWidgetState>();
   final GlobalKey<MapHomeState> _refreshMapKey = GlobalKey<MapHomeState>();
   int _curPage = 1;
+  final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
@@ -22,7 +25,18 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
     Future.delayed(Duration()).whenComplete(() {
       _refreshKey.currentState.show();
     });
+    SharedPreferences.getInstance().then((sp){
+     setState((){
+       _controller.text = sp.getString("address");
+     });
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -39,23 +53,58 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
         },
         back: Text(
           _isShowMap ? HouseValue.of(context).list : HouseValue.of(context).map,
-          style: createTextStyle(color: HouseColor.green),
+          style: createTextStyle(
+            color: HouseColor.green,
+          ),
         ),
       ),
-      title: SizedBox(
-        width: 240,
-        height: 28,
-        child: RawMaterialButton(
-          padding: EdgeInsets.symmetric(horizontal: 8),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-          elevation: 0,
-          highlightElevation: 0,
-          disabledElevation: 0,
-          fillColor: HouseColor.lightGray,
-          onPressed: () {},
-          child: Row(
-            children: <Widget>[Image.asset("image/house_search.webp")],
+      title: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 64),
+        child: TextField(
+          decoration: InputDecoration(
+            fillColor: HouseColor.lightGray,
+            filled: true,
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: HouseColor.gray, width: 0.5),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: HouseColor.gray, width: 0.5),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: HouseColor.gray, width: 0.5),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            hintText: String.fromCharCode(
+              HouseIcons.searchIcon.codePoint,
+            ),
+            hintStyle: createTextStyle(
+              fontSize: 16,
+              fontFamily: "iconfont",
+              color: HouseColor.gray,
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 4,
+              horizontal: 8,
+            ),
           ),
+          maxLines: 1,
+          inputFormatters: [LengthLimitingTextInputFormatter(30)],
+          controller: _controller,
+          textInputAction: TextInputAction.search,
+          onChanged: (str) {
+            SharedPreferences.getInstance().then((sp) {
+              sp.setString("address", str);
+            });
+          },
+          onEditingComplete: () {
+            if (_isShowMap) {
+              _refreshMapKey.currentState.queryHouse();
+            } else {
+              _refreshKey.currentState.show();
+            }
+          },
         ),
       ),
       menu: TitleAppBar.appBarMenu(

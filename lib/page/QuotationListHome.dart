@@ -197,10 +197,15 @@ class _QuotationListHomeState
             height: 84,
             child: Row(
               children: <Widget>[
-                HouseCacheNetworkImage(
-                  DataUtils.getImageUrl(data.headImg),
-                  width: 60,
-                  height: 60,
+                InkWell(
+                  onTap: () {
+                    push(context, VendorDetailHome(data.userId));
+                  },
+                  child: HouseCacheNetworkImage(
+                    DataUtils.getImageUrl(data.headImg),
+                    width: 60,
+                    height: 60,
+                  ),
                 ),
                 SizedBox(
                   width: 12,

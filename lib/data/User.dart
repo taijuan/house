@@ -31,7 +31,7 @@ class User {
         email = json["email"],
         type = TypeStatus.fromJson(DataUtils.isMap(json["type"])),
         status = TypeStatus.fromJson(DataUtils.isMap(json["status"])),
-        companyName = json["companyName"],
+        companyName = json["companyName"] ?? "",
         address = json["address"] ?? "",
         tel = json["tel"] ?? "",
         companyProfile = json["companyProfile"] ?? "",

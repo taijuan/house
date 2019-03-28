@@ -109,7 +109,7 @@ class _VendorListHomeState extends BaseAppBarAndBodyState<VendorListHome> {
     return FlatButton(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       onPressed: () {
-        push(context, VendorDetailHome(data));
+        push(context, VendorDetailHome(data.id));
       },
       child: SizedBox(
         height: 60,

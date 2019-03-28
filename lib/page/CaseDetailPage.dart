@@ -29,9 +29,13 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
-      navigatorBack: TitleAppBar.navigatorBackBlack(context, onPressed: () {
-        pop(context, result: isRefresh);
-      }),
+      navigatorBack: TitleAppBar.navigatorBackBlack(
+        context,
+        onPressed: () {
+          pop(context, result: isRefresh);
+        },
+        willPop: true,
+      ),
       title: TitleAppBar.appBarTitle(
         HouseValue.of(context).taskDescription,
       ),

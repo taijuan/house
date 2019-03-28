@@ -2,9 +2,11 @@ import 'package:house/importLib.dart';
 
 class LandlordOrdersPage extends BaseStatefulWidget {
   final House data;
+  final int status;
 
   LandlordOrdersPage({
     this.data,
+    this.status,
   });
 
   @override
@@ -64,6 +66,7 @@ class _LandlordOrdersPageState
           context,
           1,
           houseId: widget.data?.id,
+          status: widget.status,
           cancelToken: cancelToken,
         ).then((data) {
           _data.clear();

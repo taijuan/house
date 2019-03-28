@@ -237,6 +237,9 @@ Future<List<House>> getHouseList(
       });
       return _data;
     });
+    data.putIfAbsent("address", () {
+      return sp.getString("address");
+    });
   }
   BaseRes res = await HttpManager.post(
     context,
@@ -847,6 +850,9 @@ Future<List<LatLonHouse>> queryHouseLocal(
         });
       });
       return _data;
+    });
+    data.putIfAbsent("address", () {
+      return sp.getString("address");
     });
   }
   BaseRes res = await HttpManager.post(

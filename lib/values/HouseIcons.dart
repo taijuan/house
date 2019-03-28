@@ -29,4 +29,7 @@ class HouseIcons {
   static const IconData deleteIcon = IconData(0xe613, fontFamily: "iconfont");
   static const IconData rightIcon = IconData(0xe714, fontFamily: "iconfont");
   static const IconData wrongIcon = IconData(0xe711, fontFamily: "iconfont");
+
+  static const IconData searchIcon = IconData(0xe911, fontFamily: "iconfont");
+  static const IconData doOrderIcon = IconData(0xe641, fontFamily: "iconfont");
 }

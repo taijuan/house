@@ -37,15 +37,19 @@ class _CityAreaHomeListState extends BaseAppBarAndBodyState<CityAreaHome> {
       title: TitleAppBar.appBarTitle(
         widget.title ?? HouseValue.of(context).city,
       ),
-      navigatorBack: TitleAppBar.navigatorBackBlack(context, onPressed: () {
-        pop<List<CityArea>>(context, result: null);
-      }),
+      navigatorBack: TitleAppBar.navigatorBackBlack(
+        context,
+        onPressed: () {
+          pop<List<CityArea>>(context, result: null);
+        },
+      ),
       menu: TitleAppBar.appBarMenu(context, onPressed: () {
-        pop<List<CityArea>>(context,
-            result: _data.where((value) {
-              return value.checked ||
-                  !DataUtils.isEmptyList(value.districtList);
-            }).toList());
+        pop<List<CityArea>>(
+          context,
+          result: _data.where((value) {
+            return value.checked || !DataUtils.isEmptyList(value.districtList);
+          }).toList(),
+        );
       }),
     );
   }

@@ -39,9 +39,13 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
       title: TitleAppBar.appBarTitle(
         HouseValue.of(context).orderDetail,
       ),
-      navigatorBack: TitleAppBar.navigatorBackBlack(context, onPressed: () {
-        pop(context, result: isRefresh);
-      }),
+      navigatorBack: TitleAppBar.navigatorBackBlack(
+        context,
+        onPressed: () {
+          pop(context, result: isRefresh);
+        },
+        willPop: true,
+      ),
     );
   }
 
@@ -859,10 +863,18 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
                 height: 60,
                 child: Row(
                   children: <Widget>[
-                    HouseCacheNetworkImage(
-                      DataUtils.getImageUrl(_data.repairQuote.headImg),
-                      width: 60,
-                      height: 60,
+                    InkWell(
+                      onTap: () {
+                        push(
+                          context,
+                          VendorDetailHome(_data.repairQuote.userId),
+                        );
+                      },
+                      child: HouseCacheNetworkImage(
+                        DataUtils.getImageUrl(_data.repairQuote.headImg),
+                        width: 60,
+                        height: 60,
+                      ),
                     ),
                     SizedBox(
                       width: 12,
