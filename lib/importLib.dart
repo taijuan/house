@@ -39,7 +39,7 @@ export 'package:house/page/HouseDetail.dart';
 export 'package:house/page/HouseTagPage.dart';
 export 'package:house/page/OrderDetailHome.dart';
 export 'package:house/page/OrdersHome.dart';
-export 'package:house/page/QuotationListHome.dart';
+export 'package:house/page/QuotationListPage.dart';
 export 'package:house/page/ShowImage.dart';
 export 'package:house/page/TagHome.dart';
 export 'package:house/page/WebPage.dart';

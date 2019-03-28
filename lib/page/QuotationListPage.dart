@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:house/importLib.dart';
 
-class QuotationListHome extends BaseStatefulWidget {
+class QuotationListPage extends BaseStatefulWidget {
   final Order data;
 
-  QuotationListHome(this.data);
+  QuotationListPage(this.data);
 
   @override
-  _QuotationListHomeState createState() => _QuotationListHomeState();
+  _QuotationListPageState createState() => _QuotationListPageState();
 }
 
-class _QuotationListHomeState
-    extends BaseAppBarAndBodyState<QuotationListHome> {
+class _QuotationListPageState
+    extends BaseAppBarAndBodyState<QuotationListPage> {
   final List<Quotation> _data = [];
   String _transactor;
   final GlobalKey<RefreshWidgetState> _refreshKey =
@@ -72,8 +72,10 @@ class _QuotationListHomeState
           this._transactor = data.transactor;
           if (_data.length >= 10) {
             _refreshKey.currentState.more();
-          } else {
+          } else if(DataUtils.isEmptyList(_data)) {
             _refreshKey.currentState.refreshNoData();
+          }else{
+            _refreshKey.currentState.loadMoreNoData();
           }
           _currentPage = 1;
           setState(() {});

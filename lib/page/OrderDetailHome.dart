@@ -609,7 +609,7 @@ class _OrderDetailHomeState extends BaseAppBarAndBodyState<OrderDetailHome> {
         onPressed: () {
           push(
             context,
-            QuotationListHome(
+            QuotationListPage(
               _data.repairOrder,
             ),
           )..then((v) {

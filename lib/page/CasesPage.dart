@@ -102,8 +102,10 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
           this._data.addAll(data);
           if (data.length >= 10) {
             _refreshKey.currentState.more();
-          } else {
+          } else if(DataUtils.isEmptyList(data)) {
             _refreshKey.currentState.refreshNoData();
+          }else{
+            _refreshKey.currentState.loadMoreNoData();
           }
           _curPage = 1;
           setState(() {});
