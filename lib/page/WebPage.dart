@@ -1,5 +1,5 @@
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:house/importLib.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class WebPage extends BaseStatefulWidget {
   final String url;
@@ -13,30 +13,18 @@ class WebPage extends BaseStatefulWidget {
 class _WebPageState extends BaseState<WebPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          WebView(
-            initialUrl: widget.url,
-            javascriptMode: JavascriptMode.unrestricted,
-          ),
-          Container(
-            margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-            width: 48,
-            height: 48,
-            child: FlatButton(
-              onPressed: () {
-                pop(context);
-              },
-              child: Icon(
-                HouseIcons.backIcon,
-                color: HouseColor.black,
-                size: 18,
-              ),
-            ),
-          )
-        ],
+    return WebviewScaffold(
+      appBar: TitleAppBar(
+        context: context,
+        title: TitleAppBar.appBarTitle("About us"),
+        navigatorBack: TitleAppBar.navigatorBackBlack(
+          context,
+          onPressed: () {
+            pop(context);
+          },
+        ),
       ),
+      url: widget.url,
     );
   }
 }
