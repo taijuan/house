@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 class HouseValue {
-  const HouseValue();
-
   static En of(BuildContext context) {
     switch (Localizations.localeOf(context).languageCode) {
       case 'en':

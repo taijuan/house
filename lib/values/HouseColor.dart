@@ -1,8 +1,6 @@
 import 'dart:ui';
 
 class HouseColor {
-  const HouseColor();
-
   static const Color transparent = Color(0x00000000);
   static const Color halfTransparent = Color(0x80000000);
   static const Color white = Color(0xffffffff);
