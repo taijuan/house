@@ -1,9 +1,14 @@
 import 'package:house/importLib.dart';
 
 class VendorOrderPage extends StatelessWidget {
-  final TypeStatus data;
+  final Widget body;
+  final String title;
 
-  const VendorOrderPage({Key key, this.data}) : super(key: key);
+  const VendorOrderPage({
+    Key key,
+    this.body,
+    this.title,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +16,7 @@ class VendorOrderPage extends StatelessWidget {
       appBar: TitleAppBar(
         context: context,
         title: TitleAppBar.appBarTitle(
-          data.descEn,
+          title,
           style: createTextStyle(
             fontSize: 17,
             fontFamily: fontFamilySemiBold,
@@ -20,9 +25,7 @@ class VendorOrderPage extends StatelessWidget {
         ),
         decoration: BoxDecoration(color: HouseColor.green),
       ),
-      body: OrdersHome(
-        status: data.value,
-      ),
+      body: body,
     );
   }
 }

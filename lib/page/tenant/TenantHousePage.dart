@@ -26,9 +26,14 @@ class _TenantHousePageState extends BaseAppBarAndBodyState<TenantHousePage> {
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
-      navigatorBack: Container(width: 0, height: 0),
+      decoration: BoxDecoration(color: HouseColor.green),
       title: TitleAppBar.appBarTitle(
-        TypeStatus.tenant.descEn,
+        HouseValue.of(context).properties,
+        style: createTextStyle(
+          color: HouseColor.white,
+          fontSize: 17,
+          fontFamily: fontFamilySemiBold,
+        ),
       ),
     );
   }
@@ -45,17 +50,7 @@ class _TenantHousePageState extends BaseAppBarAndBodyState<TenantHousePage> {
                 var data = _data[index ~/ 2];
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: HouseBigCard(
-                    data,
-                    onPressed: () {
-                      push(
-                        context,
-                        CasesPage(
-                          data: data,
-                        ),
-                      );
-                    },
-                  ),
+                  child: HouseBigCard(data),
                 );
               } else {
                 return SizedBox(

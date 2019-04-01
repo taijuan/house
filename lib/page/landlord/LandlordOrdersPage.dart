@@ -73,9 +73,9 @@ class _LandlordOrdersPageState
           _data.addAll(data);
           if (data.length >= 10) {
             _refreshKey.currentState.more();
-          } else if(DataUtils.isEmptyList(data)) {
+          } else if (DataUtils.isEmptyList(data)) {
             _refreshKey.currentState.refreshNoData();
-          }else{
+          } else {
             _refreshKey.currentState.loadMoreNoData();
           }
           _curPage = 1;
@@ -113,7 +113,7 @@ class _LandlordOrdersPageState
       onPressed: () {
         push(
           context,
-          OrderDetailHome(data.id),
+          OrderDetailPage(data.id),
         )..then((isRefresh) {
             if (isRefresh == true) {
               _refreshKey.currentState.show();
@@ -129,11 +129,31 @@ class _LandlordOrdersPageState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          HouseValue.of(context).orderNo + data.orderNo,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: createTextStyle(fontSize: 13),
+        Row(
+          children: [
+            Text(
+              HouseValue.of(context).orderNo + data.orderNo,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: createTextStyle(
+                fontSize: 13,
+                height: 1,
+              ),
+            ),
+            Expanded(
+              child: Text(
+                data.createTime,
+                maxLines: 1,
+                textAlign: TextAlign.end,
+                overflow: TextOverflow.ellipsis,
+                style: createTextStyle(
+                  fontSize: 13,
+                  color: HouseColor.gray,
+                  height: 1,
+                ),
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 8),
         Row(
@@ -141,8 +161,8 @@ class _LandlordOrdersPageState
           children: <Widget>[
             HouseCacheNetworkImage(
               DataUtils.getFirstImage(data.photos.content),
-              width: 60,
-              height: 60,
+              width: 80,
+              height: 80,
             ),
             SizedBox(
               width: 8,
@@ -151,34 +171,28 @@ class _LandlordOrdersPageState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text.rich(
                     TextSpan(
                       children: _getSpan(data.typeNames, data.title),
+                      style: createTextStyle(height: 1),
                     ),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 4),
-                  Row(
-                    children: <Widget>[
-                      _getOrderStatus(data),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Expanded(
-                        child: Text(
-                          data.address,
-                          style: createTextStyle(
-                            color: HouseColor.gray,
-                            fontSize: 13,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  )
+                  _getOrderStatus(data),
+                  Text(
+                    data.address,
+                    style: createTextStyle(
+                      color: HouseColor.gray,
+                      fontSize: 13,
+                      height: 1,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             ),
@@ -190,11 +204,15 @@ class _LandlordOrdersPageState
 
   Widget _getOrderStatus(Order data) {
     return Text(
-      data.status.descEn,
+      data.status.descEn.toUpperCase(),
+      maxLines: 1,
+      textAlign: TextAlign.start,
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
         color: _getTextColor(data),
-        fontSize: 15,
+        fontSize: 14,
         fontFamily: "LatoSemibold",
+        height: 1,
       ),
     );
   }
@@ -213,13 +231,18 @@ class _LandlordOrdersPageState
     List<TextSpan> a = tags.split(",").map((tag) {
       return TextSpan(
         text: "#$tag# ",
-        style: createTextStyle(color: HouseColor.green),
+        style: createTextStyle(
+          color: HouseColor.green,
+          height: 1,
+        ),
       );
     }).toList();
     a.add(
       TextSpan(
         text: title,
-        style: createTextStyle(),
+        style: createTextStyle(
+          height: 1,
+        ),
       ),
     );
     return a;

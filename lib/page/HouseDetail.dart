@@ -50,6 +50,8 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
             _buildLandlord(),
             _buildLessee(),
             _buildAgency(),
+            SliverToBoxAdapter(child: Container(height: 12)),
+            _buildDivider(),
             _buildContract(),
             _buildDivider(),
             _buildFeatureName(),
@@ -83,25 +85,25 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
   }
 
   Widget _buildLandlord() {
-    if (User.getUserSync().type.value == TypeStatus.userType[1].value) {
-      return SliverToBoxAdapter();
-    } else {
+    if (User.getUserSync().type.value == TypeStatus.agent.value) {
       return _buildContact(
-        TypeStatus.userType[1].descEn,
-        _data.landlordFirstName,
+        TypeStatus.landlord.descEn,
+        _data.landlordName,
         _data.landlorPhone,
         _data.landlordEmail,
       );
+    } else {
+      return SliverToBoxAdapter();
     }
   }
 
   Widget _buildAgency() {
-    if (User.getUserSync().type.value == TypeStatus.userType[0].value) {
+    if (User.getUserSync().type.value == TypeStatus.agent.value) {
       return SliverToBoxAdapter();
     } else {
       return _buildContact(
-        TypeStatus.userType[0].descEn,
-        _data.agencyFirstName,
+        TypeStatus.agent.descEn,
+        _data.agentName,
         _data.agencyPhone,
         _data.agencyEmail,
       );
@@ -109,15 +111,15 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
   }
 
   Widget _buildLessee() {
-    if (User.getUserSync().type.value == TypeStatus.userType[2].value) {
-      return SliverToBoxAdapter();
-    } else {
+    if (User.getUserSync().type.value == TypeStatus.agent.value) {
       return _buildContact(
-        TypeStatus.userType[2].descEn,
-        _data.tenantFirstName,
+        TypeStatus.tenant.descEn,
+        _data.tenantName,
         _data.tenantPhone,
         _data.tenantEmail,
       );
+    } else {
+      return SliverToBoxAdapter();
     }
   }
 
@@ -193,8 +195,11 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
       padding: EdgeInsets.only(left: 12, top: 12, right: 12),
       sliver: SliverToBoxAdapter(
         child: Text(
-          "HouseType：${_data.type.descEn}",
-          style: createTextStyle(fontFamily: fontFamilyBold),
+          "${HouseValue.of(context).propertyType}：${_data.type.descEn}",
+          style: createTextStyle(
+            fontFamily: fontFamilyBold,
+            fontSize: 15,
+          ),
         ),
       ),
     );
@@ -299,7 +304,7 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              "$typeName：${name.isEmpty ? email : name}",
+              "$typeName：$name",
               style: createTextStyle(
                 fontSize: 15,
                 fontFamily: fontFamilyBold,
@@ -379,11 +384,14 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
 
   Widget _buildContract() {
     return SliverPadding(
-      padding: EdgeInsets.only(left: 12, top: 16, right: 12, bottom: 12),
+      padding: EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 12),
       sliver: SliverToBoxAdapter(
         child: Text(
           HouseValue.of(context).contractNo + (_data.contractNo ?? ""),
-          style: createTextStyle(color: HouseColor.green),
+          style: createTextStyle(
+            color: HouseColor.green,
+            height: 1,
+          ),
         ),
       ),
     );

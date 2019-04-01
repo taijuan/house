@@ -27,17 +27,13 @@ class _AgencyOrderPageState extends BaseAppBarAndBodyState<AgencyOrderPage> {
         Expanded(
           child: Stack(
             children: <Widget>[
-              _buildDataList(),
+              OrdersHome(status: _curTypeStatus.value),
               _buildPop(),
             ],
           ),
         ),
       ],
     );
-  }
-
-  Widget _buildDataList() {
-    return OrdersHome(status: _curTypeStatus.value);
   }
 
   Container _buildTypeStatus(BuildContext context) {

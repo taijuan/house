@@ -93,4 +93,43 @@ class House {
       return "$tenantFirstName · $tenantLastName";
     }
   }
+
+  get agentName {
+    if (DataUtils.isEmpty(agencyFirstName) &&
+        DataUtils.isEmpty(agencyLastName)) {
+      return agencyEmail;
+    } else if (DataUtils.isEmpty(agencyLastName)) {
+      return agencyFirstName;
+    } else if (DataUtils.isEmpty(agencyFirstName)) {
+      return agencyLastName;
+    } else {
+      return "$agencyFirstName $agencyLastName";
+    }
+  }
+
+  get tenantName {
+    if (DataUtils.isEmpty(tenantFirstName) &&
+        DataUtils.isEmpty(tenantLastName)) {
+      return tenantEmail;
+    } else if (DataUtils.isEmpty(tenantLastName)) {
+      return tenantFirstName;
+    } else if (DataUtils.isEmpty(tenantFirstName)) {
+      return tenantLastName;
+    } else {
+      return "$tenantFirstName $tenantLastName";
+    }
+  }
+
+  get landlordName {
+    if (DataUtils.isEmpty(landlordFirstName) &&
+        DataUtils.isEmpty(landlordLastName)) {
+      return landlordEmail;
+    } else if (DataUtils.isEmpty(landlordLastName)) {
+      return landlordFirstName;
+    } else if (DataUtils.isEmpty(landlordFirstName)) {
+      return landlordLastName;
+    } else {
+      return "$landlordFirstName $landlordLastName";
+    }
+  }
 }

@@ -21,12 +21,37 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
+      decoration: _titleBgColor,
       title: TitleAppBar.appBarTitle(
-        HouseValue.of(context).cases,
+        "${widget.data == null ? "All" : "House"} requsts",
+        style: _titleTextColor,
       ),
       navigatorBack:
           widget.data == null ? null : TitleAppBar.navigatorBackBlack(context),
     );
+  }
+
+  get _titleBgColor {
+    if (User.getUserSync().type.value == TypeStatus.tenant.value) {
+      return BoxDecoration(color: HouseColor.green);
+    } else {
+      return null;
+    }
+  }
+
+  get _titleTextColor {
+    if (User.getUserSync().type.value == TypeStatus.tenant.value) {
+      return createTextStyle(
+        color: HouseColor.white,
+        fontSize: 17,
+        fontFamily: fontFamilySemiBold,
+      );
+    } else {
+      return createTextStyle(
+        fontSize: 17,
+        fontFamily: fontFamilySemiBold,
+      );
+    }
   }
 
   @override
@@ -102,9 +127,9 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
           this._data.addAll(data);
           if (data.length >= 10) {
             _refreshKey.currentState.more();
-          } else if(DataUtils.isEmptyList(data)) {
+          } else if (DataUtils.isEmptyList(data)) {
             _refreshKey.currentState.refreshNoData();
-          }else{
+          } else {
             _refreshKey.currentState.loadMoreNoData();
           }
           _curPage = 1;
@@ -174,37 +199,37 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
           children: <Widget>[
             HouseCacheNetworkImage(
               DataUtils.getFirstImage(data.photos.content),
-              width: 60,
-              height: 60,
+              width: 80,
+              height: 80,
             ),
             Container(
               width: 12,
             ),
             Expanded(
               child: SizedBox(
-                height: 60,
+                height: 80,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
                       data.description,
-                      style: createTextStyle(height: 1),
-                      maxLines: 2,
+                      style: createTextStyle(
+                        height: 1,
+                        fontSize: 14,
+                      ),
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Row(
-                      children: <Widget>[
-                        _getQuestionStatus(data),
-                        SizedBox(width: 12),
-                        Text(
-                          data.createDate,
-                          style: createTextStyle(
-                              color: HouseColor.gray, fontSize: 10),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    )
+                    Spacer(),
+                    _getQuestionStatus(data),
+                    Text(
+                      data.createDate,
+                      style: createTextStyle(
+                        color: HouseColor.gray,
+                        fontSize: 10,
+                        height: 1,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -221,6 +246,7 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
       style: TextStyle(
         fontSize: 13,
         fontFamily: "LatoSemibold",
+        height: 1,
         color: _getTextColor(data),
       ),
     );

@@ -161,7 +161,7 @@ class _LoginState extends BaseAppBarAndBodyState<Login> {
               },
               padding: EdgeInsets.symmetric(horizontal: 8),
               textColor: HouseColor.white,
-              child: Text(TypeStatus.agency.descEn),
+              child: Text(TypeStatus.agent.descEn),
               color: HouseColor.green,
             ),
             FlatButton(

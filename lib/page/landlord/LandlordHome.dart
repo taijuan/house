@@ -16,13 +16,10 @@ class LandlordHome extends StatelessWidget {
             icon: Icon(HouseIcons.homeIcon),
             title: Text(HouseValue.of(context).properties),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(HouseIcons.doOrderIcon),
-            title: Text("ToDo"),
-          ),
+
           BottomNavigationBarItem(
             icon: Icon(HouseIcons.orderIcon),
-            title: Text(HouseValue.of(context).orders),
+            title: Text(HouseValue.of(context).allOrder),
           ),
           BottomNavigationBarItem(
             icon: Icon(HouseIcons.meIcon),
@@ -33,7 +30,6 @@ class LandlordHome extends StatelessWidget {
       tabBuilder: (context, index) {
         return [
           LandlordHousePage(),
-          LandlordOrdersPage(status: TypeStatus.orderSelecting.value),
           LandlordOrdersPage(),
           MeHome(),
         ][index];

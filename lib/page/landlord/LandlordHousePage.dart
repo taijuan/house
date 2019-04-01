@@ -45,17 +45,7 @@ class _LandlordHousePageState
                 var data = _data[index ~/ 2];
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: HouseBigCard(
-                    data,
-                    onPressed: () {
-                      push(
-                        context,
-                        LandlordOrdersPage(
-                          data: data,
-                        ),
-                      );
-                    },
-                  ),
+                  child: HouseBigCard(data),
                 );
               } else {
                 return SizedBox(
@@ -77,9 +67,9 @@ class _LandlordHousePageState
           this._data.addAll(data);
           if (data.length >= 10) {
             _refreshKey.currentState.more();
-          } else if(DataUtils.isEmptyList(data)) {
+          } else if (DataUtils.isEmptyList(data)) {
             _refreshKey.currentState.refreshNoData();
-          }else{
+          } else {
             _refreshKey.currentState.loadMoreNoData();
           }
           _curPage = 1;

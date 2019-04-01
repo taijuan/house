@@ -44,12 +44,12 @@ class TypeStatus {
         "checked": checked,
       };
 
-  static final agency = TypeStatus(1, "中介", "Agency");
+  static final agent = TypeStatus(1, "中介", "Agent");
   static final landlord = TypeStatus(2, "房东", "Landlord");
   static final tenant = TypeStatus(3, "房客", "Tenant");
   static final vendor = TypeStatus(4, "维修商", "Vendor");
   static final List<TypeStatus> userType = [
-    agency,
+    agent,
     landlord,
     tenant,
     vendor,

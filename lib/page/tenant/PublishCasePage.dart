@@ -113,7 +113,7 @@ class _PublishCasePageState extends BaseAppBarAndBodyState<PublishCasePage> {
                           "image/house_photo.webp",
                         ),
                         Text(
-                          HouseValue.of(context).photo,
+                          HouseValue.of(context).photos,
                           style: createTextStyle(
                             color: HouseColor.gray,
                             fontSize: 13,

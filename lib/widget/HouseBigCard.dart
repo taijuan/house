@@ -2,71 +2,76 @@ import 'package:house/importLib.dart';
 
 class HouseBigCard extends StatelessWidget {
   final House data;
-  final VoidCallback onPressed;
 
-  const HouseBigCard(this.data, {this.onPressed});
+  const HouseBigCard(this.data);
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      color: HouseColor.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
-      ),
-      onPressed: onPressed ??
-          () {
+    return Stack(
+      children: <Widget>[
+        FlatButton(
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          color: HouseColor.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ),
+          onPressed: () {
             push(context, HouseDetail(data));
           },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Stack(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               HouseCacheNetworkImage(
                 DataUtils.getFirstImage(data.coverImg.content),
                 aspectRatio: 16 / 9,
               ),
-              _isOngoing()
-                  ? Container(
-                      height: 24,
-                      width: 80,
-                      alignment: Alignment.center,
-                      color: HouseColor.green,
-                      child: Text(
-                        data.repairStatus.descEn.toUpperCase(),
-                        style: createTextStyle(
-                          color: HouseColor.white,
-                          fontSize: 10,
-                        ),
-                      ),
-                    )
-                  : Container(width: 0, height: 0),
+              SizedBox(
+                height: 12,
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 12,
+                ),
+                child: Text(
+                  data.address,
+                  style: createTextStyle(
+                    fontSize: 17,
+                    fontFamily: fontFamilySemiBold,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              _buildLesseeName(),
+              _buildTaskParentView(context),
             ],
           ),
-          SizedBox(
-            height: 12,
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.symmetric(
-              horizontal: 12,
-            ),
-            child: Text(
-              data.address,
-              style: createTextStyle(
-                fontSize: 17,
-                fontFamily: fontFamilySemiBold,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          _buildLesseeName(),
-          _buildTaskButton(context),
-        ],
-      ),
+        ),
+        _buildOngoing,
+        _buildBtn(context),
+      ],
     );
+  }
+
+  Container get _buildOngoing {
+    if (_isOngoing()) {
+      return Container(
+        height: 24,
+        width: 80,
+        alignment: Alignment.center,
+        color: HouseColor.green,
+        child: Text(
+          data.repairStatus.descEn.toUpperCase(),
+          style: createTextStyle(
+            color: HouseColor.white,
+            fontSize: 10,
+          ),
+        ),
+      );
+    } else {
+      return Container(width: 0, height: 0);
+    }
   }
 
   Widget _buildLesseeName() {
@@ -89,43 +94,71 @@ class HouseBigCard extends StatelessWidget {
   }
 
   bool _isOngoing() =>
-      data.repairStatus?.value == TypeStatus.houseStatus[1].value;
+      data.repairStatus?.value == TypeStatus.houseOngoing.value;
 
-  bool _isShow() =>
-      _isOngoing() && User.getUserSync().type.value == TypeStatus.agency.value;
+  bool _isShow() => _isOngoing();
 
-  Widget _buildTaskButton(BuildContext context) {
+  Widget _buildTaskParentView(BuildContext context) {
     if (_isShow()) {
-      return FlatButton(
-        onPressed: () {},
-        padding: EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 16),
-        highlightColor: HouseColor.transparent,
-        splashColor: HouseColor.transparent,
-        child: Container(
-          height: 30,
-          alignment: AlignmentDirectional.topEnd,
-          child: OutlineButton(
-            onPressed: () {
-              push(
-                context,
-                CasesPage(
-                  data: data,
-                ),
-              );
-            },
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            highlightedBorderColor: HouseColor.green,
-            disabledBorderColor: HouseColor.green,
-            borderSide: BorderSide(color: HouseColor.green),
-            child: Text(
-              HouseValue.of(context).taskView,
-              style: createTextStyle(color: HouseColor.green, fontSize: 13),
-            ),
-          ),
-        ),
-      );
+      return Container(height: 64);
     } else {
       return Container(height: 16);
+    }
+  }
+
+  Widget _buildBtn(BuildContext context) {
+    if (_isShow()) {
+      return Positioned(
+        child: RawMaterialButton(
+          onPressed: () {
+            _goToAction(context);
+          },
+          shape: RoundedRectangleBorder(
+            side: BorderSide(width: 0.5, color: HouseColor.green),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          constraints: BoxConstraints(minHeight: 28, maxHeight: 28),
+          child: _buildBtnText(context),
+        ),
+        bottom: 16,
+        right: 16,
+      );
+    } else {
+      return Container(
+        width: 0,
+        height: 0,
+      );
+    }
+  }
+
+  void _goToAction(BuildContext context) {
+    if (User.getUserSync().type.value == TypeStatus.agent.value) {
+      push(context, CasesPage(data: data));
+    } else if (User.getUserSync().type.value == TypeStatus.tenant.value) {
+      push(context, CasesPage(data: data));
+    } else {
+      push(context, LandlordOrdersPage(data: data));
+    }
+  }
+
+  Text _buildBtnText(BuildContext context) {
+    if (User.getUserSync().type.value == TypeStatus.agent.value) {
+      return Text(
+        HouseValue.of(context).taskView,
+        style: createTextStyle(color: HouseColor.green, fontSize: 13),
+      );
+    } else if (User.getUserSync().type.value == TypeStatus.tenant.value) {
+      return Text(
+        HouseValue.of(context).allRequests,
+        style: createTextStyle(color: HouseColor.green, fontSize: 13),
+      );
+    } else {
+      return Text(
+        HouseValue.of(context).orderView,
+        style: createTextStyle(color: HouseColor.green, fontSize: 13),
+      );
     }
   }
 }

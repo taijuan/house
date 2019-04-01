@@ -27,9 +27,12 @@ class Order {
     title = json["title"] ?? "";
     desc = json["desc"];
     orderNo = json["orderNo"] ?? "";
-    address = json["address"];
+    address = (json["address"] ?? "") +
+        (json["street"] ?? "") +
+        (json["fullAddress"] ?? "");
     photos = ImageContent.fromJson(DataUtils.isMap(json["photos"]));
     transactor = json["transactor"];
     resultDesc = json["resultDesc"] ?? "";
+    createTime = json["createTime"]??"";
   }
 }

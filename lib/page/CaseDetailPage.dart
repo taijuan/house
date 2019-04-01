@@ -37,7 +37,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
         willPop: true,
       ),
       title: TitleAppBar.appBarTitle(
-        HouseValue.of(context).taskDescription,
+        HouseValue.of(context).caseDetail,
       ),
     );
   }
@@ -48,13 +48,13 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
     int status = _data?.questionInfo?.status?.value ?? -1;
     if (_data == null) {
       return SizedBox.shrink();
-    } else if (status == TypeStatus.questionStatus[3].value) {
+    } else if (status == TypeStatus.questionRejected.value) {
       return SizedBox.shrink();
-    } else if (status == TypeStatus.questionStatus[2].value) {
+    } else if (status == TypeStatus.questionFinished.value) {
       return SizedBox.shrink();
-    } else if (type == TypeStatus.userType[0].value) {
+    } else if (type == TypeStatus.agent.value) {
       if (DataUtils.isEmptyList(_data.repairOrders)) {
-        return _byPass();
+        return _byPassAndConfirm();
       } else {
         return _publishAndFinish();
       }
@@ -81,6 +81,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
           Expanded(
             child: OutlineButton(
               borderSide: BorderSide(color: HouseColor.green),
+              padding: EdgeInsets.only(bottom: 3),
               onPressed: () {
                 push(
                   context,
@@ -96,7 +97,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
               },
               child: Text(
                 "+",
-                style: createTextStyle(),
+                style: createTextStyle(fontSize: 17),
               ),
             ),
           ),
@@ -107,9 +108,10 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
             child: FlatButton(
               color: HouseColor.green,
               disabledColor: HouseColor.divider,
+              padding: EdgeInsets.only(bottom: 3),
               onPressed: _isAllFinishOrClose() ? _showConformDialog : null,
               child: Text(
-                HouseValue.of(context).finished,
+                HouseValue.of(context).allResolve,
                 style: createTextStyle(color: HouseColor.white),
               ),
             ),
@@ -122,10 +124,6 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
   _showConformDialog() {
     showAlertDialog(
       context,
-      content: HouseValue.of(context).areYouOk.replaceAll(
-            "#",
-            "finish this case",
-          ),
       onOkPressed: () {
         showLoadingDialog(context);
         finishOrRejectQuestionInfoStatus(
@@ -146,7 +144,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
     );
   }
 
-  Widget _byPass() {
+  Widget _byPassAndConfirm() {
     return Container(
       height: 48,
       alignment: Alignment.center,
@@ -164,21 +162,24 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
           Expanded(
             child: FlatButton(
               color: HouseColor.divider,
-              onPressed: () async {
-                showLoadingDialog(context);
-                await finishOrRejectQuestionInfoStatus(
-                  context,
-                  _data.questionInfo.id,
-                  3,
-                  cancelToken: cancelToken,
-                ).then((v) {
-                  pop(context);
-                  showToastSuccess(context);
-                  this.isRefresh = true;
-                  _globalKey.currentState.show();
-                }).catchError((e) {
-                  pop(context);
-                  showToast(context, e.toString());
+              padding: EdgeInsets.only(bottom: 3),
+              onPressed: () {
+                showAlertDialog(context, onOkPressed: () {
+                  showLoadingDialog(context);
+                  finishOrRejectQuestionInfoStatus(
+                    context,
+                    _data.questionInfo.id,
+                    3,
+                    cancelToken: cancelToken,
+                  ).then((v) {
+                    pop(context);
+                    showToastSuccess(context);
+                    this.isRefresh = true;
+                    _globalKey.currentState.show();
+                  }).catchError((e) {
+                    pop(context);
+                    showToast(context, e.toString());
+                  });
                 });
               },
               child: Text(
@@ -193,6 +194,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
           Expanded(
             child: FlatButton(
               color: HouseColor.green,
+              padding: EdgeInsets.only(bottom: 3),
               onPressed: () {
                 push(
                   context,
@@ -207,7 +209,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
                 });
               },
               child: Text(
-                HouseValue.of(context).publish,
+                HouseValue.of(context).confirm,
                 style: createTextStyle(color: HouseColor.white),
               ),
             ),
@@ -251,7 +253,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
           _buildOrders(),
           _buildTitle(HouseValue.of(context).description),
           _buildDescription(),
-          _buildTitle(HouseValue.of(context).photo),
+          _buildTitle(HouseValue.of(context).photos),
           _buildPhotoList(),
           SliverToBoxAdapter(
             child: Container(
@@ -383,7 +385,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
             onPressed: () {
               push(
                 context,
-                OrderDetailHome(data.id),
+                OrderDetailPage(data.id),
               )..then((isRefresh) {
                   if (isRefresh == true) {
                     this.isRefresh = true;
@@ -441,7 +443,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
         data.status.value == TypeStatus.orderSelecting.value) {
       return FlatButton(
         onPressed: () {
-          if (User.getUserSync().type.value != TypeStatus.agency.value) {
+          if (User.getUserSync().type.value != TypeStatus.agent.value) {
             return;
           }
           showAlertDialog(

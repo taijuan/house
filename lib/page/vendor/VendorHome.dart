@@ -13,20 +13,16 @@ class VendorHome extends StatelessWidget {
         border: Border(),
         items: [
           BottomNavigationBarItem(
-            icon: Icon(HouseIcons.quoteIcon),
-            title: Text(TypeStatus.repairToQuote.descEn),
+            icon: Icon(HouseIcons.homeIcon),
+            title: Text(HouseValue.of(context).inquiries),
           ),
           BottomNavigationBarItem(
-            icon: Icon(HouseIcons.pendingIcon),
-            title: Text(TypeStatus.repairPending.descEn),
+            icon: Icon(HouseIcons.caseIcon),
+            title: Text(HouseValue.of(context).quote),
           ),
           BottomNavigationBarItem(
-            icon: Icon(HouseIcons.processingIcon),
-            title: Text(TypeStatus.repairProcessing.descEn),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(HouseIcons.allIcon),
-            title: Text("All"),
+            icon: Icon(HouseIcons.orderIcon),
+            title: Text(HouseValue.of(context).job),
           ),
           BottomNavigationBarItem(
             icon: Icon(HouseIcons.meIcon),
@@ -36,10 +32,24 @@ class VendorHome extends StatelessWidget {
       ),
       tabBuilder: (context, index) {
         return [
-          VendorOrderPage(data: TypeStatus.repairToQuote),
-          VendorOrderPage(data: TypeStatus.repairPending),
-          VendorOrderPage(data: TypeStatus.repairProcessing),
-          VendorPage(),
+          VendorOrderPage(
+            title: HouseValue.of(context).inquiries,
+            body: OrdersHome(status: TypeStatus.repairToQuote.value),
+          ),
+          VendorOrderPage(
+            title: HouseValue.of(context).quote,
+            body: OrdersHome(
+              queryStatus:
+                  "${TypeStatus.repairPending.value},${TypeStatus.repairProcessing.value},${TypeStatus.repairRejected.value}",
+            ),
+          ),
+          VendorOrderPage(
+            title: HouseValue.of(context).job,
+            body: OrdersHome(
+              queryStatus:
+                  "${TypeStatus.repairConfirm.value},${TypeStatus.repairFinished.value},${TypeStatus.repairClosed.value}",
+            ),
+          ),
           MeHome(),
         ][index];
       },

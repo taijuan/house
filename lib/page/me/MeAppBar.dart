@@ -74,7 +74,7 @@ class _MeAppBarState extends BaseState<MeAppBar> {
             height: 48,
             alignment: AlignmentDirectional.center,
             child: Text(
-              user.getUserName(),
+              user.userName,
               textAlign: TextAlign.center,
               style: createTextStyle(
                 color: HouseColor.white,

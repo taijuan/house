@@ -111,7 +111,7 @@ class _QuotationListPageState
     LogUtils.log("_transactor${_transactor ?? ""}");
     if (this._transactor == null) {
       return SliverToBoxAdapter();
-    } else if (user.type.value == TypeStatus.agency.value && !_isAuth()) {
+    } else if (user.type.value == TypeStatus.agent.value && !_isAuth()) {
       return SliverToBoxAdapter(
         child: Container(
           color: HouseColor.lightGreen,

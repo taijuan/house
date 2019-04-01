@@ -4,8 +4,12 @@ import 'package:house/importLib.dart';
 class OrdersHome extends BaseStatefulWidget {
   final int status;
 
+  /// "1,2,3"
+  final String queryStatus;
+
   OrdersHome({
     this.status,
+    this.queryStatus,
   }) : super(key: ValueKey(status));
 
   @override
@@ -54,15 +58,16 @@ class _OrdersHomeState extends BaseState<OrdersHome>
           context,
           1,
           status: widget.status,
+          queryStatus: widget.queryStatus,
           cancelToken: cancelToken,
         ).then((data) {
           _data.clear();
           _data.addAll(data);
           if (data.length >= 10) {
             _refreshKey.currentState.more();
-          } else if(DataUtils.isEmptyList(data)) {
+          } else if (DataUtils.isEmptyList(data)) {
             _refreshKey.currentState.refreshNoData();
-          }else{
+          } else {
             _refreshKey.currentState.loadMoreNoData();
           }
           _curPage = 1;
@@ -76,6 +81,7 @@ class _OrdersHomeState extends BaseState<OrdersHome>
           context,
           _curPage + 1,
           status: widget.status,
+          queryStatus: widget.queryStatus,
           cancelToken: cancelToken,
         ).then((data) {
           _data.addAll(data);
@@ -102,7 +108,7 @@ class _OrdersHomeState extends BaseState<OrdersHome>
       onPressed: () {
         push(
           context,
-          OrderDetailHome(
+          OrderDetailPage(
             data.id,
             repairQuoteId: data.repairQuoteId,
           ),
@@ -121,12 +127,29 @@ class _OrdersHomeState extends BaseState<OrdersHome>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text(
-          HouseValue.of(context).orderNo + data.orderNo,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: createTextStyle(fontSize: 13, height: 1),
-          textAlign: TextAlign.start,
+        Row(
+          children: <Widget>[
+            Text(
+              HouseValue.of(context).orderNo + data.orderNo,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: createTextStyle(fontSize: 13, height: 1),
+              textAlign: TextAlign.start,
+            ),
+            Expanded(
+              child: Text(
+                data.createTime,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: createTextStyle(
+                  fontSize: 12,
+                  height: 1,
+                  color: HouseColor.gray,
+                ),
+                textAlign: TextAlign.end,
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 8),
         Row(
@@ -134,8 +157,8 @@ class _OrdersHomeState extends BaseState<OrdersHome>
           children: <Widget>[
             HouseCacheNetworkImage(
               DataUtils.getFirstImage(data.photos.content),
-              width: 60,
-              height: 60,
+              width: 80,
+              height: 80,
             ),
             SizedBox(
               width: 8,
@@ -148,8 +171,8 @@ class _OrdersHomeState extends BaseState<OrdersHome>
                   _getRepairStatus(data),
                   Text.rich(
                     TextSpan(
-                      children: _getSpan(data.typeNames, data.title),
-                    ),
+                        children: _getSpan(data.typeNames, data.title),
+                        style: createTextStyle(height: 1)),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -181,12 +204,16 @@ class _OrdersHomeState extends BaseState<OrdersHome>
         color: _getTextColor(data),
         fontSize: 15,
         fontFamily: "LatoSemibold",
+        height: 1,
       ),
     );
   }
 
   Color _getTextColor(Order data) {
     if (data.repairQuoteStatus.value == TypeStatus.repairFinished.value) {
+      return HouseColor.green;
+    } else if (data.repairQuoteStatus.value ==
+        TypeStatus.repairProcessing.value) {
       return HouseColor.green;
     } else if (data.repairQuoteStatus.value ==
         TypeStatus.repairRejected.value) {
@@ -210,7 +237,10 @@ class _OrdersHomeState extends BaseState<OrdersHome>
     a.add(
       TextSpan(
         text: title,
-        style: createTextStyle(fontFamily: fontFamilySemiBold, height: 1),
+        style: createTextStyle(
+          fontFamily: fontFamilySemiBold,
+          height: 1,
+        ),
       ),
     );
     return a;

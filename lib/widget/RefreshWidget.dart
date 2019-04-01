@@ -88,6 +88,7 @@ class RefreshWidgetState extends State<RefreshWidget> {
       return Container(
         height: 48,
         alignment: Alignment.center,
+        child: Text("No more data"),
       );
     } else if (refreshMode == RefreshMode.refreshNoData) {
       return AspectRatio(
@@ -114,7 +115,7 @@ class RefreshWidgetState extends State<RefreshWidget> {
           child: RefreshProgressIndicator(),
         ),
       );
-    } else if (refreshMode == RefreshMode.loading) {
+    } else if (refreshMode == RefreshMode.error) {
       return SizedBox(
         height: 48,
         child: FlatButton(

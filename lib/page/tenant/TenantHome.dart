@@ -18,7 +18,7 @@ class TenantHome extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(HouseIcons.caseIcon),
-            title: Text(HouseValue.of(context).cases),
+            title: Text("All Requests"),
           ),
           BottomNavigationBarItem(
             icon: Icon(HouseIcons.meIcon),

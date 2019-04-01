@@ -37,7 +37,7 @@ export 'package:house/page/FilterPage.dart';
 export 'package:house/page/GuidePage.dart';
 export 'package:house/page/HouseDetail.dart';
 export 'package:house/page/HouseTagPage.dart';
-export 'package:house/page/OrderDetailHome.dart';
+export 'package:house/page/OrderDetailPage.dart';
 export 'package:house/page/OrdersHome.dart';
 export 'package:house/page/QuotationListPage.dart';
 export 'package:house/page/ShowImage.dart';

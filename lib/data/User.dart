@@ -68,7 +68,7 @@ class User {
         .setString("user", json.encode(this));
   }
 
-  String getUserName() {
+  get userName {
     if (DataUtils.isEmpty(firstName) && DataUtils.isEmpty(lastName)) {
       return email ?? "";
     } else if (DataUtils.isEmpty(firstName)) {
@@ -76,7 +76,7 @@ class User {
     } else if (DataUtils.isEmpty(lastName)) {
       return firstName;
     } else {
-      return "$firstName · $lastName";
+      return "$firstName $lastName";
     }
   }
 

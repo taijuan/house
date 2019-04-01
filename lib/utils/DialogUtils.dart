@@ -39,7 +39,7 @@ Future showAlertDialog(
           padding: EdgeInsets.symmetric(vertical: 24, horizontal: 8),
           alignment: AlignmentDirectional.center,
           child: Text(
-            content,
+            content??HouseValue.of(context).areYouSure,
             textAlign: TextAlign.center,
             style: createTextStyle(),
           ),

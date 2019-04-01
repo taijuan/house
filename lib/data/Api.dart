@@ -403,16 +403,17 @@ Future<List<Order>> selectRepairOrderPageList(
   int currentPage, {
   String houseId,
   int status,
+  String queryStatus,
   CancelToken cancelToken,
 }) async {
   User user = await User.getUser();
   var path = "/selectRepairOrderPageList";
-  if (user.type.value != TypeStatus.vendor.value) {
-    path = "/selectRepairOrderPageList";
-  } else if (status == -1) {
+  if (queryStatus != null) {
+    path = "/selectUserRepairQuotePageList";
+  } else if (status != null && status == -1) {
     path = "/selectWaitingOrderPageList";
   } else {
-    path = "/selectUserRepairQuotePageList";
+    path = "/selectRepairOrderPageList";
   }
   BaseRes res = await HttpManager.post(
     context,
@@ -422,6 +423,7 @@ Future<List<Order>> selectRepairOrderPageList(
       "userType": user.type.value,
       "houseId": houseId,
       "status": status,
+      "queryStatus": queryStatus,
       "currentPage": currentPage,
       "pageSize": 10,
     },
