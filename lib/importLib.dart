@@ -75,7 +75,6 @@ export 'package:house/page/tenant/TenantHome.dart';
 export 'package:house/page/tenant/TenantHousePage.dart';
 export 'package:house/page/vendor/VendorHome.dart';
 export 'package:house/page/vendor/VendorOrderPage.dart';
-export 'package:house/page/vendor/VendorPage.dart';
 export 'package:house/page/vendor/VendorQuoteHome.dart';
 export 'package:house/page/vendor/VendorRepairResults.dart';
 export 'package:house/utils/CleanCacheUtils.dart';
