@@ -353,7 +353,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
       return SliverToBoxAdapter(
         child: Container(
           height: MediaQuery.of(context).size.width,
-          margin: EdgeInsets.only(left: 12, right: 12, bottom: 12),
+          margin: EdgeInsets.only(left: 12, right: 12, top: 12, bottom: 12),
           decoration: BoxDecoration(
             color: HouseColor.lightGray,
             borderRadius: BorderRadius.circular(4),
@@ -665,8 +665,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
             a.name = TypeStatus.vendor.descEn;
             break;
           case 2:
-            a.name =
-                "${TypeStatus.landlord.descEn}/${TypeStatus.agent.descEn}";
+            a.name = "${TypeStatus.landlord.descEn}/${TypeStatus.agent.descEn}";
             break;
           case 3:
             a.name = TypeStatus.vendor.descEn;

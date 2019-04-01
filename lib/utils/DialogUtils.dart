@@ -106,6 +106,7 @@ Future showInputDialog(
   final TextEditingController controller = TextEditingController();
   return showContentDialog(
     context,
+    barrierDismissible: false,
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
