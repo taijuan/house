@@ -25,9 +25,10 @@ android {
         applicationId "berry.android.dm"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 102
-        versionName "1.0.2"
+        versionCode 103
+        versionName "1.0.3"
         resConfig "en"
+        resValue("string", "appName", "house")
     }
 
     signingConfigs {
@@ -47,31 +48,6 @@ android {
             useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    flavorDimensions "house"
-    productFlavors {
-        house {
-            resValue("string", "appName", "house")
-        }
-        zj {
-            applicationIdSuffix = ".zj"
-            resValue("string", "appName", "中介")
-        }
-        fd {
-            applicationIdSuffix = ".fd"
-            resValue("string", "appName", "房东")
-        }
-        fk {
-            applicationIdSuffix = ".fk"
-            resValue("string", "appName", "房客")
-        }
-        wx {
-            applicationIdSuffix = ".wx"
-            resValue("string", "appName", "维修")
-        }
-    }
-    productFlavors.all { flavor ->
-        flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
     }
 }
 
