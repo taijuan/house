@@ -138,15 +138,19 @@ class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
         ),
         _nameAndValue(
           onPressed: () {
-            ImagePicker.pickImage(
-              source: ImageSource.gallery,
-            ).then((f) {
-              if (f != null) {
-                widget.data.imgStr = f;
-                widget.data.imageName = f.path;
-                setState(() {});
-              }
-            });
+            ImagePicker.singlePicker(
+              context,
+              type: ImagePickerType.onlyImage,
+              placeholder:
+              AssetImage("image/house_loading_image_placeholder.webp"),
+              appBarColor: HouseColor.blue,
+              singleCallback: (image) {
+                setState(() {
+                  widget.data.imgStr = File(image.path);
+                  widget.data.imageName = image.name;
+                });
+              },
+            );
           },
           name: HouseValue.of(context).certificate,
           value: "",
@@ -229,7 +233,7 @@ class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
         image: FileImage(widget.data.imgStr),
       );
     } else if (DataUtils.getImageUrl(widget.data.picUrl).isNotEmpty) {
-      return HouseCacheNetworkImage(DataUtils.getImageUrl(widget.data.picUrl));
+      return houseCacheNetworkImage(DataUtils.getImageUrl(widget.data.picUrl));
     } else {
       return Container(width: 0, height: 0);
     }

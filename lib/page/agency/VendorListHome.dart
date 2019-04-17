@@ -117,7 +117,7 @@ class _VendorListHomeState extends BaseAppBarAndBodyState<VendorListHome> {
         height: 60,
         child: Row(
           children: <Widget>[
-            HouseCacheNetworkImage(
+            houseCacheNetworkImage(
               DataUtils.getImageUrl(data.headImage),
               width: 60,
               height: 60,

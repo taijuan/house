@@ -18,10 +18,10 @@ class CityArea {
   }
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "pid": pid,
-        "districtList": districtList,
-        "checked": checked
-      };
+    "id": id,
+    "name": name,
+    "pid": pid,
+    "districtList": districtList,
+    "checked": checked
+  };
 }

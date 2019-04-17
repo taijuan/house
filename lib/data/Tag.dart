@@ -11,9 +11,9 @@ class Tag {
         checked = json["checked"] ?? false;
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "desc": desc,
-        "checked": checked,
-      };
+    "id": id,
+    "name": name,
+    "desc": desc,
+    "checked": checked,
+  };
 }

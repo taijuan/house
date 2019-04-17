@@ -768,9 +768,8 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                   ),
                 );
               },
-              child: HouseCacheNetworkImage(
+              child: houseCacheNetworkImage(
                 imageUrl,
-                aspectRatio: 1,
               ),
             );
           },
@@ -911,7 +910,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                           VendorDetailHome(_data.repairQuote.userId),
                         );
                       },
-                      child: HouseCacheNetworkImage(
+                      child: houseCacheNetworkImage(
                         DataUtils.getImageUrl(_data.repairQuote.headImg),
                         width: 60,
                         height: 60,
@@ -1057,9 +1056,8 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                     ),
                   );
                 },
-                child: HouseCacheNetworkImage(
+                child: houseCacheNetworkImage(
                   imageUrl,
-                  aspectRatio: 1,
                 ),
               );
             },

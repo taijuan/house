@@ -10,10 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^0.5.1+2
-  image_picker: ^0.5.2
-  cached_network_image: ^0.7.0
+#  image_picker: ^0.5.2
   dio: ^2.1.0
-  photo_view: ^0.2.2
   google_maps_flutter: ^0.5.3
   url_launcher: ^5.0.2
   intl: ^0.15.7
@@ -22,6 +20,8 @@ dependencies:
   flutter_webview_plugin: ^0.3.1
   package_info: ^0.4.0+2
   flutter_image_compress: ^0.2.4
+  image_picker_flutter: ^1.0.1
+  extended_image: ^0.2.7
 
 flutter:
   #图片资源

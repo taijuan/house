@@ -25,7 +25,7 @@ class _QuestionItemState extends BaseState<QuestionItem> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            HouseCacheNetworkImage(
+            houseCacheNetworkImage(
               DataUtils.getFirstImage(widget.data.photos.content),
               width: 80,
               height: 60,

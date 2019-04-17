@@ -1,4 +1,5 @@
 import 'package:house/importLib.dart';
+import 'package:image_picker_flutter/model/AssetData.dart';
 
 class VendorRepairResults extends BaseStatefulWidget {
   ///订单id
@@ -78,14 +79,23 @@ class _VendorRepairResultsState
                   return FlatButton(
                     color: HouseColor.lightGray,
                     onPressed: () {
-                      ImagePicker.pickImage(
-                        source: ImageSource.gallery,
-                      ).then((image) {
-                        if (image != null) {
-                          _images.add(image);
-                          setState(() {});
-                        }
-                      });
+                      ImagePicker.mulPicker(
+                        context,
+                        data: _getAssetDataList(),
+                        limit: 9,
+                        type: ImagePickerType.onlyImage,
+                        placeholder: AssetImage(
+                            "image/house_loading_image_placeholder.webp"),
+                        appBarColor: HouseColor.blue,
+                        mulCallback: (data) {
+                          setState(() {
+                            this._images.clear();
+                            this._images.addAll(
+                                  data.map((a) => File(a.path)),
+                                );
+                          });
+                        },
+                      );
                     },
                     child: Image.asset(
                       "image/house_photo.webp",
@@ -136,6 +146,10 @@ class _VendorRepairResultsState
         )
       ],
     );
+  }
+
+  List<AssetData> _getAssetDataList() {
+    return _images.map((a) => AssetData.fromJson({"path": a.path})).toList();
   }
 
   void _repairQuoteResultSubmit() async {

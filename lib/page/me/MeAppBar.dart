@@ -63,7 +63,7 @@ class _MeAppBarState extends BaseState<MeAppBar> {
               style: BorderStyle.solid,
             ),
             clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: HouseCacheNetworkImage(
+            child: houseCacheNetworkImage(
               DataUtils.getImageUrl(user.headImage),
               width: 88,
               height: 88,
@@ -91,14 +91,15 @@ class _MeAppBarState extends BaseState<MeAppBar> {
   }
 
   void _pickImage() {
-    ImagePicker.pickImage(
-      source: ImageSource.gallery,
-    ).then((file) {
-      LogUtils.log(file.path);
-      if (file != null) {
-        _changeHeadImage(file);
-      }
-    });
+    ImagePicker.singlePicker(
+      context,
+      type: ImagePickerType.onlyImage,
+      placeholder: AssetImage("image/house_loading_image_placeholder.webp"),
+      appBarColor: HouseColor.blue,
+      singleCallback: (image) {
+        _changeHeadImage(File(image.path));
+      },
+    );
   }
 
   void _changeHeadImage(File file) async {

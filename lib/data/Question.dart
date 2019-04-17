@@ -21,13 +21,13 @@ class Question {
         userId = json["userId"];
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "description": description,
-        "houseId": houseId,
-        "status": status,
-        "photos": photos,
-        "createDate": createDate,
-        "updateDate": updateDate,
-        "userId": userId,
-      };
+    "id": id,
+    "description": description,
+    "houseId": houseId,
+    "status": status,
+    "photos": photos,
+    "createDate": createDate,
+    "updateDate": updateDate,
+    "userId": userId,
+  };
 }

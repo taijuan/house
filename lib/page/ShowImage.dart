@@ -1,6 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:house/importLib.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 
 class ShowImage extends BaseStatefulWidget {
   final List<ImageData> data;
@@ -36,19 +35,27 @@ class _ShowImageState extends BaseState<ShowImage> {
       body: SizedBox.expand(
         child: Stack(
           children: <Widget>[
-            PhotoViewGallery(
-              pageOptions: widget.data.map((image) {
-                String imageUrl = DataUtils.getImageUrl(image.picUrl);
-                return PhotoViewGalleryPageOptions(
-                  imageProvider: CachedNetworkImageProvider(imageUrl),
-                  maxScale: 4.0,
+            ExtendedImageGesturePageView.builder(
+              itemBuilder: (context, index) {
+                return ExtendedImage.network(
+                  DataUtils.getImageUrl(widget.data[index].picUrl),
+                  fit: BoxFit.contain,
+                  mode: ExtendedImageMode.Gesture,
+                  gestureConfig: GestureConfig(
+                    inPageView: true,
+                    initialScale: 1.0,
+                    minScale: 1.0,
+                    cacheGesture: false,
+                  ),
                 );
-              }).toList(),
-              onPageChanged: (index) {
-                this._index = index;
-                setState(() {});
               },
-              pageController: _controller,
+              itemCount: widget.data.length,
+              controller: PageController(initialPage: widget.startPos),
+              onPageChanged: (index) {
+                setState(() {
+                  this._index = index;
+                });
+              },
             ),
             Positioned(
               left: 0,

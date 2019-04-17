@@ -334,9 +334,8 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
                     ),
                   );
                 },
-                child: HouseCacheNetworkImage(
+                child: houseCacheNetworkImage(
                   imageUrl,
-                  aspectRatio: 1,
                 ),
               );
             },

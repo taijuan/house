@@ -21,9 +21,11 @@ class HouseBigCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              HouseCacheNetworkImage(
-                DataUtils.getFirstImage(data.coverImg.content),
+              AspectRatio(
                 aspectRatio: 16 / 9,
+                child: houseCacheNetworkImage(
+                  DataUtils.getFirstImage(data.coverImg.content),
+                ),
               ),
               SizedBox(
                 height: 12,

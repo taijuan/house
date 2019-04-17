@@ -105,6 +105,6 @@ export 'package:house/widget/UserIdentityTextField.dart';
 export 'package:house/widget/UserNameTextField.dart';
 export 'package:house/widget/UserPasswordTextField.dart';
 export 'package:house/widget/UserServiceNotice.dart';
-export 'package:image_picker/image_picker.dart';
+export 'package:image_picker_flutter/ImagePicker.dart';
 export 'package:package_info/package_info.dart';
 export 'package:path_provider/path_provider.dart';

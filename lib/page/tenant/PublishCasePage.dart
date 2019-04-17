@@ -1,4 +1,5 @@
 import 'package:house/importLib.dart';
+import 'package:image_picker_flutter/model/AssetData.dart';
 
 class PublishCasePage extends BaseStatefulWidget {
   final House data;
@@ -12,8 +13,8 @@ class PublishCasePage extends BaseStatefulWidget {
 }
 
 class _PublishCasePageState extends BaseAppBarAndBodyState<PublishCasePage> {
-  List<File> images = [];
-  TextEditingController controller = TextEditingController();
+  final List<File> images = [];
+  final TextEditingController controller = TextEditingController();
 
   @override
   void dispose() {
@@ -94,14 +95,21 @@ class _PublishCasePageState extends BaseAppBarAndBodyState<PublishCasePage> {
                 if (index == images.length) {
                   return FlatButton(
                     onPressed: () {
-                      ImagePicker.pickImage(
-                        source: ImageSource.gallery,
-                      ).then(
-                        (f) {
-                          if (f != null) {
-                            images.add(f);
-                            setState(() {});
-                          }
+                      ImagePicker.mulPicker(
+                        context,
+                        data: _getAssetDataList(),
+                        limit: 9,
+                        type: ImagePickerType.onlyImage,
+                        placeholder: AssetImage(
+                            "image/house_loading_image_placeholder.webp"),
+                        appBarColor: HouseColor.blue,
+                        mulCallback: (data) {
+                          setState(() {
+                            this.images.clear();
+                            this.images.addAll(
+                                  data.map((a) => File(a.path)),
+                                );
+                          });
                         },
                       );
                     },
@@ -166,6 +174,10 @@ class _PublishCasePageState extends BaseAppBarAndBodyState<PublishCasePage> {
         )
       ],
     );
+  }
+
+  List<AssetData> _getAssetDataList() {
+    return images.map((a) => AssetData.fromJson({"path": a.path})).toList();
   }
 
   SliverToBoxAdapter buildSliverToBoxAdapter(

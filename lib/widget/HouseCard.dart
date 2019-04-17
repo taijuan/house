@@ -22,7 +22,7 @@ class HouseCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            HouseCacheNetworkImage(
+            houseCacheNetworkImage(
               DataUtils.getFirstImage(data.coverImg.content),
               width: 60,
               height: 60,
