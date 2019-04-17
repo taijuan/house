@@ -132,9 +132,12 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
       );
     } else {
       return SliverToBoxAdapter(
-        child: ImagePageView(_data.image.content.map((a) {
-          return a.picUrl;
-        }).toList()),
+        child: AspectRatio(
+          aspectRatio: 16 / 9,
+          child: ImagePageView(_data.image.content.map((a) {
+            return a.picUrl;
+          }).toList()),
+        ),
       );
     }
   }

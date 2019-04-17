@@ -74,9 +74,9 @@ class _VendorListHomeState extends BaseAppBarAndBodyState<VendorListHome> {
           this._data.addAll(data);
           if (data.length >= 10) {
             _refreshKey.currentState.more();
-          } else if(DataUtils.isEmptyList(data)) {
+          } else if (DataUtils.isEmptyList(data)) {
             _refreshKey.currentState.refreshNoData();
-          }else{
+          } else {
             _refreshKey.currentState.loadMoreNoData();
           }
           _curPage = 1;
@@ -114,13 +114,13 @@ class _VendorListHomeState extends BaseAppBarAndBodyState<VendorListHome> {
         push(context, VendorDetailHome(data.id));
       },
       child: SizedBox(
-        height: 60,
+        height: 80,
         child: Row(
           children: <Widget>[
             houseCacheNetworkImage(
               DataUtils.getImageUrl(data.headImage),
-              width: 60,
-              height: 60,
+              width: 80,
+              height: 80,
             ),
             SizedBox(
               width: 16,

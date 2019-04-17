@@ -37,21 +37,26 @@ class TitleAppBar extends BaseAppBar {
     VoidCallback onPressed,
     Widget back,
     bool willPop = false,
+    Color color,
   }) {
     if (willPop && onPressed != null) {
       return WillPopScope(
-          child: _back(onPressed, context, back),
+          child: _back(onPressed, context, back, color),
           onWillPop: () async {
             onPressed();
             return false;
           });
     } else {
-      return _back(onPressed, context, back);
+      return _back(onPressed, context, back, color);
     }
   }
 
   static FlatButton _back(
-      VoidCallback onPressed, BuildContext context, Widget back) {
+    VoidCallback onPressed,
+    BuildContext context,
+    Widget back,
+    Color color,
+  ) {
     return FlatButton(
       onPressed: onPressed ??
           () {
@@ -65,7 +70,7 @@ class TitleAppBar extends BaseAppBar {
         child: back ??
             Icon(
               HouseIcons.backIcon,
-              color: HouseColor.black,
+              color: color ?? HouseColor.black,
               size: 18,
             ),
       ),

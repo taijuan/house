@@ -1,5 +1,4 @@
 import 'package:house/importLib.dart';
-import 'package:image_picker_flutter/model/AssetData.dart';
 
 class VendorRepairResults extends BaseStatefulWidget {
   ///订单id

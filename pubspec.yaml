@@ -9,18 +9,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences: ^0.5.1+2
-#  image_picker: ^0.5.2
-  dio: ^2.1.0
-  google_maps_flutter: ^0.5.3
+  shared_preferences: ^0.5.2
+  dio: ^2.1.2
+  google_maps_flutter: ^0.5.7
   url_launcher: ^5.0.2
-  intl: ^0.15.7
+  intl: ^0.15.8
   permission_handler: ^3.0.0
-  location: ^2.3.3
-  flutter_webview_plugin: ^0.3.1
-  package_info: ^0.4.0+2
-  flutter_image_compress: ^0.2.4
-  image_picker_flutter: ^1.0.1
+  location: ^2.3.5
+  flutter_webview_plugin: ^0.3.3
+  package_info: ^0.4.0+3
+  flutter_image_compress: ^0.4.0
+  image_picker_flutter: ^1.0.2
   extended_image: ^0.2.7
 
 flutter:
