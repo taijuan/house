@@ -4,7 +4,7 @@ import io.flutter.plugin.common.PluginRegistry;
 import com.example.flutterimagecompress.FlutterImageCompressPlugin;
 import com.flutter_webview_plugin.FlutterWebviewPlugin;
 import io.flutter.plugins.googlemaps.GoogleMapsPlugin;
-import taijuan.com.image_picker.ImagePickerPlugin;
+import com.taijuan.image_picker_flutter.ImagePickerFlutterPlugin;
 import com.lyokone.location.LocationPlugin;
 import io.flutter.plugins.packageinfo.PackageInfoPlugin;
 import io.flutter.plugins.pathprovider.PathProviderPlugin;
@@ -23,7 +23,7 @@ public final class GeneratedPluginRegistrant {
     FlutterImageCompressPlugin.registerWith(registry.registrarFor("com.example.flutterimagecompress.FlutterImageCompressPlugin"));
     FlutterWebviewPlugin.registerWith(registry.registrarFor("com.flutter_webview_plugin.FlutterWebviewPlugin"));
     GoogleMapsPlugin.registerWith(registry.registrarFor("io.flutter.plugins.googlemaps.GoogleMapsPlugin"));
-    ImagePickerPlugin.registerWith(registry.registrarFor("taijuan.com.image_picker.ImagePickerPlugin"));
+    ImagePickerFlutterPlugin.registerWith(registry.registrarFor("com.taijuan.image_picker_flutter.ImagePickerFlutterPlugin"));
     LocationPlugin.registerWith(registry.registrarFor("com.lyokone.location.LocationPlugin"));
     PackageInfoPlugin.registerWith(registry.registrarFor("io.flutter.plugins.packageinfo.PackageInfoPlugin"));
     PathProviderPlugin.registerWith(registry.registrarFor("io.flutter.plugins.pathprovider.PathProviderPlugin"));

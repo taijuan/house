@@ -6,7 +6,7 @@
 #import <flutter_image_compress/FlutterImageCompressPlugin.h>
 #import <flutter_webview_plugin/FlutterWebviewPlugin.h>
 #import <google_maps_flutter/GoogleMapsPlugin.h>
-#import <image_picker_flutter/ImagePickerPlugin.h>
+#import <image_picker_flutter/ImagePickerFlutterPlugin.h>
 #import <location/LocationPlugin.h>
 #import <package_info/PackageInfoPlugin.h>
 #import <path_provider/PathProviderPlugin.h>
@@ -20,7 +20,7 @@
   [FlutterImageCompressPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterImageCompressPlugin"]];
   [FlutterWebviewPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterWebviewPlugin"]];
   [FLTGoogleMapsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleMapsPlugin"]];
-  [ImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"ImagePickerPlugin"]];
+  [ImagePickerFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"ImagePickerFlutterPlugin"]];
   [LocationPlugin registerWithRegistrar:[registry registrarForPlugin:@"LocationPlugin"]];
   [FLTPackageInfoPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPackageInfoPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
