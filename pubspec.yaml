@@ -25,34 +25,34 @@ dependencies:
 flutter:
   #图片资源
   assets:
-  - image/house_email_sent_ok.webp
-  - image/house_signup_image.webp
-  - image/house_photo.webp
-  - image/house_loading_image_placeholder.webp
-  - image/house_add.webp
-  - image/house_map.webp
-  - image/house_location.webp
-  - image/house_sqft.webp
-  - image/house_car.webp
-  - image/house_built.webp
-  - image/house_bed.webp
-  - image/house_bath.webp
-  - image/house_search.webp
-  - image/house_marker_green.webp
-  - image/house_marker_red.webp
-  - image/launch_background.webp
+    - image/house_email_sent_ok.webp
+    - image/house_signup_image.webp
+    - image/house_photo.webp
+    - image/house_loading_image_placeholder.webp
+    - image/house_add.webp
+    - image/house_map.webp
+    - image/house_location.webp
+    - image/house_sqft.webp
+    - image/house_car.webp
+    - image/house_built.webp
+    - image/house_bed.webp
+    - image/house_bath.webp
+    - image/house_search.webp
+    - image/house_marker_green.webp
+    - image/house_marker_red.webp
+    - image/launch_background.webp
   #自定义字体
   fonts:
-  - family: LatoRegular
-    fonts:
-    - asset: font/lato_regular.ttf
-  - family: LatoSemiBold
-    fonts:
-    - asset: font/lato_semibold.ttf
-  - family: LatoBold
-    fonts:
-    - asset: font/lato_bold.ttf
-  - family: iconfont
-    fonts:
-    - asset: font/iconfont.ttf
+    - family: LatoRegular
+      fonts:
+        - asset: font/lato_regular.ttf
+    - family: LatoSemiBold
+      fonts:
+        - asset: font/lato_semibold.ttf
+    - family: LatoBold
+      fonts:
+        - asset: font/lato_bold.ttf
+    - family: iconfont
+      fonts:
+        - asset: font/iconfont.ttf
 
