@@ -35,7 +35,6 @@ android {
         versionCode 103
         versionName "1.0.3"
         resConfig "en"
-        resValue("string", "appName", "house")
     }
 
     signingConfigs {

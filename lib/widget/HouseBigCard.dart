@@ -56,18 +56,22 @@ class HouseBigCard extends StatelessWidget {
     );
   }
 
-  Container get _buildOngoing {
+  Widget get _buildOngoing {
     if (_isOngoing()) {
-      return Container(
-        height: 24,
-        width: 80,
-        alignment: Alignment.center,
-        color: HouseColor.green,
-        child: Text(
-          data.repairStatus.descEn.toUpperCase(),
-          style: createTextStyle(
-            color: HouseColor.white,
-            fontSize: 10,
+      return Positioned(
+        left: 0,
+        top: 0,
+        child: Container(
+          height: 24,
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          alignment: Alignment.center,
+          color: HouseColor.green,
+          child: Text(
+            data.repairStatus.descEn.toUpperCase(),
+            style: createTextStyle(
+              color: HouseColor.white,
+              fontSize: 10,
+            ),
           ),
         ),
       );
