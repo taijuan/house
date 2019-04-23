@@ -3,7 +3,7 @@ import 'package:house/importLib.dart';
 typedef Future<void> OnSaveWhenComplete();
 
 class ProviderUser extends ChangeNotifier {
-  final User user;
+  final User user = User.fromJson({});
 
   String get userId => user.id;
 
@@ -25,8 +25,6 @@ class ProviderUser extends ChangeNotifier {
   bool isVendor() {
     return typeValue == TypeStatus.vendor.value;
   }
-
-  ProviderUser(this.user);
 
   void save(
     User user, {

@@ -8,8 +8,6 @@ class ProfileHome extends BaseStatefulWidget {
 }
 
 class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
-//  final List<CityArea> cityList = [];
-
   @override
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
@@ -28,6 +26,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
         User user = data.user;
         return ListView(
           padding: EdgeInsets.only(),
+          physics: ClampingScrollPhysics(),
           children: [
             ///firstName
             _nameAndValue(

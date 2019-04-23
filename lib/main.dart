@@ -15,7 +15,7 @@ void main() async {
 
   User user = await User.getUser();
   var providers = Providers()
-    ..provide(Provider<ProviderUser>.value(ProviderUser(user)))
+    ..provide(Provider<ProviderUser>.value(ProviderUser()..save(user)))
     ..provide(Provider<ProviderHouseReLoad>.value(ProviderHouseReLoad()))
     ..provide(Provider<ProviderVendorReLoad>.value(ProviderVendorReLoad()))
     ..provide(Provider<ProviderOrderReLoad>.value(ProviderOrderReLoad()));

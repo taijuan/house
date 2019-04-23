@@ -9,15 +9,19 @@ class Welcome extends BaseStatefulWidget {
 }
 
 class _WelcomeState extends BaseState<Welcome> {
-  bool hadInit = false;
-
   @override
   void initState() {
-    PermissionHandler().requestPermissions([
-      PermissionGroup.storage,
-      PermissionGroup.location,
-      PermissionGroup.camera
-    ]).then((values) {
+    List<PermissionGroup> permissions = [];
+    if (Platform.isAndroid) {
+      permissions.add(PermissionGroup.location);
+      permissions.add(PermissionGroup.storage);
+    }
+    if (Platform.isIOS) {
+      permissions.add(PermissionGroup.locationWhenInUse);
+      permissions.add(PermissionGroup.locationAlways);
+      permissions.add(PermissionGroup.photos);
+    }
+    PermissionHandler().requestPermissions(permissions).then((values) {
       Future.delayed(const Duration(seconds: 2), () {
         loginSuccessToNavigator(context, isFromWelCome: true);
       });
