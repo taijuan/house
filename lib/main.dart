@@ -29,6 +29,7 @@ class HouseApp extends StatelessWidget {
           backgroundColor: HouseColor.white,
           scaffoldBackgroundColor: HouseColor.white,
           dialogBackgroundColor: HouseColor.white,
+          platform: TargetPlatform.iOS,
           buttonTheme: ThemeData.light().buttonTheme.copyWith(
                 minWidth: 48,
                 height: 36,

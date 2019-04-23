@@ -36,19 +36,9 @@ class TitleAppBar extends BaseAppBar {
     BuildContext context, {
     VoidCallback onPressed,
     Widget back,
-    bool willPop = false,
     Color color,
   }) {
-    if (willPop && onPressed != null) {
-      return WillPopScope(
-          child: _back(onPressed, context, back, color),
-          onWillPop: () async {
-            onPressed();
-            return false;
-          });
-    } else {
-      return _back(onPressed, context, back, color);
-    }
+    return _back(onPressed, context, back, color);
   }
 
   static FlatButton _back(

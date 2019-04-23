@@ -29,12 +29,8 @@ class _PublishOrderHomeState extends BaseAppBarAndBodyState<PublishOrderHome> {
       navigatorBack: TitleAppBar.navigatorBackBlack(
         context,
         onPressed: () {
-          pop(
-            context,
-            result: _data.any((a) => !a.isEnable),
-          );
+          pop(context);
         },
-        willPop: true,
       ),
       title: TitleAppBar.appBarTitle(
         HouseValue.of(context).publish,
