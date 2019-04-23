@@ -18,85 +18,52 @@ class OrdersHome extends BaseStatefulWidget {
 
 class _OrdersHomeState extends BaseState<OrdersHome>
     with AutomaticKeepAliveClientMixin<OrdersHome> {
-  final GlobalKey<RefreshWidgetState> _refreshKey =
-      GlobalKey<RefreshWidgetState>();
   final List<Order> _data = [];
-  int _curPage = 1;
-
-  @override
-  void initState() {
-    Future.delayed(Duration()).whenComplete(() {
-      _refreshKey.currentState.show();
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return RefreshWidget(
-      key: _refreshKey,
-      slivers: <Widget>[
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              if (index.isEven) {
-                return _buildOrderItem(_data[index ~/ 2]);
-              } else {
-                return Container(
+    return Provide<ProviderOrderReLoad>(
+      builder: (_, a, reload) => RefreshListView(
+            key: ValueKey(reload.reloadNum),
+            itemBuilder: (context, index) => _buildOrderItem(_data[index]),
+            separatorBuilder: (context, index) => Container(
                   height: .5,
                   margin: EdgeInsets.symmetric(horizontal: 12),
                   color: HouseColor.divider,
-                );
-              }
+                ),
+            itemCount: _data.length,
+            onRefresh: () async {
+              await selectRepairOrderPageList(
+                context,
+                1,
+                status: widget.status,
+                queryStatus: widget.queryStatus,
+                cancelToken: cancelToken,
+              ).then((data) {
+                _data.clear();
+                _data.addAll(data);
+              }).catchError((e) {
+                showToast(context, e.toString());
+              }).whenComplete(() {
+                setState(() {});
+              });
             },
-            childCount: _data.length * 2,
+            onLoadMore: (page) async {
+              await selectRepairOrderPageList(
+                context,
+                page,
+                status: widget.status,
+                queryStatus: widget.queryStatus,
+                cancelToken: cancelToken,
+              ).then((data) {
+                _data.addAll(data);
+              }).catchError((e) {
+                showToast(context, e.toString());
+              }).whenComplete(() {
+                setState(() {});
+              });
+            },
           ),
-        ),
-      ],
-      onRefresh: () async {
-        await selectRepairOrderPageList(
-          context,
-          1,
-          status: widget.status,
-          queryStatus: widget.queryStatus,
-          cancelToken: cancelToken,
-        ).then((data) {
-          _data.clear();
-          _data.addAll(data);
-          if (data.length >= 10) {
-            _refreshKey.currentState.more();
-          } else if (DataUtils.isEmptyList(data)) {
-            _refreshKey.currentState.refreshNoData();
-          } else {
-            _refreshKey.currentState.loadMoreNoData();
-          }
-          _curPage = 1;
-          setState(() {});
-        }).catchError((e) {
-          showToast(context, e.toString());
-        });
-      },
-      onLoadMore: () async {
-        await selectRepairOrderPageList(
-          context,
-          _curPage + 1,
-          status: widget.status,
-          queryStatus: widget.queryStatus,
-          cancelToken: cancelToken,
-        ).then((data) {
-          _data.addAll(data);
-          if (data.length >= 10) {
-            _refreshKey.currentState.more();
-          } else {
-            _refreshKey.currentState.loadMoreNoData();
-          }
-          _curPage++;
-          setState(() {});
-        }).catchError((e) {
-          _refreshKey.currentState.error();
-          showToast(context, e.toString());
-        });
-      },
     );
   }
 
@@ -114,7 +81,7 @@ class _OrdersHomeState extends BaseState<OrdersHome>
           ),
         )..then((isRefresh) {
             if (isRefresh == true) {
-              _refreshKey.currentState.show();
+//              _refreshKey.currentState.show();
             }
           });
       },

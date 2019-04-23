@@ -215,7 +215,7 @@ class _SettingsState extends BaseAppBarAndBodyState<Settings> {
                 context,
                 content: HouseValue.of(context).areYouOkToExitTheApplication,
                 onOkPressed: () {
-                  pushLogin(context);
+                  Provide.value<ProviderUser>(context).clear(context);
                 },
               );
             },

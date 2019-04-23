@@ -243,8 +243,12 @@ class _NoHaveInviteCodeSignUpState
       cancelToken: cancelToken,
     )
       ..then((user) {
-        user.saveUser();
-        loginSuccessToNavigator(context);
+        Provide.value<ProviderUser>(context).save(
+          user,
+          onSaveWhenComplete: () {
+            loginSuccessToNavigator(context);
+          },
+        );
       })
       ..catchError((e) {
         pop(context);

@@ -13,9 +13,6 @@ class CasesPage extends BaseStatefulWidget {
 
 class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
   final List<Question> _data = [];
-  final GlobalKey<RefreshWidgetState> _refreshKey =
-      GlobalKey<RefreshWidgetState>();
-  int _curPage = 1;
 
   @override
   BaseAppBar appBar(BuildContext context) {
@@ -32,7 +29,7 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
   }
 
   get _titleBgColor {
-    if (User.getUserSync().type.value == TypeStatus.tenant.value) {
+    if (Provide.value<ProviderUser>(context).isTenant()) {
       return BoxDecoration(color: HouseColor.green);
     } else {
       return null;
@@ -40,7 +37,7 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
   }
 
   get _titleTextColor {
-    if (User.getUserSync().type.value == TypeStatus.tenant.value) {
+    if (Provide.value<ProviderUser>(context).isTenant()) {
       return createTextStyle(
         color: HouseColor.white,
         fontSize: 17,
@@ -64,7 +61,7 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
       );
 
   Widget _addButton() {
-    if (User.getUserSync().type.value == TypeStatus.tenant.value &&
+    if (Provide.value<ProviderUser>(context).isTenant() &&
         widget.data != null) {
       return Positioned(
         bottom: 24,
@@ -73,11 +70,7 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
             push(
               context,
               PublishCasePage(widget.data),
-            ).then((isRefresh) {
-              if (isRefresh == true) {
-                _refreshKey.currentState?.show();
-              }
-            });
+            );
           },
           child: Image.asset("image/house_add.webp"),
         ),
@@ -87,77 +80,47 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
     }
   }
 
-  @override
-  void initState() {
-    Future.delayed(Duration()).whenComplete(() {
-      _refreshKey.currentState?.show();
-    });
-    super.initState();
-  }
-
   _buildRefresh() {
-    return RefreshWidget(
-      key: _refreshKey,
-      slivers: <Widget>[
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              if (index.isEven) {
-                return _buildItem(_data[index ~/ 2]);
-              } else {
-                return Container(
-                  height: 0.5,
+    return Provide<ProviderOrderReLoad>(
+      builder: (_, a, reload) => RefreshListView(
+            key: ValueKey(reload.reloadNum),
+            itemBuilder: (context, index) => _buildItem(_data[index]),
+            separatorBuilder: (context, index) => Container(
+                  height: .5,
                   margin: EdgeInsets.symmetric(horizontal: 12),
                   color: HouseColor.divider,
-                );
-              }
+                ),
+            itemCount: _data.length,
+            onRefresh: () async {
+              await selectQuestionInfoPageList(
+                context,
+                1,
+                houseId: widget.data?.id,
+                cancelToken: cancelToken,
+              ).then((data) {
+                this._data.clear();
+                this._data.addAll(data);
+              }).catchError((e) {
+                showToast(context, e.toString());
+              }).whenComplete(() {
+                setState(() {});
+              });
             },
-            childCount: _data.length * 2,
+            onLoadMore: (page) async {
+              await selectQuestionInfoPageList(
+                context,
+                page,
+                houseId: widget.data?.id,
+                cancelToken: cancelToken,
+              ).then((data) {
+                this._data.addAll(data);
+              }).catchError((e) {
+                showToast(context, e.toString());
+              }).whenComplete(() {
+                setState(() {});
+              });
+            },
           ),
-        ),
-      ],
-      onRefresh: () async {
-        await selectQuestionInfoPageList(
-          context,
-          1,
-          houseId: widget.data?.id,
-          cancelToken: cancelToken,
-        ).then((data) {
-          this._data.clear();
-          this._data.addAll(data);
-          if (data.length >= 10) {
-            _refreshKey.currentState.more();
-          } else if (DataUtils.isEmptyList(data)) {
-            _refreshKey.currentState.refreshNoData();
-          } else {
-            _refreshKey.currentState.loadMoreNoData();
-          }
-          _curPage = 1;
-          setState(() {});
-        }).catchError((e) {
-          showToast(context, e.toString());
-        });
-      },
-      onLoadMore: () async {
-        await selectQuestionInfoPageList(
-          context,
-          _curPage + 1,
-          houseId: widget.data?.id,
-          cancelToken: cancelToken,
-        ).then((data) {
-          this._data.addAll(data);
-          if (data.length >= 10) {
-            _refreshKey.currentState.more();
-          } else {
-            _refreshKey.currentState.loadMoreNoData();
-          }
-          _curPage++;
-          setState(() {});
-        }).catchError((e) {
-          _refreshKey.currentState.error();
-          showToast(context, e.toString());
-        });
-      },
     );
   }
 
@@ -167,14 +130,10 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
         push(
           context,
           CaseDetailPage(data),
-        )..then((isRefresh) {
-            if (isRefresh == true) {
-              _refreshKey.currentState.show();
-            }
-          });
+        );
       },
       onLongPress: () {
-        if (User.getUserSync().type.value != TypeStatus.tenant.value) {
+        if (Provide.value<ProviderUser>(context).isTenant()) {
           return;
         }
         if (data.status.value != TypeStatus.questionNew.value) {

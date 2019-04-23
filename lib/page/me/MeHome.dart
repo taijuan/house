@@ -26,7 +26,7 @@ class MeHome extends StatelessWidget {
         ),
 
         ///证书
-        User.getUserSync().type.value == TypeStatus.vendor.value
+        Provide.value<ProviderUser>(context).isVendor()
             ? _buildIconNameHot(
                 onPressed: () {
                   push(context, CertificateListPage());

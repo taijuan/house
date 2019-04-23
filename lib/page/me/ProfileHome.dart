@@ -8,24 +8,7 @@ class ProfileHome extends BaseStatefulWidget {
 }
 
 class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
-  User user = User.getUserSync();
-  final List<CityArea> cityList = [];
-  String _area = "";
-
-  @override
-  void initState() {
-    _refresh();
-    super.initState();
-  }
-
-  void _refresh() {
-    User.getUser().then((user) {
-      setState(() {
-        this.user = user;
-        _getArea();
-      });
-    });
-  }
+//  final List<CityArea> cityList = [];
 
   @override
   BaseAppBar appBar(BuildContext context) {
@@ -40,136 +23,142 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
 
   @override
   Widget body(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.only(),
-      children: [
-        ///firstName
-        _nameAndValue(
-          onPressed: () {
-            push(context, ChangeName()).whenComplete(_refresh);
-          },
-          name: HouseValue.of(context).firstName,
-          value: user.firstName,
-        ),
+    return Provide<ProviderUser>(
+      builder: (context, child, data) {
+        User user = data.user;
+        return ListView(
+          padding: EdgeInsets.only(),
+          children: [
+            ///firstName
+            _nameAndValue(
+              onPressed: () {
+                push(context, ChangeName());
+              },
+              name: HouseValue.of(context).firstName,
+              value: user.firstName,
+            ),
 
-        ///lastName
-        _nameAndValue(
-          onPressed: () {
-            push(context, ChangeName()).whenComplete(_refresh);
-          },
-          name: HouseValue.of(context).lastName,
-          value: user.lastName,
-        ),
+            ///lastName
+            _nameAndValue(
+              onPressed: () {
+                push(context, ChangeName());
+              },
+              name: HouseValue.of(context).lastName,
+              value: user.lastName,
+            ),
 
-        ///修改邮箱
-        _nameAndValue(
-          onPressed: () {
-            push(context, ChangeEmail()).whenComplete(_refresh);
-          },
-          name: HouseValue.of(context).email,
-          value: user.email,
-        ),
+            ///修改邮箱
+            _nameAndValue(
+              onPressed: () {
+                push(context, ChangeEmail());
+              },
+              name: HouseValue.of(context).email,
+              value: user.email,
+            ),
 
-        ///电话
-        _nameAndValue(
-          onPressed: () {
-            push(context, ChangePhone()).whenComplete(_refresh);
-          },
-          name: HouseValue.of(context).phone,
-          value: user.tel,
-        ),
+            ///电话
+            _nameAndValue(
+              onPressed: () {
+                push(context, ChangePhone());
+              },
+              name: HouseValue.of(context).phone,
+              value: user.tel,
+            ),
 
-        ///修改密码
-        _nameAndValue(
-          onPressed: () {
-            push(context, ChangePassword()).whenComplete(_refresh);
-          },
-          name: HouseValue.of(context).password,
-          value: "",
-        ),
-        _nameAndValue(
-          onPressed: () {
-            push(
-              context,
-              TextFieldPage(
-                HouseValue.of(context).companyName,
-                value: user.companyName,
-                maxLength: 100,
-                maxLines: 4,
-              ),
-            ).then((value) {
-              if (value != null) {
-                _modifyUserInfo(companyName: value);
-              }
-            });
-          },
-          name: HouseValue.of(context).companyName,
-          value: user.companyName,
-          showNull: user.type.value != TypeStatus.vendor.value,
-        ),
-        _nameAndValue(
-          onPressed: () {
-            push<List<CityArea>>(
-              context,
-              CityAreaHome(
-                selectData: user.areaList.where((v) {
-                  if (v.checked) {
-                    v.districtList = [];
+            ///修改密码
+            _nameAndValue(
+              onPressed: () {
+                push(context, ChangePassword());
+              },
+              name: HouseValue.of(context).password,
+              value: "",
+            ),
+            _nameAndValue(
+              onPressed: () {
+                push(
+                  context,
+                  TextFieldPage(
+                    HouseValue.of(context).companyName,
+                    value: user.companyName,
+                    maxLength: 100,
+                    maxLines: 4,
+                  ),
+                ).then((value) {
+                  if (value != null) {
+                    _modifyUserInfo(companyName: value);
                   }
-                  return v.checked || !DataUtils.isEmptyList(v.districtList);
-                }).toList(),
-              ),
-            ).then((area) {
-              if (area != null) {
-                _modifyUserInfo(cityArea: area);
-              }
-            });
-          },
-          name: HouseValue.of(context).area,
-          value: _area,
-          showNull: user.type.value != TypeStatus.vendor.value,
-        ),
-        _nameAndValue(
-          onPressed: () {
-            push(
-              context,
-              TextFieldPage(
-                HouseValue.of(context).address,
-                value: user.address,
-                maxLength: 100,
-                maxLines: 4,
-              ),
-            ).then((value) {
-              if (value != null) {
-                _modifyUserInfo(address: value);
-              }
-            });
-          },
-          name: HouseValue.of(context).address,
-          value: user.address,
-          showNull: user.type.value != TypeStatus.vendor.value,
-        ),
-        _nameAndValue(
-          onPressed: () {
-            push(
-              context,
-              TextFieldPage(
-                HouseValue.of(context).companyInfo,
-                value: user.companyProfile,
-                maxLength: 600,
-                maxLines: 10,
-              ),
-            ).then((value) {
-              if (value != null) {
-                _modifyUserInfo(companyProfile: value);
-              }
-            });
-          },
-          name: HouseValue.of(context).companyInfo,
-          value: user.companyProfile,
-          showNull: user.type.value != TypeStatus.vendor.value,
-        ),
-      ],
+                });
+              },
+              name: HouseValue.of(context).companyName,
+              value: user.companyName,
+              showNull: user.type.value != TypeStatus.vendor.value,
+            ),
+            _nameAndValue(
+              onPressed: () {
+                push<List<CityArea>>(
+                  context,
+                  CityAreaHome(
+                    selectData: user.areaList.where((v) {
+                      if (v.checked) {
+                        v.districtList = [];
+                      }
+                      return v.checked ||
+                          !DataUtils.isEmptyList(v.districtList);
+                    }).toList(),
+                  ),
+                ).then((area) {
+                  if (area != null) {
+                    _modifyUserInfo(cityArea: area);
+                  }
+                });
+              },
+              name: HouseValue.of(context).area,
+              value: user.areaStr,
+              showNull: user.type.value != TypeStatus.vendor.value,
+            ),
+            _nameAndValue(
+              onPressed: () {
+                push(
+                  context,
+                  TextFieldPage(
+                    HouseValue.of(context).address,
+                    value: user.address,
+                    maxLength: 100,
+                    maxLines: 4,
+                  ),
+                ).then((value) {
+                  if (value != null) {
+                    _modifyUserInfo(address: value);
+                  }
+                });
+              },
+              name: HouseValue.of(context).address,
+              value: user.address,
+              showNull: user.type.value != TypeStatus.vendor.value,
+            ),
+            _nameAndValue(
+              onPressed: () {
+                push(
+                  context,
+                  TextFieldPage(
+                    HouseValue.of(context).companyInfo,
+                    value: user.companyProfile,
+                    maxLength: 600,
+                    maxLines: 10,
+                  ),
+                ).then((value) {
+                  if (value != null) {
+                    _modifyUserInfo(companyProfile: value);
+                  }
+                });
+              },
+              name: HouseValue.of(context).companyInfo,
+              value: user.companyProfile,
+              showNull: user.type.value != TypeStatus.vendor.value,
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -226,71 +215,6 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
     );
   }
 
-  _getArea() {
-    Future<String>(() {
-      return _getAreaStr(user.areaList);
-    }).then((area) {
-      this._area = area;
-    }).whenComplete(() {
-      setState(() {});
-    });
-  }
-
-  String _getAreaStr(List<CityArea> data) {
-    if (DataUtils.isEmptyList(data)) {
-      return "";
-    } else {
-      data.sort(
-        (a, b) => b.checked.toString().compareTo(
-              a.checked.toString(),
-            ),
-      );
-      List<CityArea> a = data.where((value) {
-        return value.checked || !DataUtils.isEmptyList(value.districtList);
-      }).toList();
-      if (DataUtils.isEmptyList(a)) {
-        return "";
-      }
-      return a.map((value) {
-        if (value.checked) {
-          return value.name;
-        } else {
-          return _getNextAreaStr(value.districtList);
-        }
-      }).reduce((a, b) {
-        if (DataUtils.isEmpty(a) && DataUtils.isEmpty(b)) {
-          return "";
-        } else if (DataUtils.isEmpty(a)) {
-          return b;
-        } else if (DataUtils.isEmpty(b)) {
-          return a;
-        } else {
-          return "$a，$b";
-        }
-      });
-    }
-  }
-
-  String _getNextAreaStr(List<CityArea> data) {
-    if (DataUtils.isEmptyList(data)) {
-      return "";
-    } else {
-      return data.map((value) {
-        return value.name;
-      }).reduce((a, b) {
-        if (DataUtils.isEmpty(a) && DataUtils.isEmpty(b)) {
-          return "";
-        } else if (DataUtils.isEmpty(a)) {
-          return b;
-        } else if (DataUtils.isEmpty(b)) {
-          return a;
-        } else {
-          return "$a，$b";
-        }
-      });
-    }
-  }
-
   void _modifyUserInfo({
     String companyName,
     String companyProfile,
@@ -307,8 +231,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
       cancelToken: cancelToken,
     ).then((user) {
       pop(context);
-      user.saveUser();
-      _refresh();
+      Provide.value<ProviderUser>(context).save(user);
     }).catchError((e) {
       showToast(context, e.toString());
       pop(context);

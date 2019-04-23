@@ -18,17 +18,7 @@ class CityAreaHome extends BaseStatefulWidget {
 }
 
 class _CityAreaHomeListState extends BaseAppBarAndBodyState<CityAreaHome> {
-  final GlobalKey<RefreshIndicatorState> _globalKey =
-      GlobalKey<RefreshIndicatorState>();
   final List<CityArea> _data = [];
-
-  @override
-  void initState() {
-    Future.delayed(Duration()).whenComplete(() {
-      _globalKey.currentState.show();
-    });
-    super.initState();
-  }
 
   @override
   BaseAppBar appBar(BuildContext context) {
@@ -56,28 +46,14 @@ class _CityAreaHomeListState extends BaseAppBarAndBodyState<CityAreaHome> {
 
   @override
   Widget body(BuildContext context) {
-    return RefreshIndicator(
-      key: _globalKey,
-      semanticsLabel: "",
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverList(
-              delegate: SliverChildBuilderDelegate(
-            (_, index) {
-              if (index.isEven) {
-                return _buildItem(_data[index ~/ 2]);
-              } else {
-                return Container(
-                  height: .5,
-                  margin: EdgeInsets.symmetric(horizontal: 12),
-                  color: HouseColor.divider,
-                );
-              }
-            },
-            childCount: _data.length * 2,
-          ))
-        ],
-      ),
+    return RefreshListView(
+      itemBuilder: (context, index) => _buildItem(_data[index]),
+      separatorBuilder: (context, index) => Container(
+            height: .5,
+            margin: EdgeInsets.symmetric(horizontal: 12),
+            color: HouseColor.divider,
+          ),
+      itemCount: _data.length,
       onRefresh: () async {
         await getCityList(
           context,
@@ -85,10 +61,11 @@ class _CityAreaHomeListState extends BaseAppBarAndBodyState<CityAreaHome> {
           cancelToken: cancelToken,
         ).then((data) async {
           await _setData(data);
-          setState(() {});
         }).catchError((e) {
           LogUtils.log(e);
           showToast(context, e.toString());
+        }).whenComplete(() {
+          setState(() {});
         });
       },
     );

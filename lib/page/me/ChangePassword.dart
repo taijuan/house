@@ -74,9 +74,9 @@ class _ChangePasswordState extends BaseAppBarAndBodyState<ChangePassword> {
       password: pwd1,
       cancelToken: cancelToken,
     ).then((user) {
-      user.saveUser();
       pop(context);
       pop(context);
+      Provide.value<ProviderUser>(context).save(user);
     }).catchError((e) {
       pop(context);
       showToast(context, e.toString());

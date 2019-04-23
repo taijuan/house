@@ -15,18 +15,19 @@ class LandlordOrdersPage extends BaseStatefulWidget {
 
 class _LandlordOrdersPageState
     extends BaseAppBarAndBodyState<LandlordOrdersPage> {
-  final GlobalKey<RefreshWidgetState> _refreshKey =
-      GlobalKey<RefreshWidgetState>();
+//  final GlobalKey<RefreshWidgetState> _refreshKey =
+//      GlobalKey<RefreshWidgetState>();
   final List<Order> _data = [];
-  int _curPage = 1;
 
-  @override
-  void initState() {
-    Future.delayed(Duration()).whenComplete(() {
-      _refreshKey.currentState.show();
-    });
-    super.initState();
-  }
+//  int _curPage = 1;
+
+//  @override
+//  void initState() {
+//    Future.delayed(Duration()).whenComplete(() {
+//      _refreshKey.currentState.show();
+//    });
+//    super.initState();
+//  }
 
   @override
   BaseAppBar appBar(BuildContext context) {
@@ -42,68 +43,47 @@ class _LandlordOrdersPageState
 
   @override
   Widget body(BuildContext context) {
-    return RefreshWidget(
-      key: _refreshKey,
-      slivers: [
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              if (index.isEven) {
-                return _buildOrderItem(_data[index ~/ 2]);
-              } else {
-                return Container(
-                  height: 1,
+    return Provide<ProviderOrderReLoad>(
+      builder: (_, a, reload) => RefreshListView(
+            key: ValueKey(reload.reloadNum),
+            itemBuilder: (context, index) => _buildOrderItem(_data[index]),
+            separatorBuilder: (context, index) => Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  height: .5,
                   color: HouseColor.divider,
-                );
-              }
+                ),
+            itemCount: _data.length,
+            onRefresh: () async {
+              await selectRepairOrderPageList(
+                context,
+                1,
+                houseId: widget.data?.id,
+                status: widget.status,
+                cancelToken: cancelToken,
+              ).then((data) {
+                _data.clear();
+                _data.addAll(data);
+              }).catchError((e) {
+                showToast(context, e.toString());
+              }).whenComplete(() {
+                setState(() {});
+              });
             },
-            childCount: _data.length * 2,
+            onLoadMore: (page) async {
+              await selectRepairOrderPageList(
+                context,
+                page,
+                houseId: widget.data?.id,
+                cancelToken: cancelToken,
+              ).then((data) {
+                _data.addAll(data);
+              }).catchError((e) {
+                showToast(context, e.toString());
+              }).whenComplete(() {
+                setState(() {});
+              });
+            },
           ),
-        ),
-      ],
-      onRefresh: () async {
-        await selectRepairOrderPageList(
-          context,
-          1,
-          houseId: widget.data?.id,
-          status: widget.status,
-          cancelToken: cancelToken,
-        ).then((data) {
-          _data.clear();
-          _data.addAll(data);
-          if (data.length >= 10) {
-            _refreshKey.currentState.more();
-          } else if (DataUtils.isEmptyList(data)) {
-            _refreshKey.currentState.refreshNoData();
-          } else {
-            _refreshKey.currentState.loadMoreNoData();
-          }
-          _curPage = 1;
-          setState(() {});
-        }).catchError((e) {
-          showToast(context, e.toString());
-        });
-      },
-      onLoadMore: () async {
-        await selectRepairOrderPageList(
-          context,
-          _curPage + 1,
-          houseId: widget.data?.id,
-          cancelToken: cancelToken,
-        ).then((data) {
-          _data.addAll(data);
-          if (data.length >= 10) {
-            _refreshKey.currentState.more();
-          } else {
-            _refreshKey.currentState.loadMoreNoData();
-          }
-          _curPage++;
-          setState(() {});
-        }).catchError((e) {
-          _refreshKey.currentState.error();
-          showToast(context, e.toString());
-        });
-      },
     );
   }
 
@@ -116,7 +96,7 @@ class _LandlordOrdersPageState
           OrderDetailPage(data.id),
         )..then((isRefresh) {
             if (isRefresh == true) {
-              _refreshKey.currentState.show();
+//              _refreshKey.currentState.show();
             }
           });
       },

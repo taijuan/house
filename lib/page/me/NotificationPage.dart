@@ -6,17 +6,6 @@ class NotificationPage extends BaseStatefulWidget {
 }
 
 class _NotificationPageState extends BaseAppBarAndBodyState<NotificationPage> {
-  final GlobalKey<RefreshWidgetState> _refreshKey =
-      GlobalKey<RefreshWidgetState>();
-
-  @override
-  void initState() {
-    Future.delayed(Duration()).whenComplete(() {
-      _refreshKey.currentState.show();
-    });
-    super.initState();
-  }
-
   @override
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
@@ -30,11 +19,12 @@ class _NotificationPageState extends BaseAppBarAndBodyState<NotificationPage> {
 
   @override
   Widget body(BuildContext context) {
-    return RefreshWidget(
-      key: _refreshKey,
-      onRefresh: () {},
-      onLoadMore: () {},
-      slivers: <Widget>[],
+    return RefreshListView(
+      itemBuilder: (context, index) {},
+      separatorBuilder: (context, index) {},
+      itemCount: 0,
+      onRefresh: () async {},
+      onLoadMore: (page) async {},
     );
   }
 }

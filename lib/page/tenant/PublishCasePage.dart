@@ -35,6 +35,7 @@ class _PublishCasePageState extends BaseAppBarAndBodyState<PublishCasePage> {
   @override
   Widget body(BuildContext context) {
     return CustomScrollView(
+      physics: ClampingScrollPhysics(),
       slivers: <Widget>[
         buildSliverToBoxAdapter(
           context,
@@ -236,8 +237,9 @@ class _PublishCasePageState extends BaseAppBarAndBodyState<PublishCasePage> {
     )
       ..then((value) {
         pop(context);
+        pop(context);
         showToastSuccess(context);
-        pop(context, result: true);
+        Provide.value<ProviderOrderReLoad>(context).reLoad();
       })
       ..catchError((e) {
         pop(context);

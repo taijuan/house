@@ -9,16 +9,10 @@ class TenantHousePage extends BaseStatefulWidget {
 
 class _TenantHousePageState extends BaseAppBarAndBodyState<TenantHousePage> {
   final List<House> _data = [];
-  final GlobalKey<RefreshWidgetState> _refreshKey =
-      GlobalKey<RefreshWidgetState>();
-  int _curPage = 1;
 
   @override
   void initState() {
     backgroundColor = HouseColor.lightGray;
-    Future.delayed(Duration()).whenComplete(() {
-      _refreshKey.currentState.show();
-    });
     super.initState();
   }
 
@@ -40,28 +34,14 @@ class _TenantHousePageState extends BaseAppBarAndBodyState<TenantHousePage> {
 
   @override
   Widget body(BuildContext context) {
-    return RefreshWidget(
-      key: _refreshKey,
-      slivers: <Widget>[
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              if (index.isOdd) {
-                var data = _data[index ~/ 2];
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: HouseBigCard(data),
-                );
-              } else {
-                return SizedBox(
-                  height: 12,
-                );
-              }
-            },
-            childCount: _data.length * 2,
+    return RefreshListView(
+      padding: EdgeInsets.symmetric(vertical: 12),
+      itemBuilder: (context, index) => Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: HouseBigCard(_data[index]),
           ),
-        )
-      ],
+      separatorBuilder: (context, index) => Container(height: 12),
+      itemCount: _data.length,
       onRefresh: () async {
         await getHouseList(
           context,
@@ -70,36 +50,23 @@ class _TenantHousePageState extends BaseAppBarAndBodyState<TenantHousePage> {
         ).then((data) {
           this._data.clear();
           this._data.addAll(data);
-          if (data.length >= 10) {
-            _refreshKey.currentState.more();
-          } else if (DataUtils.isEmptyList(data)) {
-            _refreshKey.currentState.refreshNoData();
-          } else {
-            _refreshKey.currentState.loadMoreNoData();
-          }
-          _curPage = 1;
-          setState(() {});
         }).catchError((e) {
           showToast(context, e.toString());
+        }).whenComplete(() {
+          setState(() {});
         });
       },
-      onLoadMore: () async {
+      onLoadMore: (page) async {
         await getHouseList(
           context,
-          _curPage + 1,
+          page,
           cancelToken: cancelToken,
         ).then((data) {
           this._data.addAll(data);
-          if (data.length >= 10) {
-            _refreshKey.currentState.more();
-          } else {
-            _refreshKey.currentState.loadMoreNoData();
-          }
-          _curPage++;
-          setState(() {});
         }).catchError((e) {
-          _refreshKey.currentState.error();
           showToast(context, e.toString());
+        }).whenComplete(() {
+          setState(() {});
         });
       },
     );

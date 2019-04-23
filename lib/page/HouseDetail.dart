@@ -12,18 +12,7 @@ class HouseDetail extends BaseStatefulWidget {
 }
 
 class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
-  final GlobalKey<RefreshIndicatorState> _globalKey =
-      GlobalKey<RefreshIndicatorState>();
   House _data;
-
-  @override
-  void initState() {
-    _data = widget.data;
-    Future.delayed(Duration()).whenComplete(() {
-      _globalKey.currentState.show();
-    });
-    super.initState();
-  }
 
   @override
   BaseAppBar appBar(BuildContext context) {
@@ -38,29 +27,27 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
 
   @override
   Widget body(BuildContext context) {
-    return RefreshIndicator(
-        key: _globalKey,
-        semanticsLabel: "",
-        child: CustomScrollView(
-          slivers: <Widget>[
-            _buildViewPager(),
-            _buildMap(),
-            _buildHouseType(),
-            _buildBasic(),
-            _buildLandlord(),
-            _buildLessee(),
-            _buildAgency(),
-            SliverToBoxAdapter(child: Container(height: 12)),
-            _buildDivider(),
-            _buildContract(),
-            _buildDivider(),
-            _buildFeatureName(),
-            _buildFeature(),
-            _buildDivider(),
-            _buildRepairOrderListName(),
-            _buildRepairOrderList(),
-          ],
-        ),
+    return RefreshCustomScrollView(
+        slivers: _data == null
+            ? []
+            : [
+                _buildViewPager(),
+                _buildMap(),
+                _buildHouseType(),
+                _buildBasic(),
+                _buildLandlord(),
+                _buildLessee(),
+                _buildAgency(),
+                SliverToBoxAdapter(child: Container(height: 12)),
+                _buildDivider(),
+                _buildContract(),
+                _buildDivider(),
+                _buildFeatureName(),
+                _buildFeature(),
+                _buildDivider(),
+                _buildRepairOrderListName(),
+                _buildRepairOrderList(),
+              ],
         onRefresh: () async {
           await houseDetail(
             context,
@@ -68,9 +55,10 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
             cancelToken: cancelToken,
           ).then((v) {
             _data = v;
-            setState(() {});
           }).catchError((e) {
             showToast(context, e.toString());
+          }).whenComplete(() {
+            setState(() {});
           });
         });
   }
@@ -85,7 +73,7 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
   }
 
   Widget _buildLandlord() {
-    if (User.getUserSync().type.value == TypeStatus.agent.value) {
+    if (Provide.value<ProviderUser>(context).isAgent()) {
       return _buildContact(
         TypeStatus.landlord.descEn,
         _data.landlordName,
@@ -98,7 +86,7 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
   }
 
   Widget _buildAgency() {
-    if (User.getUserSync().type.value == TypeStatus.agent.value) {
+    if (Provide.value<ProviderUser>(context).isAgent()) {
       return SliverToBoxAdapter();
     } else {
       return _buildContact(
@@ -111,7 +99,7 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
   }
 
   Widget _buildLessee() {
-    if (User.getUserSync().type.value == TypeStatus.agent.value) {
+    if (Provide.value<ProviderUser>(context).isAgent()) {
       return _buildContact(
         TypeStatus.tenant.descEn,
         _data.tenantName,

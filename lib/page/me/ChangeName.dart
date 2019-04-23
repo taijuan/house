@@ -76,9 +76,9 @@ class _ChangeNameState extends BaseAppBarAndBodyState<ChangeName> {
       lastName: lastName,
       cancelToken: cancelToken,
     ).then((user) {
-      user.saveUser();
       pop(context);
       pop(context);
+      Provide.value<ProviderUser>(context).save(user);
     }).catchError((e) {
       pop(context);
       showToast(context, e.toString());

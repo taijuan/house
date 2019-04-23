@@ -20,31 +20,54 @@ class MeAppBar extends BaseAppBar {
 }
 
 class _MeAppBarState extends BaseState<MeAppBar> {
-  User user = User.getUserSync();
-
-  void _refresh() {
-    User.getUser().then((user) {
-      setState(() {
-        this.user = user;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.width * 244 / 360,
-      color: HouseColor.green,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: TitleAppBar(
-              context: context,
-              foregroundDecoration: BoxDecoration(),
-              title: TitleAppBar.appBarTitle(
-                user.type.descEn,
+    return Provide<ProviderUser>(builder: (context, child, data) {
+      User user = data.user;
+      return Container(
+        height: MediaQuery.of(context).size.width * 244 / 360,
+        color: HouseColor.green,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: TitleAppBar(
+                context: context,
+                foregroundDecoration: BoxDecoration(),
+                title: TitleAppBar.appBarTitle(
+                  user.type.descEn,
+                  style: createTextStyle(
+                    color: HouseColor.white,
+                    fontSize: 17,
+                    fontFamily: fontFamilySemiBold,
+                  ),
+                ),
+              ),
+            ),
+            Spacer(),
+            OutlineButton(
+              onPressed: _pickImage,
+              shape: CircleBorder(),
+              borderSide: BorderSide(
+                color: HouseColor.white,
+                width: 3,
+                style: BorderStyle.solid,
+              ),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: houseCacheNetworkImage(
+                DataUtils.getImageUrl(user.headImage),
+                width: 88,
+                height: 88,
+              ),
+            ),
+            Spacer(),
+            Container(
+              height: 48,
+              alignment: AlignmentDirectional.center,
+              child: Text(
+                user.userName,
+                textAlign: TextAlign.center,
                 style: createTextStyle(
                   color: HouseColor.white,
                   fontSize: 17,
@@ -52,42 +75,12 @@ class _MeAppBarState extends BaseState<MeAppBar> {
                 ),
               ),
             ),
-          ),
-          Spacer(),
-          OutlineButton(
-            onPressed: _pickImage,
-            shape: CircleBorder(),
-            borderSide: BorderSide(
-              color: HouseColor.white,
-              width: 3,
-              style: BorderStyle.solid,
-            ),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: houseCacheNetworkImage(
-              DataUtils.getImageUrl(user.headImage),
-              width: 88,
-              height: 88,
-            ),
-          ),
-          Spacer(),
-          Container(
-            height: 48,
-            alignment: AlignmentDirectional.center,
-            child: Text(
-              user.userName,
-              textAlign: TextAlign.center,
-              style: createTextStyle(
-                color: HouseColor.white,
-                fontSize: 17,
-                fontFamily: fontFamilySemiBold,
-              ),
-            ),
-          ),
-          Spacer(),
-          Container(height: 4),
-        ],
-      ),
-    );
+            Spacer(),
+            Container(height: 4),
+          ],
+        ),
+      );
+    });
   }
 
   void _pickImage() {
@@ -109,9 +102,8 @@ class _MeAppBarState extends BaseState<MeAppBar> {
       imgStr: file,
       cancelToken: cancelToken,
     ).then((user) {
+      Provide.value<ProviderUser>(context).save(user);
       pop(context);
-      user.saveUser();
-      _refresh();
     });
   }
 }

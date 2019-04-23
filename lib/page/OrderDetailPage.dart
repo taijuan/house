@@ -12,23 +12,15 @@ class OrderDetailPage extends BaseStatefulWidget {
 }
 
 class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
-  final GlobalKey<RefreshIndicatorState> _globalKey =
-      GlobalKey<RefreshIndicatorState>();
-
   final TextEditingController _messageController = TextEditingController();
   TypeStatus _receiveUserType = TypeStatus.agent;
   OrderDetail _data;
 
-  bool isRefresh = false;
-
   @override
   void initState() {
-    if (User.getUserSync().type.value == TypeStatus.agent.value) {
+    if (Provide.value<ProviderUser>(context).isAgent()) {
       _receiveUserType = null;
     }
-    Future.delayed(Duration()).whenComplete(() {
-      _globalKey.currentState.show();
-    });
     super.initState();
   }
 
@@ -39,22 +31,15 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
       title: TitleAppBar.appBarTitle(
         HouseValue.of(context).orderDetail,
       ),
-      navigatorBack: TitleAppBar.navigatorBackBlack(
-        context,
-        onPressed: () {
-          pop(context, result: isRefresh);
-        },
-        willPop: true,
-      ),
+      navigatorBack: TitleAppBar.navigatorBackBlack(context),
     );
   }
 
   @override
   Widget body(BuildContext context) {
-    return RefreshIndicator(
-        key: _globalKey,
-        semanticsLabel: "",
-        child: CustomScrollView(
+    return Provide<ProviderOrderReLoad>(
+      builder: (context, w, reload) => RefreshCustomScrollView(
+          key: ValueKey(reload.reloadNum),
           slivers: _data == null
               ? []
               : [
@@ -80,25 +65,25 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                   _buildMessageList(),
                   SliverToBoxAdapter(child: Container(height: 12)),
                 ],
-        ),
-        onRefresh: () async {
-          await selectRepairOrderById(
-            context,
-            widget.id,
-            widget.repairQuoteId,
-            cancelToken: cancelToken,
-          ).then((data) {
-            this._data = data;
-            setState(() {});
-          }).catchError((e) {
-            showToast(context, e.toString());
-          });
-        });
+          onRefresh: () async {
+            await selectRepairOrderById(
+              context,
+              widget.id,
+              widget.repairQuoteId,
+              cancelToken: cancelToken,
+            ).then((data) {
+              this._data = data;
+            }).catchError((e) {
+              showToast(context, e.toString());
+            }).whenComplete(() {
+              setState(() {});
+            });
+          }),
+    );
   }
 
   Widget _buildMessageTitle() {
-    int userType = User.getUserSync().type.value;
-    if (User.getUserSync().type.value == TypeStatus.vendor.value) {
+    if (Provide.value<ProviderUser>(context).isVendor()) {
       return SliverToBoxAdapter();
     } else if (_data.repairOrder.status.value ==
         TypeStatus.orderFinished.value) {
@@ -106,7 +91,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
     } else if (_data.repairOrder.status.value ==
         TypeStatus.orderRejected.value) {
       return SliverToBoxAdapter();
-    } else if (userType == TypeStatus.agent.value) {
+    } else if (Provide.value<ProviderUser>(context).isAgent()) {
       return SliverToBoxAdapter(
         child: Container(
           padding: EdgeInsets.fromLTRB(12, 24, 12, 12),
@@ -189,7 +174,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
           ),
         ),
       );
-    } else if (userType == TypeStatus.landlord.value) {
+    } else if (Provide.value<ProviderUser>(context).isLandlord()) {
       return SliverToBoxAdapter(
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
@@ -202,7 +187,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
           ),
         ),
       );
-    } else if (userType == TypeStatus.tenant.value) {
+    } else if (Provide.value<ProviderUser>(context).isTenant()) {
       return SliverToBoxAdapter(
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
@@ -221,7 +206,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
   }
 
   Widget _buildMessage() {
-    if (User.getUserSync().type.value == TypeStatus.vendor.value) {
+    if (Provide.value<ProviderUser>(context).isVendor()) {
       return SliverToBoxAdapter();
     } else if (_data.repairOrder.status.value ==
         TypeStatus.orderFinished.value) {
@@ -297,7 +282,8 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                           ).then((v) {
                             pop(context);
                             _messageController.clear();
-                            _globalKey.currentState.show();
+                            Provide.value<ProviderOrderReLoad>(context)
+                                .reLoad();
                           }).catchError((e) {
                             pop(context);
                             showToast(context, e.toString());
@@ -347,7 +333,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
   }
 
   Widget _buildMessageList() {
-    if (User.getUserSync().type.value == TypeStatus.vendor.value) {
+    if (Provide.value<ProviderUser>(context).isVendor()) {
       return SliverToBoxAdapter();
     } else if (_data.repairMessages.isEmpty) {
       return SliverToBoxAdapter(
@@ -390,7 +376,8 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                       textBaseline: TextBaseline.alphabetic,
                       children: <Widget>[
                         Text(
-                          User.getUserSync().id == data.sendUserId
+                          Provide.value<ProviderUser>(context).userId ==
+                                  data.sendUserId
                               ? "From ${HouseValue.of(context).me} to ${data.receiveUserType.descEn}"
                               : "From ${data.userType.descEn} to ${data.receiveUserType.descEn}",
                           style: createTextStyle(
@@ -434,25 +421,24 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
 
   @override
   Widget bottomNavigationBar(BuildContext context) {
-    int userType = User.getUserSync().type.value;
     if (_data == null) {
       return SizedBox.shrink();
-    } else if (userType == TypeStatus.vendor.value &&
+    } else if (Provide.value<ProviderUser>(context).isVendor() &&
         _data.repairQuote == null) {
       return _goToQuote();
-    } else if (userType == TypeStatus.vendor.value &&
+    } else if (Provide.value<ProviderUser>(context).isVendor() &&
         _data.repairQuote.status.value == TypeStatus.repairProcessing.value) {
       return _goToVendorFinish();
-    } else if (userType == TypeStatus.vendor.value &&
+    } else if (Provide.value<ProviderUser>(context).isVendor() &&
         _data.repairQuote.status.value == TypeStatus.repairConfirm.value) {
       return _goToVendorFinish();
-    } else if (userType == TypeStatus.agent.value &&
+    } else if (Provide.value<ProviderUser>(context).isAgent() &&
         _data.repairOrder.status.value == TypeStatus.orderSelecting.value) {
       return _chooseAVendorBtn();
-    } else if (userType == TypeStatus.landlord.value &&
+    } else if (Provide.value<ProviderUser>(context).isLandlord() &&
         _data.repairOrder.status.value == TypeStatus.orderSelecting.value) {
       return _chooseAVendorBtn();
-    } else if (userType == TypeStatus.agent.value &&
+    } else if (Provide.value<ProviderUser>(context).isAgent() &&
         _data.repairOrder.status.value == TypeStatus.orderConfirming.value) {
       return closeAndFinishOrder();
     } else {
@@ -491,8 +477,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                     ).then((v) {
                       pop(context);
                       showToastSuccess(context);
-                      isRefresh = true;
-                      _globalKey.currentState.show();
+                      Provide.value<ProviderOrderReLoad>(context).reLoad();
                     }).catchError((e) {
                       pop(context);
                       showToast(context, e.toString());
@@ -527,9 +512,8 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                       cancelToken: cancelToken,
                     ).then((v) {
                       pop(context);
-                      _globalKey.currentState.show();
-                      isRefresh = true;
                       showToastSuccess(context);
+                      Provide.value<ProviderOrderReLoad>(context).reLoad();
                     }).catchError((e) {
                       pop(context);
                       showToast(context, e.toString());
@@ -561,10 +545,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
               _data.repairQuote.id,
               _data.repairQuote.repairOrderId,
             ),
-          )..then((v) {
-              isRefresh = true;
-              _globalKey.currentState.show();
-            });
+          );
         },
         child: Text(
           HouseValue.of(context).submitRepairResults,
@@ -586,10 +567,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
             VendorQuoteHome(
               _data.repairOrder.id,
             ),
-          )..then((v) {
-              isRefresh = true;
-              _globalKey.currentState.show();
-            });
+          );
         },
         child: Text(
           HouseValue.of(context).quote,
@@ -611,10 +589,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
             QuotationListPage(
               _data.repairOrder,
             ),
-          )..then((v) {
-              isRefresh = true;
-              _globalKey.currentState.show();
-            });
+          );
         },
         child: Text(
           HouseValue.of(context).chooseAVendor,
@@ -625,7 +600,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
   }
 
   _buildHouse() {
-    if (User.getUserSync().type.value == TypeStatus.vendor.value) {
+    if (Provide.value<ProviderUser>(context).isVendor()) {
       return SliverToBoxAdapter(
         child: Container(
           width: 0,
@@ -642,8 +617,8 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
   }
 
   Widget _buildLogs() {
-    if (User.getUserSync().type.value == TypeStatus.agent.value ||
-        User.getUserSync().type.value == TypeStatus.landlord.value) {
+    if (Provide.value<ProviderUser>(context).isAgent() ||
+        Provide.value<ProviderUser>(context).isLandlord()) {
       List<OrderLogs> logs = [];
       int length = _data.repairOrderLogs.length;
       for (var i = 0; i < 5; i++) {
@@ -854,11 +829,11 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
     if (_data.repairQuote == null) {
       return SliverToBoxAdapter();
     }
-    int userType = User.getUserSync().type.value;
-    if (userType == TypeStatus.tenant.value) {
+
+    if (Provide.value<ProviderUser>(context).isTenant()) {
       return SliverToBoxAdapter();
     }
-    if (userType == TypeStatus.vendor.value) {
+    if (Provide.value<ProviderUser>(context).isVendor()) {
       return SliverToBoxAdapter(
         child: Container(
           margin: EdgeInsets.fromLTRB(12, 8, 12, 0),
@@ -1069,7 +1044,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
   }
 
   _buildRepairResultDescTitle(Order data) {
-    if (User.getUserSync().type.value == TypeStatus.tenant.value) {
+    if (Provide.value<ProviderUser>(context).isTenant()) {
       return SliverToBoxAdapter();
     } else if (data.resultDesc.isEmpty) {
       return SliverToBoxAdapter();
@@ -1079,7 +1054,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
   }
 
   _buildRepairResultDesc(Order data) {
-    if (User.getUserSync().type.value == TypeStatus.tenant.value) {
+    if (Provide.value<ProviderUser>(context).isTenant()) {
       return SliverToBoxAdapter();
     } else if (data.resultDesc.isEmpty) {
       return SliverToBoxAdapter();

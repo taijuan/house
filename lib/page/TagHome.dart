@@ -16,17 +16,7 @@ class TagHome extends BaseStatefulWidget {
 }
 
 class _TagHomeState extends BaseAppBarAndBodyState<TagHome> {
-  final GlobalKey<RefreshIndicatorState> _globalKey =
-      GlobalKey<RefreshIndicatorState>();
   final List<Tag> _data = [];
-
-  @override
-  void initState() {
-    Future.delayed(Duration()).whenComplete(() {
-      _globalKey.currentState.show();
-    });
-    super.initState();
-  }
 
   @override
   BaseAppBar appBar(BuildContext context) {
@@ -47,30 +37,14 @@ class _TagHomeState extends BaseAppBarAndBodyState<TagHome> {
 
   @override
   Widget body(BuildContext context) {
-    return RefreshIndicator(
-      key: _globalKey,
-      semanticsLabel: "",
-      child: CustomScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (_, index) {
-                if (index.isEven) {
-                  return _buildItem(_data[index ~/ 2]);
-                } else {
-                  return Container(
-                    height: 0.5,
-                    margin: EdgeInsets.symmetric(horizontal: 12),
-                    color: HouseColor.divider,
-                  );
-                }
-              },
-              childCount: _data.length * 2,
-            ),
-          )
-        ],
-      ),
+    return RefreshListView(
+      itemBuilder: (context, index) => _buildItem(_data[index]),
+      separatorBuilder: (context, index) => Container(
+            height: 0.5,
+            margin: EdgeInsets.symmetric(horizontal: 12),
+            color: HouseColor.divider,
+          ),
+      itemCount: _data.length,
       onRefresh: () async {
         await getVendorCertificateType(
           context,
@@ -80,6 +54,8 @@ class _TagHomeState extends BaseAppBarAndBodyState<TagHome> {
         }).catchError((e) {
           LogUtils.log(e);
           showToast(context, e.toString());
+        }).whenComplete(() {
+          setState(() {});
         });
       },
     );
@@ -93,7 +69,6 @@ class _TagHomeState extends BaseAppBarAndBodyState<TagHome> {
         return tag.id;
       }).contains(tag.id);
     });
-    setState(() {});
   }
 
   Widget _buildItem(Tag data) {

@@ -39,11 +39,13 @@ class _FilterPageState extends BaseAppBarAndBodyState<FilterPage> {
             if (widget.isFromHouse) {
               sp.setString(FilterPage.house_type, json.encode(houseTypes));
               sp.setString(FilterPage.house_area, json.encode(areas));
+              Provide.value<ProviderHouseReLoad>(context).reLoad();
             } else {
               sp.setString(FilterPage.vendor_type, json.encode(tags));
               sp.setString(FilterPage.vendor_area, json.encode(areas));
+              Provide.value<ProviderVendorReLoad>(context).reLoad();
             }
-            pop(context, result: true);
+            pop(context);
           });
         }),
       );

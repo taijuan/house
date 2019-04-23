@@ -239,9 +239,12 @@ class _LoginState extends BaseAppBarAndBodyState<Login> {
       cancelToken: cancelToken,
     )
       ..then((user) {
-        user.saveUser();
-        pop(context);
-        loginSuccessToNavigator(context);
+        Provide.value<ProviderUser>(context).save(
+          user,
+          onSaveWhenComplete: () {
+            loginSuccessToNavigator(context);
+          },
+        );
       })
       ..catchError((e) {
         LogUtils.log(e);

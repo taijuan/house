@@ -2,14 +2,13 @@ import 'package:house/importLib.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void pop<T extends Object>(BuildContext context, {T result}) {
-  if (Navigator.canPop(context)) {
+  if (Navigator.of(context).canPop()) {
     Navigator.of(context).pop<T>(result);
   }
 }
 
 Future<T> push<T extends Object>(BuildContext context, Widget route) {
-  return Navigator.push<T>(
-    context,
+  return Navigator.of(context).push<T>(
     MaterialPageRoute(
       builder: (context) => route,
     ),
@@ -18,8 +17,7 @@ Future<T> push<T extends Object>(BuildContext context, Widget route) {
 
 Future<T> pushReplacement<T extends Object>(
     BuildContext context, Widget route) {
-  return Navigator.pushReplacement(
-    context,
+  return Navigator.of(context).pushReplacement(
     MaterialPageRoute(
       builder: (context) => route,
     ),
@@ -30,7 +28,6 @@ Future<T> pushLogin<T extends Object>(
   BuildContext context, {
   String name: "/",
 }) {
-  User.clear();
   return pushAndRemoveUntil(context, Login(), name: name);
 }
 
@@ -38,8 +35,6 @@ void loginSuccessToNavigator(
   BuildContext context, {
   bool isFromWelCome: false,
 }) async {
-  User user = await User.getUser();
-  LogUtils.log(json.encode(user));
   if (isFromWelCome) {
     String oldVersionCode =
         (await SharedPreferences.getInstance()).getString("versionCode") ?? "";
@@ -47,15 +42,15 @@ void loginSuccessToNavigator(
     if (versionCode.compareTo(oldVersionCode) > 0) {
       pushReplacement(context, GuidePage());
     } else {
-      pushReplacement(context, route(user));
+      pushReplacement(context, route(context));
     }
   } else {
-    pushAndRemoveUntil(context, route(user));
+    pushAndRemoveUntil(context, route(context));
   }
 }
 
-Widget route(User user) {
-  switch (user?.type?.value) {
+Widget route(BuildContext context) {
+  switch (Provide.value<ProviderUser>(context).typeValue) {
     case 1:
       return AgencyHome();
     case 2:
@@ -73,8 +68,7 @@ Future<T> pushAndRemoveUntil<T extends Object>(
   Widget route, {
   String name: "/",
 }) {
-  return Navigator.pushAndRemoveUntil(
-    context,
+  return Navigator.of(context).pushAndRemoveUntil(
     MaterialPageRoute(
       builder: (context) => route,
     ),

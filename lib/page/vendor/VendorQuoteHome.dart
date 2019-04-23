@@ -49,6 +49,7 @@ class _VendorQuoteHomeState extends BaseAppBarAndBodyState<VendorQuoteHome> {
         ).then((v) {
           pop(context);
           pop(context);
+          Provide.value<ProviderOrderReLoad>(context).reLoad();
         }).catchError((e) {
           pop(context);
           showToast(context, e.toString());

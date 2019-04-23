@@ -9,6 +9,7 @@ houseCacheNetworkImage(
 }) {
   return ExtendedImage.network(
     data,
+    key: ValueKey(data),
     fit: fit,
     width: width,
     height: height,

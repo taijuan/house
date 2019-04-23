@@ -41,7 +41,7 @@ class HouseCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  _buildLesseeName(),
+                  _buildLesseeName(context),
                 ],
               ),
             ),
@@ -51,10 +51,9 @@ class HouseCard extends StatelessWidget {
     );
   }
 
-  Widget _buildLesseeName() {
-    int userType = User.getUserSync().type.value;
-    if (userType == TypeStatus.vendor.value ||
-        userType == TypeStatus.tenant.value ||
+  Widget _buildLesseeName(BuildContext context) {
+    if (Provide.value<ProviderUser>(context).isVendor() ||
+        Provide.value<ProviderUser>(context).isTenant() ||
         DataUtils.isEmpty(data.getLesseeName())) {
       return SizedBox.shrink();
     } else {

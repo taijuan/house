@@ -42,26 +42,15 @@ class _HouseTagPageState extends BaseAppBarAndBodyState<HouseTagPage> {
 
   @override
   Widget body(BuildContext context) {
-    return CustomScrollView(
-      physics: AlwaysScrollableScrollPhysics(),
-      slivers: <Widget>[
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (_, index) {
-              if (index.isEven) {
-                return _buildItem(_data[index ~/ 2]);
-              } else {
-                return Container(
-                  height: .5,
-                  margin: EdgeInsets.symmetric(horizontal: 12),
-                  color: HouseColor.divider,
-                );
-              }
-            },
-            childCount: _data.length * 2,
+    return ListView.separated(
+      physics: BouncingScrollPhysics(),
+      itemBuilder: (context, index) => _buildItem(_data[index]),
+      separatorBuilder: (context, index) => Container(
+            height: .5,
+            margin: EdgeInsets.symmetric(horizontal: 12),
+            color: HouseColor.divider,
           ),
-        )
-      ],
+      itemCount: _data.length,
     );
   }
 

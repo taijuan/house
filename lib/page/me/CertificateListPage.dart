@@ -14,15 +14,13 @@ class CertificateListPage extends BaseStatefulWidget {
 class _CertificateListPageState
     extends BaseAppBarAndBodyState<CertificateListPage> {
   final List<Certificate> _data = [];
-  final GlobalKey<RefreshWidgetState> _refreshKey =
-      GlobalKey<RefreshWidgetState>();
 
   @override
   void initState() {
     backgroundColor = HouseColor.lightGray;
-    Future.delayed(Duration()).whenComplete(() {
-      _refreshKey.currentState.show();
-    });
+//    Future.delayed(Duration()).whenComplete(() {
+//      _refreshKey.currentState.show();
+//    });
     super.initState();
   }
 
@@ -39,31 +37,26 @@ class _CertificateListPageState
 
   @override
   Widget body(BuildContext context) {
-    return RefreshWidget(
-      key: _refreshKey,
-      onRefresh: () async {
-        await selectCertificatePageList(
-          context,
-          cancelToken: cancelToken,
-          userId: widget.userId,
-        ).then((data) {
-          setState(() {
-            _data.clear();
-            _data.addAll(data);
-          });
-        });
-      },
-      slivers: [
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (_, index) {
-              if (index.isOdd) {
-                return _buildCertificateItem(_data[index ~/ 2]);
-              } else {
-                return Container(height: 16);
-              }
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: RefreshListView(
+            itemBuilder: (context, index) =>
+                _buildCertificateItem(_data[index]),
+            separatorBuilder: (context, index) => Container(height: 16),
+            itemCount: _data.length,
+            onRefresh: () async {
+              await selectCertificatePageList(
+                context,
+                cancelToken: cancelToken,
+                userId: widget.userId,
+              ).then((data) {
+                _data.clear();
+                _data.addAll(data);
+              }).whenComplete(() {
+                setState(() {});
+              });
             },
-            childCount: _data.length * 2,
           ),
         ),
         _buildAddCertificate(),
@@ -80,51 +73,49 @@ class _CertificateListPageState
         ),
       );
     }
-    return SliverPadding(
+    return Padding(
       padding: EdgeInsets.all(16),
-      sliver: SliverToBoxAdapter(
-        child: FlatButton(
-          onPressed: () {
-            push<bool>(
-              context,
-              CertificatePage(data: Certificate.fromJson({})),
-            ).then((refreshState) {
-              if (refreshState == true) {
-                _refreshKey.currentState.show();
-              }
-            });
-          },
-          color: HouseColor.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: Container(
-            alignment: Alignment.center,
-            height: 160,
-            child: Text.rich(
-              TextSpan(
-                text: "+",
-                style: createTextStyle(
-                  color: HouseColor.gray,
-                  fontSize: 25,
-                  fontFamily: fontFamilySemiBold,
-                  height: 1,
-                ),
-                children: [
-                  TextSpan(
-                    text: "\n${HouseValue.of(context).certificate}",
-                    style: createTextStyle(
-                      color: HouseColor.gray,
-                      fontSize: 17,
-                      fontFamily: fontFamilyRegular,
-                      height: 1,
-                    ),
-                  ),
-                ],
+      child: FlatButton(
+        onPressed: () {
+          push<bool>(
+            context,
+            CertificatePage(data: Certificate.fromJson({})),
+          ).then((refreshState) {
+            if (refreshState == true) {
+//                _refreshKey.currentState.show();
+            }
+          });
+        },
+        color: HouseColor.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Container(
+          alignment: Alignment.center,
+          height: 160,
+          child: Text.rich(
+            TextSpan(
+              text: "+",
+              style: createTextStyle(
+                color: HouseColor.gray,
+                fontSize: 25,
+                fontFamily: fontFamilySemiBold,
+                height: 1,
               ),
-              textAlign: TextAlign.center,
+              children: [
+                TextSpan(
+                  text: "\n${HouseValue.of(context).certificate}",
+                  style: createTextStyle(
+                    color: HouseColor.gray,
+                    fontSize: 17,
+                    fontFamily: fontFamilyRegular,
+                    height: 1,
+                  ),
+                ),
+              ],
             ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),
@@ -254,7 +245,7 @@ class _CertificateListPageState
             CertificatePage(data: data),
           ).then((refreshState) {
             if (refreshState == true) {
-              _refreshKey.currentState.show();
+//              _refreshKey.currentState.show();
             }
           });
         },
@@ -288,7 +279,7 @@ class _CertificateListPageState
             ),
           ).then((refreshState) {
             if (refreshState == true) {
-              _refreshKey.currentState.show();
+//              _refreshKey.currentState.show();
             }
           });
         },

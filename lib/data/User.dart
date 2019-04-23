@@ -20,6 +20,7 @@ class User {
   String companyProfile;
   List<Certificate> certificateList;
   List<CityArea> areaList;
+  String areaStr;
 
   User.fromJson(Map<String, dynamic> json)
       : id = json["id"],
@@ -62,7 +63,7 @@ class User {
 
   static User user;
 
-  void saveUser() async {
+  Future<Null> saveUser() async {
     user = this;
     await (await SharedPreferences.getInstance())
         .setString("user", json.encode(this));
@@ -80,18 +81,15 @@ class User {
     }
   }
 
-  static User getUserSync() {
-    return user;
-  }
-
   static Future<User> getUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String value = sharedPreferences.getString("user");
-    user = value == null ? null : User.fromJson(json.decode(value));
+    user =
+        value == null ? User.fromJson({}) : User.fromJson(json.decode(value));
     return user;
   }
 
-  static void clear() async {
+  static Future<Null> clear() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.remove("user");
   }

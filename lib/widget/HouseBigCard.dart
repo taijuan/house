@@ -45,7 +45,7 @@ class HouseBigCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              _buildLesseeName(),
+              _buildLesseeName(context),
               _buildTaskParentView(context),
             ],
           ),
@@ -80,10 +80,9 @@ class HouseBigCard extends StatelessWidget {
     }
   }
 
-  Widget _buildLesseeName() {
-    int userType = User.getUserSync().type.value;
-    if (userType == TypeStatus.vendor.value ||
-        userType == TypeStatus.tenant.value ||
+  Widget _buildLesseeName(BuildContext context) {
+    if (Provide.value<ProviderUser>(context).isVendor() ||
+        Provide.value<ProviderUser>(context).isTenant() ||
         DataUtils.isEmpty(data.getLesseeName())) {
       return SizedBox.shrink();
     } else {
@@ -140,9 +139,9 @@ class HouseBigCard extends StatelessWidget {
   }
 
   void _goToAction(BuildContext context) {
-    if (User.getUserSync().type.value == TypeStatus.agent.value) {
+    if (Provide.value<ProviderUser>(context).isAgent()) {
       push(context, CasesPage(data: data));
-    } else if (User.getUserSync().type.value == TypeStatus.tenant.value) {
+    } else if (Provide.value<ProviderUser>(context).isTenant()) {
       push(context, CasesPage(data: data));
     } else {
       push(context, LandlordOrdersPage(data: data));
@@ -150,12 +149,12 @@ class HouseBigCard extends StatelessWidget {
   }
 
   Text _buildBtnText(BuildContext context) {
-    if (User.getUserSync().type.value == TypeStatus.agent.value) {
+    if (Provide.value<ProviderUser>(context).isAgent()) {
       return Text(
         HouseValue.of(context).taskView,
         style: createTextStyle(color: HouseColor.green, fontSize: 13),
       );
-    } else if (User.getUserSync().type.value == TypeStatus.tenant.value) {
+    } else if (Provide.value<ProviderUser>(context).isTenant()) {
       return Text(
         HouseValue.of(context).allRequests,
         style: createTextStyle(color: HouseColor.green, fontSize: 13),

@@ -163,6 +163,7 @@ class _VendorRepairResultsState
     ).then((value) {
       pop(context);
       pop(context);
+      Provide.value<ProviderOrderReLoad>(context).reLoad();
     }).catchError((e) {
       pop(context);
       showToast(context, e.toString());

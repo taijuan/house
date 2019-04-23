@@ -14,16 +14,10 @@ class _QuotationListPageState
     extends BaseAppBarAndBodyState<QuotationListPage> {
   final List<Quotation> _data = [];
   String _transactor;
-  final GlobalKey<RefreshWidgetState> _refreshKey =
-      GlobalKey<RefreshWidgetState>();
-  int _currentPage = 0;
 
   @override
   void initState() {
     backgroundColor = HouseColor.lightGray;
-    Future.delayed(Duration()).whenComplete(() {
-      _refreshKey.currentState.show();
-    });
     super.initState();
   }
 
@@ -33,7 +27,7 @@ class _QuotationListPageState
       context: context,
       decoration: BoxDecoration(color: HouseColor.white),
       title: TitleAppBar.appBarTitle(
-        HouseValue.of(context).taskList,
+        HouseValue.of(context).quotation,
       ),
       navigatorBack: TitleAppBar.navigatorBackBlack(context),
     );
@@ -41,129 +35,120 @@ class _QuotationListPageState
 
   @override
   Widget body(BuildContext context) {
-    return RefreshWidget(
-      key: _refreshKey,
-      slivers: <Widget>[
-        _buildAuthBtn(),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              if (index.isEven) {
-                return _buildItem(_data[index ~/ 2]);
-              } else {
-                return SizedBox(
-                  height: 12,
-                );
-              }
-            },
-            childCount: _data.length * 2,
-          ),
-        )
-      ],
-      onRefresh: () async {
-        await selectRepairQuotePageList(
-          context,
-          widget.data.id,
-          1,
-          cancelToken: cancelToken,
-        ).then((data) {
-          this._data.clear();
-          this._data.addAll(data.data);
-          this._transactor = data.transactor;
-          if (_data.length >= 10) {
-            _refreshKey.currentState.more();
-          } else if(DataUtils.isEmptyList(_data)) {
-            _refreshKey.currentState.refreshNoData();
-          }else{
-            _refreshKey.currentState.loadMoreNoData();
-          }
-          _currentPage = 1;
-          setState(() {});
-        }).catchError((e) {
-          showToast(context, e.toString());
-        });
-      },
-      onLoadMore: () async {
-        await selectRepairQuotePageList(
-          context,
-          widget.data.id,
-          _currentPage + 1,
-          cancelToken: cancelToken,
-        ).then((data) {
-          this._data.addAll(data.data);
-          this._transactor = data.transactor;
-          if (_data.length >= 10) {
-            _refreshKey.currentState.more();
-          } else {
-            _refreshKey.currentState.loadMoreNoData();
-          }
-          _currentPage++;
-          setState(() {});
-        }).catchError((e) {
-          showToast(context, e.toString());
-        });
-      },
-    );
+    return Column(children: <Widget>[
+      _buildAuthBtn(),
+      Expanded(
+        child: RefreshListView(
+          itemBuilder: (context, index) => _buildItem(_data[index]),
+          separatorBuilder: (context, index) => Container(height: 12),
+          itemCount: _data.length,
+          onRefresh: () async {
+            await selectRepairQuotePageList(
+              context,
+              widget.data.id,
+              1,
+              cancelToken: cancelToken,
+            ).then((data) {
+              this._data.clear();
+              this._data.addAll(data.data);
+              this._transactor = data.transactor;
+            }).catchError((e) {
+              showToast(context, e.toString());
+            }).whenComplete(() {
+              setState(() {});
+            });
+          },
+          onLoadMore: (page) async {
+            await selectRepairQuotePageList(
+              context,
+              widget.data.id,
+              page,
+              cancelToken: cancelToken,
+            ).then((data) {
+              this._data.addAll(data.data);
+              this._transactor = data.transactor;
+            }).catchError((e) {
+              showToast(context, e.toString());
+            }).whenComplete(() {
+              setState(() {});
+            });
+          },
+        ),
+      )
+    ]);
   }
 
   Widget _buildAuthBtn() {
-    User user = User.getUserSync();
-    LogUtils.log("_transactor${_transactor ?? ""}");
     if (this._transactor == null) {
-      return SliverToBoxAdapter();
-    } else if (user.type.value == TypeStatus.agent.value && !_isAuth()) {
-      return SliverToBoxAdapter(
-        child: Container(
-          color: HouseColor.lightGreen,
-          padding: EdgeInsets.all(12),
-          margin: EdgeInsets.only(bottom: 12),
-          child: Text(
-            HouseValue.of(context).authProcessing,
-            style: createTextStyle(color: HouseColor.green),
+      return Container(width: 0, height: 0);
+    } else if (Provide.value<ProviderUser>(context).isAgent() && _isAuth()) {
+      return Container(
+        color: HouseColor.lightGreen,
+        padding: EdgeInsets.all(12),
+        width: double.infinity,
+        margin: EdgeInsets.only(bottom: 12),
+        child: Text(
+          HouseValue.of(context).authProcessing,
+          style: createTextStyle(color: HouseColor.green),
+        ),
+      );
+    } else if (Provide.value<ProviderUser>(context).isLandlord() && _isAuth()) {
+      return Padding(
+        padding: EdgeInsets.all(12),
+        child: FlatButton(
+          onPressed: _showAuthDialog,
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          color: HouseColor.white,
+          disabledColor: HouseColor.white,
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(bottom: 4),
+                child: Text(
+                  HouseValue.of(context).authorizedAgency,
+                  style: createTextStyle(fontFamily: fontFamilySemiBold),
+                ),
+              ),
+              Spacer(),
+              Icon(
+                HouseIcons.unCheckIcon,
+                color: HouseColor.gray,
+                size: 20,
+              ),
+            ],
           ),
         ),
       );
-    } else if (user.type.value == TypeStatus.landlord.value) {
-      return SliverPadding(
+    } else if (Provide.value<ProviderUser>(context).isLandlord() &&
+        !_isAuth()) {
+      return Padding(
         padding: EdgeInsets.all(12),
-        sliver: SliverToBoxAdapter(
-          child: FlatButton(
-            onPressed: _isAuth() ? null : _showAuthDialog,
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            color: HouseColor.white,
-            disabledColor: HouseColor.white,
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(bottom: 4),
-                  child: Text(
-                    HouseValue.of(context).authorizedAgency,
-                    style: createTextStyle(fontFamily: fontFamilySemiBold),
-                  ),
+        child: FlatButton(
+          onPressed: null,
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          color: HouseColor.white,
+          disabledColor: HouseColor.white,
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(bottom: 4),
+                child: Text(
+                  HouseValue.of(context).authorizedAgency,
+                  style: createTextStyle(fontFamily: fontFamilySemiBold),
                 ),
-                Spacer(),
-                _isAuth()
-                    ? Icon(
-                        HouseIcons.checkOkIcon,
-                        color: HouseColor.green,
-                        size: 20,
-                      )
-                    : Icon(
-                        HouseIcons.unCheckIcon,
-                        color: HouseColor.gray,
-                        size: 20,
-                      ),
-              ],
-            ),
+              ),
+              Spacer(),
+              Icon(
+                HouseIcons.checkOkIcon,
+                color: HouseColor.green,
+                size: 20,
+              ),
+            ],
           ),
         ),
       );
     } else {
-      return SliverToBoxAdapter(
-        child: SizedBox(
-          height: 12,
-        ),
-      );
+      return Container(height: 12);
     }
   }
 
@@ -246,7 +231,7 @@ class _QuotationListPageState
                 height: 28,
                 margin: EdgeInsets.symmetric(vertical: 12),
                 child: OutlineButton(
-                  padding:EdgeInsets.symmetric(horizontal: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 8),
                   onPressed: () {
                     _showDetailDialog(data);
                   },
@@ -259,21 +244,20 @@ class _QuotationListPageState
                   ),
                 ),
               ),
-
               Container(
                 margin: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 height: 28,
                 child: OutlineButton(
-                  padding:EdgeInsets.symmetric(horizontal: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 8),
                   borderSide: BorderSide(color: HouseColor.green),
                   highlightedBorderColor: HouseColor.green,
                   disabledBorderColor: HouseColor.divider,
                   disabledTextColor: HouseColor.divider,
                   onPressed: _isAuth()
-                      ? null
-                      : () {
+                      ? () {
                           _showChooseAVendorDialog(data);
-                        },
+                        }
+                      : null,
                   child: Text(
                     HouseValue.of(context).accept,
                     style: TextStyle(fontSize: 15),
@@ -324,6 +308,7 @@ class _QuotationListPageState
     ).then((value) {
       pop(context);
       pop(context);
+      Provide.value<ProviderOrderReLoad>(context).reLoad();
     }).catchError((e) {
       pop(context);
       showToast(context, e.toString());
@@ -331,6 +316,8 @@ class _QuotationListPageState
   }
 
   bool _isAuth() {
-    return User.getUserSync().id != this._transactor;
+    LogUtils.log("$_transactor");
+    LogUtils.log("${Provide.value<ProviderUser>(context).userId}");
+    return Provide.value<ProviderUser>(context).userId == this._transactor;
   }
 }

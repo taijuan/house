@@ -12,30 +12,13 @@ class CaseDetailPage extends BaseStatefulWidget {
 }
 
 class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
-  final GlobalKey<RefreshIndicatorState> _globalKey =
-      GlobalKey<RefreshIndicatorState>();
-  bool isRefresh = false;
   QuestionDetail _data;
-
-  @override
-  void initState() {
-    Future.delayed(Duration()).whenComplete(() {
-      _globalKey.currentState.show();
-    });
-    super.initState();
-  }
 
   @override
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
       context: context,
-      navigatorBack: TitleAppBar.navigatorBackBlack(
-        context,
-        onPressed: () {
-          pop(context, result: isRefresh);
-        },
-        willPop: true,
-      ),
+      navigatorBack: TitleAppBar.navigatorBackBlack(context),
       title: TitleAppBar.appBarTitle(
         HouseValue.of(context).caseDetail,
       ),
@@ -44,7 +27,6 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
 
   @override
   Widget bottomNavigationBar(BuildContext context) {
-    int type = User.getUserSync().type.value;
     int status = _data?.questionInfo?.status?.value ?? -1;
     if (_data == null) {
       return SizedBox.shrink();
@@ -52,7 +34,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
       return SizedBox.shrink();
     } else if (status == TypeStatus.questionFinished.value) {
       return SizedBox.shrink();
-    } else if (type == TypeStatus.agent.value) {
+    } else if (Provide.value<ProviderUser>(context).isAgent()) {
       if (DataUtils.isEmptyList(_data.repairOrders)) {
         return _byPassAndConfirm();
       } else {
@@ -86,14 +68,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
                 push(
                   context,
                   PublishOrderHome(widget.data.id),
-                ).then((isRefresh) {
-                  if (isRefresh) {
-                    this.isRefresh = isRefresh;
-                    setState(() {
-                      _globalKey.currentState.show();
-                    });
-                  }
-                });
+                );
               },
               child: Text(
                 "+",
@@ -134,8 +109,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
         ).then((v) {
           pop(context);
           showToastSuccess(context);
-          this.isRefresh = true;
-          _globalKey.currentState.show();
+          Provide.value<ProviderOrderReLoad>(context).reLoad();
         }).catchError((e) {
           pop(context);
           showToast(context, e.toString());
@@ -174,8 +148,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
                   ).then((v) {
                     pop(context);
                     showToastSuccess(context);
-                    this.isRefresh = true;
-                    _globalKey.currentState.show();
+                    Provide.value<ProviderOrderReLoad>(context).reLoad();
                   }).catchError((e) {
                     pop(context);
                     showToast(context, e.toString());
@@ -199,14 +172,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
                 push(
                   context,
                   PublishOrderHome(widget.data.id),
-                ).then((isRefresh) {
-                  if (isRefresh) {
-                    this.isRefresh = isRefresh;
-                    setState(() {
-                      _globalKey.currentState.show();
-                    });
-                  }
-                });
+                );
               },
               child: Text(
                 HouseValue.of(context).confirm,
@@ -229,39 +195,39 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
 
   @override
   Widget body(BuildContext context) {
-    return RefreshIndicator(
-      key: _globalKey,
-      semanticsLabel: "",
-      onRefresh: () async {
-        await selectQuestionDetail(
-          context,
-          widget.data.id,
-          cancelToken: cancelToken,
-        ).then((data) {
-          _data = data;
-          setState(() {});
-        }).catchError((e) {
-          showToast(context, e.toString());
-        });
-      },
-      child: CustomScrollView(
-        slivers: <Widget>[
-          _buildHouse(),
-          DataUtils.isEmptyList(_data?.repairOrders)
-              ? SliverToBoxAdapter()
-              : _buildTitle(HouseValue.of(context).orders),
-          _buildOrders(),
-          _buildTitle(HouseValue.of(context).description),
-          _buildDescription(),
-          _buildTitle(HouseValue.of(context).photos),
-          _buildPhotoList(),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 12,
-            ),
+    return Provide<ProviderOrderReLoad>(
+      builder: (_, a, reload) => RefreshCustomScrollView(
+            key: ValueKey(reload.reloadNum),
+            slivers: [
+              _buildHouse(),
+              DataUtils.isEmptyList(_data?.repairOrders)
+                  ? SliverToBoxAdapter()
+                  : _buildTitle(HouseValue.of(context).orders),
+              _buildOrders(),
+              _buildTitle(HouseValue.of(context).description),
+              _buildDescription(),
+              _buildTitle(HouseValue.of(context).photos),
+              _buildPhotoList(),
+              SliverToBoxAdapter(
+                child: Container(
+                  height: 12,
+                ),
+              ),
+            ],
+            onRefresh: () async {
+              await selectQuestionDetail(
+                context,
+                widget.data.id,
+                cancelToken: cancelToken,
+              ).then((data) {
+                _data = data;
+              }).catchError((e) {
+                showToast(context, e.toString());
+              }).whenComplete(() {
+                setState(() {});
+              });
+            },
           ),
-        ],
-      ),
     );
   }
 
@@ -385,12 +351,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
               push(
                 context,
                 OrderDetailPage(data.id),
-              )..then((isRefresh) {
-                  if (isRefresh == true) {
-                    this.isRefresh = true;
-                    _globalKey.currentState.show();
-                  }
-                });
+              );
             },
             color: _getBgColor(data),
             child: Column(
@@ -442,7 +403,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
         data.status.value == TypeStatus.orderSelecting.value) {
       return FlatButton(
         onPressed: () {
-          if (User.getUserSync().type.value != TypeStatus.agent.value) {
+          if (!Provide.value<ProviderUser>(context).isAgent()) {
             return;
           }
           showAlertDialog(
@@ -500,8 +461,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
       ..then((v) {
         showToastSuccess(context);
         pop(context);
-        this.isRefresh = true;
-        _globalKey.currentState.show();
+        Provide.value<ProviderOrderReLoad>(context).reLoad();
       })
       ..catchError((e) {
         showToast(context, e.toString());
