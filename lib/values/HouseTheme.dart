@@ -10,11 +10,8 @@ TextStyle createTextStyle({
   Color color: HouseColor.black,
   double fontSize: 15,
   String fontFamily: fontFamilyRegular,
-  double height: 1.2,
+  double height: 1.1,
 }) {
-  if (Platform.isIOS) {
-    fontSize = fontSize * 1.2;
-  }
   return TextStyle(
     color: color,
     fontSize: fontSize,

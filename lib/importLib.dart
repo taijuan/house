@@ -90,7 +90,7 @@ export 'package:house/values/HouseIcons.dart';
 export 'package:house/values/HouseTheme.dart';
 export 'package:house/values/HouseValue.dart';
 export 'package:house/widget/HouseBigCard.dart';
-export 'package:house/widget/HouseCacheNetworkImage.dart';
+export 'package:house/widget/cache_network_image.dart';
 export 'package:house/widget/HouseCard.dart';
 export 'package:house/widget/ImagePageView.dart';
 export 'package:house/widget/ShutDownButton.dart';

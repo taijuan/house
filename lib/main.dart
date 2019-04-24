@@ -13,11 +13,14 @@ void main() async {
   );
   SystemChrome.setSystemUIOverlayStyle(dark);
 
-  User user = await User.getUser();
+  ProviderUser providerUser = ProviderUser();
+  await providerUser.save(await User.getUser());
   var providers = Providers()
-    ..provide(Provider<ProviderUser>.value(ProviderUser()..save(user)))
+    ..provide(Provider<ProviderUser>.value(providerUser))
     ..provide(Provider<ProviderHouseReLoad>.value(ProviderHouseReLoad()))
     ..provide(Provider<ProviderVendorReLoad>.value(ProviderVendorReLoad()))
+    ..provide(
+        Provider<ProviderCertificateReLoad>.value(ProviderCertificateReLoad()))
     ..provide(Provider<ProviderOrderReLoad>.value(ProviderOrderReLoad()));
   return runApp(ProviderNode(child: HouseApp(), providers: providers));
 }

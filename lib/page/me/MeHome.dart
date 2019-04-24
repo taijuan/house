@@ -29,7 +29,12 @@ class MeHome extends StatelessWidget {
         Provide.value<ProviderUser>(context).isVendor()
             ? _buildIconNameHot(
                 onPressed: () {
-                  push(context, CertificateListPage());
+                  push(
+                    context,
+                    CertificateListPage(
+                      userId: Provide.value<ProviderUser>(context).userId,
+                    ),
+                  );
                 },
                 icon: HouseIcons.certificationIcon,
                 name: HouseValue.of(context).certificate,

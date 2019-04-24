@@ -156,7 +156,7 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            houseCacheNetworkImage(
+            CacheImage(
               DataUtils.getFirstImage(data.photos.content),
               width: 80,
               height: 80,

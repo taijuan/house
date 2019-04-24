@@ -23,7 +23,7 @@ class HouseBigCard extends StatelessWidget {
             children: <Widget>[
               AspectRatio(
                 aspectRatio: 16 / 9,
-                child: houseCacheNetworkImage(
+                child: CacheImage(
                   DataUtils.getFirstImage(data.coverImg.content),
                 ),
               ),

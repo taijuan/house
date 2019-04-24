@@ -55,7 +55,7 @@ class _MeAppBarState extends BaseState<MeAppBar> {
                 style: BorderStyle.solid,
               ),
               clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: houseCacheNetworkImage(
+              child: CacheImage(
                 DataUtils.getImageUrl(user.headImage),
                 width: 88,
                 height: 88,

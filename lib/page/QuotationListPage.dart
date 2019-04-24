@@ -188,7 +188,7 @@ class _QuotationListPageState
                   onTap: () {
                     push(context, VendorDetailHome(data.userId));
                   },
-                  child: houseCacheNetworkImage(
+                  child: CacheImage(
                     DataUtils.getImageUrl(data.headImg),
                     width: 60,
                     height: 60,

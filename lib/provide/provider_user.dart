@@ -26,7 +26,7 @@ class ProviderUser extends ChangeNotifier {
     return typeValue == TypeStatus.vendor.value;
   }
 
-  void save(
+  Future<void> save(
     User user, {
     OnSaveWhenComplete onSaveWhenComplete,
   }) async {

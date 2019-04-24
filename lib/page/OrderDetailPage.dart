@@ -743,7 +743,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                   ),
                 );
               },
-              child: houseCacheNetworkImage(
+              child: CacheImage(
                 imageUrl,
               ),
             );
@@ -885,7 +885,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                           VendorDetailHome(_data.repairQuote.userId),
                         );
                       },
-                      child: houseCacheNetworkImage(
+                      child: CacheImage(
                         DataUtils.getImageUrl(_data.repairQuote.headImg),
                         width: 60,
                         height: 60,
@@ -1031,7 +1031,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                     ),
                   );
                 },
-                child: houseCacheNetworkImage(
+                child: CacheImage(
                   imageUrl,
                 ),
               );

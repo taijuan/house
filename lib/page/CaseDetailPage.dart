@@ -300,7 +300,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
                     ),
                   );
                 },
-                child: houseCacheNetworkImage(
+                child: CacheImage(
                   imageUrl,
                 ),
               );

@@ -70,7 +70,8 @@ class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
     )
       ..then((v) {
         pop(context);
-        pop(context, result: true);
+        pop(context);
+        Provide.value<ProviderCertificateReLoad>(context).reLoad();
       })
       ..catchError((e) {
         pop(context);
@@ -142,7 +143,7 @@ class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
               context,
               type: ImagePickerType.onlyImage,
               placeholder:
-              AssetImage("image/house_loading_image_placeholder.webp"),
+                  AssetImage("image/house_loading_image_placeholder.webp"),
               appBarColor: HouseColor.blue,
               singleCallback: (image) {
                 setState(() {
@@ -233,7 +234,10 @@ class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
         image: FileImage(widget.data.imgStr),
       );
     } else if (DataUtils.getImageUrl(widget.data.picUrl).isNotEmpty) {
-      return houseCacheNetworkImage(DataUtils.getImageUrl(widget.data.picUrl));
+      return CacheImage(
+        DataUtils.getImageUrl(widget.data.picUrl),
+        height: null,
+      );
     } else {
       return Container(width: 0, height: 0);
     }

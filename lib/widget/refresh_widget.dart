@@ -45,11 +45,6 @@ class RefreshListViewState extends State<RefreshListView> {
   int page = 0;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return EasyRefresh(
       firstRefresh: true,
@@ -67,7 +62,6 @@ class RefreshListViewState extends State<RefreshListView> {
       emptyWidget: Container(
         width: double.infinity,
         height: 360,
-        color: Theme.of(context).scaffoldBackgroundColor,
         alignment: AlignmentDirectional.center,
         child: Text(
           "empty...",
@@ -94,7 +88,7 @@ class RefreshListViewState extends State<RefreshListView> {
             }
           : null,
       refreshFooter: _defaultFooter,
-      autoLoad: true,
+      autoLoad: false,
     );
   }
 }
@@ -133,11 +127,6 @@ class RefreshCustomScrollViewState extends State<RefreshCustomScrollView> {
   int page = 0;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return EasyRefresh(
       firstRefresh: true,
@@ -152,7 +141,6 @@ class RefreshCustomScrollViewState extends State<RefreshCustomScrollView> {
       emptyWidget: Container(
         width: double.infinity,
         height: 360,
-        color: Theme.of(context).scaffoldBackgroundColor,
         alignment: AlignmentDirectional.center,
         child: Text("empty..."),
       ),
@@ -173,7 +161,7 @@ class RefreshCustomScrollViewState extends State<RefreshCustomScrollView> {
             }
           : null,
       refreshFooter: _defaultFooter,
-      autoLoad: true,
+      autoLoad: false,
     );
   }
 }

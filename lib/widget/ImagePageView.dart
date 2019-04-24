@@ -18,7 +18,7 @@ class _ImagePageViewState extends BaseState<ImagePageView> {
         children: <Widget>[
           ExtendedImageGesturePageView.builder(
             itemBuilder: (context, index) {
-              return houseCacheNetworkImage(DataUtils.getImageUrl(widget.data[index]));
+              return CacheImage(DataUtils.getImageUrl(widget.data[index]));
             },
             itemCount: widget.data.length,
             controller: PageController(initialPage: index),

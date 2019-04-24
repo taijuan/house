@@ -101,35 +101,11 @@ class _VendorRepairResultsState
                     ),
                   );
                 } else {
-                  return Stack(
-                    alignment: AlignmentDirectional.topEnd,
-                    children: <Widget>[
-                      Image.file(
-                        _images[index],
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
-                      ),
-                      SizedBox(
-                        width: 36,
-                        height: 36,
-                        child: FlatButton(
-                          color: HouseColor.halfTransparent,
-                          onPressed: () {
-                            _images.removeAt(index);
-                            setState(() {});
-                          },
-                          child: Text(
-                            "X",
-                            style: createTextStyle(
-                              color: HouseColor.red,
-                              fontSize: 20,
-                            ),
-                          ),
-                          padding: EdgeInsets.only(),
-                        ),
-                      )
-                    ],
+                  return Image.file(
+                    _images[index],
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
                   );
                 }
               },

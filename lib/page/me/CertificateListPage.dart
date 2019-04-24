@@ -18,9 +18,6 @@ class _CertificateListPageState
   @override
   void initState() {
     backgroundColor = HouseColor.lightGray;
-//    Future.delayed(Duration()).whenComplete(() {
-//      _refreshKey.currentState.show();
-//    });
     super.initState();
   }
 
@@ -32,15 +29,24 @@ class _CertificateListPageState
         HouseValue.of(context).certificate,
       ),
       navigatorBack: TitleAppBar.navigatorBackBlack(context),
+      menu: Provide.value<ProviderUser>(context).isVendor()
+          ? TitleAppBar.appBarMenu(context,
+              menu: Text(
+                "Add",
+                style: createTextStyle(color: HouseColor.green),
+              ), onPressed: () {
+              push(context, CertificatePage(data: Certificate.fromJson({})));
+            })
+          : null,
     );
   }
 
   @override
   Widget body(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: RefreshListView(
+    return Provide<ProviderCertificateReLoad>(
+      builder: (_, b, reload) => RefreshListView(
+            key: ValueKey(reload.reloadNum),
+            padding: EdgeInsets.symmetric(vertical: 12),
             itemBuilder: (context, index) =>
                 _buildCertificateItem(_data[index]),
             separatorBuilder: (context, index) => Container(height: 16),
@@ -58,67 +64,6 @@ class _CertificateListPageState
               });
             },
           ),
-        ),
-        _buildAddCertificate(),
-      ],
-    );
-  }
-
-  _buildAddCertificate() {
-    if (widget.userId != null) {
-      return SliverToBoxAdapter(
-        child: Container(
-          width: 0,
-          height: 0,
-        ),
-      );
-    }
-    return Padding(
-      padding: EdgeInsets.all(16),
-      child: FlatButton(
-        onPressed: () {
-          push<bool>(
-            context,
-            CertificatePage(data: Certificate.fromJson({})),
-          ).then((refreshState) {
-            if (refreshState == true) {
-//                _refreshKey.currentState.show();
-            }
-          });
-        },
-        color: HouseColor.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        child: Container(
-          alignment: Alignment.center,
-          height: 160,
-          child: Text.rich(
-            TextSpan(
-              text: "+",
-              style: createTextStyle(
-                color: HouseColor.gray,
-                fontSize: 25,
-                fontFamily: fontFamilySemiBold,
-                height: 1,
-              ),
-              children: [
-                TextSpan(
-                  text: "\n${HouseValue.of(context).certificate}",
-                  style: createTextStyle(
-                    color: HouseColor.gray,
-                    fontSize: 17,
-                    fontFamily: fontFamilyRegular,
-                    height: 1,
-                  ),
-                ),
-              ],
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
     );
   }
 
@@ -205,7 +150,7 @@ class _CertificateListPageState
   }
 
   Container _buildDeleteBtn(Certificate data) {
-    if (widget.userId != null) {
+    if (!Provide.value<ProviderUser>(context).isVendor()) {
       return Container(width: 0, height: 0);
     }
     return Container(
@@ -231,7 +176,7 @@ class _CertificateListPageState
   }
 
   Widget _buildModifyBtn(Certificate data) {
-    if (widget.userId != null) {
+    if (!Provide.value<ProviderUser>(context).isVendor()) {
       return Container(width: 0, height: 0);
     } else if (data.status.value == 1) {
       return SizedBox.shrink();
@@ -240,14 +185,7 @@ class _CertificateListPageState
       height: 28,
       child: OutlineButton(
         onPressed: () {
-          push<bool>(
-            context,
-            CertificatePage(data: data),
-          ).then((refreshState) {
-            if (refreshState == true) {
-//              _refreshKey.currentState.show();
-            }
-          });
+          push(context, CertificatePage(data: data));
         },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),

@@ -139,7 +139,7 @@ class _LandlordOrdersPageState
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            houseCacheNetworkImage(
+            CacheImage(
               DataUtils.getFirstImage(data.photos.content),
               width: 80,
               height: 80,
