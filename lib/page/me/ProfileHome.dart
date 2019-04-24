@@ -26,7 +26,6 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
         User user = data.user;
         return ListView(
           padding: EdgeInsets.only(),
-          physics: ClampingScrollPhysics(),
           children: [
             ///firstName
             _nameAndValue(
