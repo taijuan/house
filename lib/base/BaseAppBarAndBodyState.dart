@@ -7,6 +7,7 @@ abstract class BaseAppBarAndBodyState<T extends BaseStatefulWidget>
   @override
   Widget build(BuildContext context) {
     backgroundColor = backgroundColor ?? Theme.of(context).backgroundColor;
+    super.build(context);
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: appBar(context),

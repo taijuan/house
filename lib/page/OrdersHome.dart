@@ -22,6 +22,7 @@ class _OrdersHomeState extends BaseState<OrdersHome>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Provide<ProviderOrderReLoad>(
       builder: (_, a, reload) => RefreshListView(
             key: ValueKey(reload.reloadNum),
