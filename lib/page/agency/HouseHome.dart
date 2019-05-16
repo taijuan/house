@@ -92,7 +92,7 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
             });
           },
           onEditingComplete: () {
-            FocusScope.of(context).detach();
+            FocusScope.of(context).unfocus();
             Provide.value<ProviderHouseReLoad>(context).reLoad();
           },
         ),
