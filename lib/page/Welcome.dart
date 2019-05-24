@@ -26,6 +26,9 @@ class _WelcomeState extends BaseState<Welcome> {
         loginSuccessToNavigator(context, isFromWelCome: true);
       });
     });
+    PaintingBinding.instance.imageCache
+      ..maximumSize = 1000
+      ..maximumSizeBytes = 500 << 20;
     super.initState();
   }
 
