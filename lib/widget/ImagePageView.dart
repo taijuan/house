@@ -1,4 +1,3 @@
-import 'package:extended_image/extended_image.dart';
 import 'package:house/importLib.dart';
 
 class ImagePageView extends BaseStatefulWidget {
@@ -16,12 +15,11 @@ class _ImagePageViewState extends BaseState<ImagePageView> {
   @override
   Widget build(BuildContext context) => Stack(
         children: <Widget>[
-          ExtendedImageGesturePageView.builder(
+          PageView.builder(
             itemBuilder: (context, index) {
               return CacheImage(DataUtils.getImageUrl(widget.data[index]));
             },
             itemCount: widget.data.length,
-            controller: PageController(initialPage: index),
             onPageChanged: (index) {
               setState(() {
                 this.index = index;

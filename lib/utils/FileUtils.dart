@@ -1,27 +1,36 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:house/utils/LogUtils.dart';
+import 'dart:ui' as ui show instantiateImageCodec, Codec;
+import 'dart:ui';
 
 class FileUtils {
   const FileUtils();
 
   static Future<String> compressWithFileToBase64(File file) async {
-    if (file == null) {
+    try {
+      if (file == null) {
+        return null;
+      } else if (!await file.exists()) {
+        return null;
+      } else {
+        List<int> bytes = await file.readAsBytes();
+        ui.Codec codec = await ui.instantiateImageCodec(
+          bytes,
+          targetWidth: 540,
+          targetHeight: 960,
+        );
+        if (codec.frameCount > 1) {
+          var c = base64.encode(bytes);
+          return c;
+        } else {
+          var a = await codec.getNextFrame();
+          var b = await a.image.toByteData(format: ImageByteFormat.png);
+          var c = base64.encode(b.buffer.asUint8List());
+          return c;
+        }
+      }
+    } catch (e) {
       return null;
-    } else {
-      String path = file.absolute.path;
-      LogUtils.log(path);
-      List<int> a = await FlutterImageCompress.compressWithFile(
-        path,
-        minWidth: 540,
-        minHeight: 960,
-        quality: 75,
-      );
-      String b = base64.encode(a);
-      LogUtils.log(b);
-      return b;
     }
   }
 }

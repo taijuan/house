@@ -1,4 +1,3 @@
-import 'package:extended_image/extended_image.dart';
 import 'package:house/importLib.dart';
 
 class ShowImage extends BaseStatefulWidget {
@@ -35,22 +34,15 @@ class _ShowImageState extends BaseState<ShowImage> {
       body: SizedBox.expand(
         child: Stack(
           children: <Widget>[
-            ExtendedImageGesturePageView.builder(
+            PageView.builder(
               itemBuilder: (context, index) {
-                return ExtendedImage.network(
+                return CacheImage(
                   DataUtils.getImageUrl(widget.data[index].picUrl),
                   fit: BoxFit.contain,
-                  mode: ExtendedImageMode.Gesture,
-                  gestureConfig: GestureConfig(
-                    inPageView: true,
-                    initialScale: 1.0,
-                    minScale: 1.0,
-                    cacheGesture: false,
-                  ),
                 );
               },
               itemCount: widget.data.length,
-              controller: PageController(initialPage: widget.startPos),
+              controller: _controller,
               onPageChanged: (index) {
                 setState(() {
                   this._index = index;

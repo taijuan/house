@@ -17,7 +17,7 @@ class CleanCacheUtils {
   }
 
   static Future<String> formatCacheFileSize({int fractionDigits: 2}) async {
-    Directory d = await getTemporaryDirectory();
+    Directory d = await getApplicationDocumentsDirectory();
     int size = await getFileSizes(d);
     if (size <= 0) {
       return "0.00b";
