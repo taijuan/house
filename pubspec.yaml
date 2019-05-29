@@ -23,7 +23,8 @@ dependencies:
 #  flutter_image_compress: ^0.5.2
   image_picker_flutter: ^1.0.5+1
 #  extended_image: ^0.3.6
-  flutter_easyrefresh: ^1.2.7
+#  flutter_easyrefresh: ^1.2.7
+  pull_to_refresh: ^1.4.0
 #  path_provider: ^1.1.0
   provide: ^1.0.2
   flutter_cache_manager: ^0.3.2

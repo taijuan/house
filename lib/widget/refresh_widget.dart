@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:house/importLib.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 typedef Future<void> OnRefresh();
 typedef Future<void> OnLoadMore(int);
@@ -28,67 +28,41 @@ class RefreshListView extends StatefulWidget {
 }
 
 class RefreshListViewState extends State<RefreshListView> {
-  final ClassicsHeader _defaultHeader = ClassicsHeader(
-    key: new GlobalKey<ClassicsHeaderState>(),
-    bgColor: HouseColor.transparent,
-    textColor: HouseColor.black,
-    moreInfoColor: HouseColor.black,
-    showMore: true,
-  );
-  final ClassicsFooter _defaultFooter = ClassicsFooter(
-    key: new GlobalKey<ClassicsFooterState>(),
-    bgColor: HouseColor.transparent,
-    textColor: HouseColor.black,
-    moreInfoColor: HouseColor.black,
-    showMore: true,
-  );
   int page = 0;
+  ClassicHeader header = ClassicHeader();
+  ClassicFooter footer = ClassicFooter();
+  RefreshController controller = RefreshController(initialRefresh: true);
 
   @override
   Widget build(BuildContext context) {
-    return EasyRefresh(
-      firstRefresh: true,
-      behavior: ScrollOverBehavior(),
-      firstRefreshWidget: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Theme.of(context).scaffoldBackgroundColor,
-        alignment: AlignmentDirectional.center,
-        child: Text(
-          "loading...",
-          style: createTextStyle(),
-        ),
-      ),
-      emptyWidget: Container(
-        width: double.infinity,
-        height: 360,
-        alignment: AlignmentDirectional.center,
-        child: Text(
-          "empty...",
-          style: createTextStyle(),
-        ),
-      ),
-      onRefresh: () async {
-        await widget.onRefresh().then((a) {
+    return SmartRefresher(
+      controller: controller,
+      header: header,
+      footer: footer,
+      enablePullUp: widget.onLoadMore != null,
+      enablePullDown: true,
+      onRefresh: () {
+        widget.onRefresh().then((a) {
           this.page = 1;
+        }).whenComplete(() {
+          controller.refreshCompleted();
         });
       },
-      refreshHeader: _defaultHeader,
       child: ListView.separated(
         padding: widget.padding,
         itemBuilder: widget.itemBuilder,
         separatorBuilder: widget.separatorBuilder,
         itemCount: widget.itemCount,
       ),
-      loadMore: widget.onLoadMore != null
+      onLoading: widget.onLoadMore != null
           ? () {
               widget.onLoadMore(this.page + 1).then((a) {
                 this.page++;
+              }).whenComplete(() {
+                controller.loadComplete();
               });
             }
           : null,
-      refreshFooter: _defaultFooter,
-      autoLoad: false,
     );
   }
 }
@@ -110,58 +84,39 @@ class RefreshCustomScrollView extends StatefulWidget {
 }
 
 class RefreshCustomScrollViewState extends State<RefreshCustomScrollView> {
-  final ClassicsHeader _defaultHeader = ClassicsHeader(
-    key: new GlobalKey<ClassicsHeaderState>(),
-    bgColor: HouseColor.transparent,
-    textColor: HouseColor.black,
-    moreInfoColor: HouseColor.black,
-    showMore: true,
-  );
-  final ClassicsFooter _defaultFooter = ClassicsFooter(
-    key: new GlobalKey<ClassicsFooterState>(),
-    bgColor: HouseColor.transparent,
-    textColor: HouseColor.black,
-    moreInfoColor: HouseColor.black,
-    showMore: true,
-  );
+  ClassicHeader header = ClassicHeader();
+  ClassicFooter footer = ClassicFooter();
+  RefreshController controller = RefreshController(initialRefresh: true);
+
   int page = 0;
 
   @override
   Widget build(BuildContext context) {
-    return EasyRefresh(
-      firstRefresh: true,
-      behavior: ScrollOverBehavior(),
-      firstRefreshWidget: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Theme.of(context).scaffoldBackgroundColor,
-        alignment: AlignmentDirectional.center,
-        child: Text("loading..."),
-      ),
-      emptyWidget: Container(
-        width: double.infinity,
-        height: 360,
-        alignment: AlignmentDirectional.center,
-        child: Text("empty..."),
-      ),
-      onRefresh: () async {
-        await widget.onRefresh().then((a) {
+    return SmartRefresher(
+      controller: controller,
+      header: header,
+      footer: footer,
+      enablePullUp: widget.onLoadMore != null,
+      enablePullDown: true,
+      onRefresh: () {
+        widget.onRefresh().then((a) {
           this.page = 1;
+        }).whenComplete(() {
+          controller.refreshCompleted();
         });
       },
-      refreshHeader: _defaultHeader,
       child: CustomScrollView(
         slivers: widget.slivers,
       ),
-      loadMore: widget.onLoadMore != null
+      onLoading: widget.onLoadMore != null
           ? () {
               widget.onLoadMore(this.page + 1).then((a) {
                 this.page++;
+              }).whenComplete(() {
+                controller.loadComplete();
               });
             }
           : null,
-      refreshFooter: _defaultFooter,
-      autoLoad: false,
     );
   }
 }
