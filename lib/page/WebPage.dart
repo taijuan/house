@@ -1,7 +1,7 @@
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:house/importLib.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
-class WebPage extends BaseStatefulWidget {
+class WebPage extends StatelessWidget {
   final String url, title;
 
   WebPage(
@@ -10,23 +10,14 @@ class WebPage extends BaseStatefulWidget {
   });
 
   @override
-  _WebPageState createState() => _WebPageState();
-}
-
-class _WebPageState extends BaseAppBarAndBodyState<WebPage> {
-  @override
-  BaseAppBar appBar(BuildContext context) => TitleAppBar(
+  Widget build(BuildContext context) {
+    return WebviewScaffold(
+      url: url,
+      appBar: TitleAppBar(
         context: context,
-        title: TitleAppBar.appBarTitle(widget.title),
+        title: TitleAppBar.appBarTitle(title),
         navigatorBack: TitleAppBar.navigatorBackBlack(context),
-      );
-
-  @override
-  Widget body(BuildContext context) {
-    return WebView(
-      onWebViewCreated: (WebViewController webViewController) {},
-      initialUrl: widget.url,
-      javascriptMode: JavascriptMode.unrestricted,
+      ),
     );
   }
 }
