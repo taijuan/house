@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:house/importLib.dart';
-import 'package:intl/intl.dart';
+import 'package:house/utils/TimeUtils.dart';
 
 class CertificatePage extends BaseStatefulWidget {
   final Certificate data;
@@ -250,24 +250,15 @@ class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
           return _buildBottomPicker(
             CupertinoDatePicker(
               mode: CupertinoDatePickerMode.date,
-              initialDateTime: buildParse(widget.data.endDate),
+              initialDateTime: string2DateTime(widget.data.endDate),
               onDateTimeChanged: (DateTime newDateTime) {
                 setState(
-                  () => widget.data.endDate =
-                      DateFormat("MMM d,yyyy").format(newDateTime),
+                  () => widget.data.endDate = dateTime2String(newDateTime),
                 );
               },
             ),
           );
         });
-  }
-
-  DateTime buildParse(String input) {
-    try {
-      return DateFormat("MMM d,yyyy").parse(input);
-    } catch (e) {
-      return DateTime.now();
-    }
   }
 
   Widget _buildBottomPicker(Widget picker) {
