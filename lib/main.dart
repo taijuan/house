@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:house/importLib.dart';
 
 void main() async {
+  //Fix https://github.com/flutter/flutter/issues/38056
+  WidgetsFlutterBinding.ensureInitialized();
   const SystemUiOverlayStyle dark = SystemUiOverlayStyle(
     systemNavigationBarColor: HouseColor.transparent,
     systemNavigationBarDividerColor: HouseColor.transparent,
@@ -53,10 +55,6 @@ class HouseApp extends StatelessWidget {
           Locale("zh", ""),
           Locale("en", ""),
         ],
-        routes: {
-          "/": (_) {
-            return Welcome();
-          },
-        },
+        home: Welcome(),
       );
 }

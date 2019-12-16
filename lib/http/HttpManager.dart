@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:house/http/BaseRes.dart';
 import 'package:house/importLib.dart';
@@ -17,7 +15,7 @@ class HttpManager {
       connectTimeout: 30000,
       baseUrl: BASE_URL,
       responseType: ResponseType.json,
-      contentType: ContentType.parse("application/x-www-form-urlencoded"),
+      contentType: "application/x-www-form-urlencoded",
     ),
   );
 
@@ -35,7 +33,7 @@ class HttpManager {
     LogUtils.log("#######################################");
     Response response = await dio.post(
       path,
-      data: FormData.from(data),
+      data: FormData.fromMap(data),
       cancelToken: cancelToken,
     );
     LogUtils.log(response.request.baseUrl);
