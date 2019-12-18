@@ -31,7 +31,21 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
     _controller.dispose();
     super.dispose();
   }
-
+  @override
+  Future<bool> didPopRoute() {
+    print("didPopRoute");
+    return super.didPopRoute();
+  }
+  @override
+  Future<bool> didPushRoute(String route) {
+    print("didPushRoute");
+    return super.didPushRoute(route);
+  }
+  @override
+  void didUpdateWidget(HouseHome oldWidget) {
+    print("didUpdateWidget");
+    super.didUpdateWidget(oldWidget);
+  }
   @override
   BaseAppBar appBar(BuildContext context) {
     return TitleAppBar(
@@ -52,7 +66,7 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
         ),
       ),
       title: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 64),
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 64),
         child: TextField(
           decoration: InputDecoration(
             fillColor: HouseColor.lightGray,
@@ -77,10 +91,7 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
               fontFamily: "iconfont",
               color: HouseColor.gray,
             ),
-            contentPadding: EdgeInsets.symmetric(
-              vertical: 4,
-              horizontal: 8,
-            ),
+            contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           ),
           maxLines: 1,
           inputFormatters: [LengthLimitingTextInputFormatter(30)],
@@ -120,8 +131,8 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
         ),
         Provide<ProviderHouseReLoad>(
           builder: (context, child, reload) => MapHome(
-                key: ValueKey(reload.reloadNum),
-              ),
+            key: ValueKey(reload.reloadNum),
+          ),
         ),
       ],
     );
@@ -133,9 +144,9 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
       padding: EdgeInsets.symmetric(vertical: 12),
       key: ValueKey(num),
       itemBuilder: (context, index) => Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: HouseBigCard(_data[index]),
-          ),
+        padding: EdgeInsets.symmetric(horizontal: 12),
+        child: HouseBigCard(_data[index]),
+      ),
       separatorBuilder: (context, index) => Container(height: 12),
       itemCount: _data.length,
       onRefresh: () async {

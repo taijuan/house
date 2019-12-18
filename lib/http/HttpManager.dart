@@ -4,7 +4,7 @@ import 'package:house/importLib.dart';
 import 'package:meta/meta.dart';
 
 class HttpManager {
-  static const String DNS = "http://poc.fleica.com/";
+  static const String DNS = "http://103.253.239.165/";
   static const String BASE_URL = "${DNS}house-api";
 
   const HttpManager();

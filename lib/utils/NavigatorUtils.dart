@@ -2,12 +2,14 @@ import 'package:house/importLib.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void pop<T extends Object>(BuildContext context, {T result}) {
+  FocusScope.of(context).unfocus();
   if (Navigator.of(context).canPop()) {
     Navigator.of(context).pop<T>(result);
   }
 }
 
 Future<T> push<T extends Object>(BuildContext context, Widget route) {
+  FocusScope.of(context).unfocus();
   return Navigator.of(context).push<T>(
     MaterialPageRoute(
       builder: (context) => route,
@@ -17,6 +19,7 @@ Future<T> push<T extends Object>(BuildContext context, Widget route) {
 
 Future<T> pushReplacement<T extends Object>(
     BuildContext context, Widget route) {
+  FocusScope.of(context).unfocus();
   return Navigator.of(context).pushReplacement(
     MaterialPageRoute(
       builder: (context) => route,
@@ -28,6 +31,7 @@ Future<T> pushLogin<T extends Object>(
   BuildContext context, {
   String name: "/",
 }) {
+  FocusScope.of(context).unfocus();
   return pushAndRemoveUntil(context, Login(), name: name);
 }
 
@@ -35,6 +39,7 @@ void loginSuccessToNavigator(
   BuildContext context, {
   bool isFromWelCome: false,
 }) async {
+  FocusScope.of(context).unfocus();
   if (isFromWelCome) {
     String oldVersionCode =
         (await SharedPreferences.getInstance()).getString("versionCode") ?? "";
@@ -68,6 +73,7 @@ Future<T> pushAndRemoveUntil<T extends Object>(
   Widget route, {
   String name: "/",
 }) {
+  FocusScope.of(context).unfocus();
   return Navigator.of(context).pushAndRemoveUntil(
     MaterialPageRoute(
       builder: (context) => route,

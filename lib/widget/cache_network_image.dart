@@ -26,9 +26,15 @@ class CacheImage extends StatelessWidget {
       loadStateChanged: (state) {
         switch (state.extendedImageLoadState) {
           case LoadState.loading:
-            return Image.asset("image/house_loading_image_placeholder.webp");
+            return Image.asset(
+              "image/house_loading_image_placeholder.webp",
+              fit: fit,
+            );
           case LoadState.failed:
-            return Image.asset("image/house_loading_image_placeholder.webp");
+            return Image.asset(
+              "image/house_loading_image_placeholder.webp",
+              fit: fit,
+            );
           case LoadState.completed:
             return ExtendedRawImage(
               image: state.extendedImageInfo?.image,
