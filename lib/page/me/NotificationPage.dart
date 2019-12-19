@@ -20,8 +20,12 @@ class _NotificationPageState extends BaseAppBarAndBodyState<NotificationPage> {
   @override
   Widget body(BuildContext context) {
     return RefreshListView(
-      itemBuilder: (context, index) {},
-      separatorBuilder: (context, index) {},
+      itemBuilder: (context, index) {
+        return Container();
+      },
+      separatorBuilder: (context, index) {
+        return Container();
+      },
       itemCount: 0,
       onRefresh: () async {},
       onLoadMore: (page) async {},

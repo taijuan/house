@@ -1,6 +1,6 @@
 import 'package:house/importLib.dart';
 
-typedef Future<void> OnSaveWhenComplete();
+typedef void OnSaveWhenComplete();
 
 class ProviderUser extends ChangeNotifier {
   final User user = User.fromJson({});

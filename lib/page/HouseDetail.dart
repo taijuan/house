@@ -255,7 +255,7 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
                     )
                   ],
                 );
-              case 4:
+              default:
                 return Row(
                   children: <Widget>[
                     Image.asset("image/house_sqft.webp"),

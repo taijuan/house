@@ -25,6 +25,9 @@
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
                 android:value="true" />
+            <meta-data
+                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+                android:resource="@drawable/launch_background" />
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -34,6 +37,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDV0DNbhbAt5Nvk7Fq88BNql6dhGXI71Do" />

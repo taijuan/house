@@ -110,7 +110,7 @@ class RefreshCustomScrollView extends StatefulWidget {
 class RefreshCustomScrollViewState extends State<RefreshCustomScrollView> {
   ClassicHeader header = ClassicHeader();
   ClassicFooter footer = ClassicFooter();
-  RefreshController controller = RefreshController(initialRefresh: true);
+  RefreshController controller = RefreshController();
   int page = 0;
   bool isShowLoading = true;
 
