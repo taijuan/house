@@ -5,6 +5,9 @@ import 'package:house/importLib.dart';
 void main() async {
   //Fix https://github.com/flutter/flutter/issues/38056
   WidgetsFlutterBinding.ensureInitialized();
+  FlutterError.onError =(e){
+    print(e);
+  };
   const SystemUiOverlayStyle dark = SystemUiOverlayStyle(
     systemNavigationBarColor: HouseColor.transparent,
     systemNavigationBarDividerColor: HouseColor.transparent,
