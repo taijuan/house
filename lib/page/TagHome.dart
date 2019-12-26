@@ -53,7 +53,7 @@ class _TagHomeState extends BaseAppBarAndBodyState<TagHome> {
           await _mapData(data);
         }).catchError((e) {
           LogUtils.log(e);
-          showToast(context, e.toString());
+          showMsgToast(context, e.toString());
         }).whenComplete(() {
           setState(() {});
         });

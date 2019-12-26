@@ -101,7 +101,7 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
                 this._data.clear();
                 this._data.addAll(data);
               }).catchError((e) {
-                showToast(context, e.toString());
+                showMsgToast(context, e.toString());
               }).whenComplete(() {
                 setState(() {});
               });
@@ -115,7 +115,7 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
               ).then((data) {
                 this._data.addAll(data);
               }).catchError((e) {
-                showToast(context, e.toString());
+                showMsgToast(context, e.toString());
               }).whenComplete(() {
                 setState(() {});
               });
@@ -239,7 +239,7 @@ class _CasesPageState extends BaseAppBarAndBodyState<CasesPage> {
         });
       })
       ..catchError((e) {
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
         pop(context);
       });
   }

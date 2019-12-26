@@ -55,6 +55,22 @@ void loginSuccessToNavigator(
 }
 
 Widget route(BuildContext context) {
+  int _lastBackTime = 0;
+  return WillPopScope(
+      child: home(context),
+      onWillPop: () async {
+        int time = DateTime.now().millisecondsSinceEpoch;
+        if (time - _lastBackTime > 3000) {
+          _lastBackTime = time;
+          showMsgToast(context, "Click exit again !");
+          return false;
+        } else {
+          return true;
+        }
+      });
+}
+
+Widget home(BuildContext context) {
   switch (Provide.value<ProviderUser>(context).typeValue) {
     case 1:
       return AgencyHome();
@@ -64,8 +80,9 @@ Widget route(BuildContext context) {
       return TenantHome();
     case 4:
       return VendorHome();
+    default:
+      return Login();
   }
-  return Login();
 }
 
 Future<T> pushAndRemoveUntil<T extends Object>(

@@ -63,7 +63,7 @@ class _CityAreaHomeListState extends BaseAppBarAndBodyState<CityAreaHome> {
           await _setData(data);
         }).catchError((e) {
           LogUtils.log(e);
-          showToast(context, e.toString());
+          showMsgToast(context, e.toString());
         }).whenComplete(() {
           setState(() {});
         });

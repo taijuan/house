@@ -163,23 +163,23 @@ class _NoHaveInviteCodeSignUpState
     String password1 = _userPwd1Controller.text;
     String password2 = _userPwd2Controller.text;
     if (account.isEmpty) {
-      showToast(context, HouseValue.of(context).typeYourEmailAddress);
+      showMsgToast(context, HouseValue.of(context).typeYourEmailAddress);
       return;
     }
     if (account.isEmpty) {
-      showToast(context, HouseValue.of(context).isNotEmail);
+      showMsgToast(context, HouseValue.of(context).isNotEmail);
       return;
     }
     if (password1.isEmpty) {
-      showToast(context, HouseValue.of(context).typeYourPassword);
+      showMsgToast(context, HouseValue.of(context).typeYourPassword);
       return;
     }
     if (password2.isEmpty) {
-      showToast(context, HouseValue.of(context).retypeYourPassword);
+      showMsgToast(context, HouseValue.of(context).retypeYourPassword);
       return;
     }
     if (password1.length < 6 || password2.length < 6) {
-      showToast(context, HouseValue.of(context).passwordLengthMoreThan6);
+      showMsgToast(context, HouseValue.of(context).passwordLengthMoreThan6);
       return;
     }
     showLoadingDialog(context);
@@ -191,11 +191,11 @@ class _NoHaveInviteCodeSignUpState
       ..then((value) {
         pop(context);
         emailCode = value;
-        showToast(context, HouseValue.of(context).success);
+        showMsgToast(context, HouseValue.of(context).success);
       })
       ..catchError((e) {
         pop(context);
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
       });
   }
 
@@ -208,27 +208,27 @@ class _NoHaveInviteCodeSignUpState
     String lastName = _lastNameController.text;
     String companyName = _companyNameController.text;
     if (account.isEmpty) {
-      showToast(context, HouseValue.of(context).typeYourEmailAddress);
+      showMsgToast(context, HouseValue.of(context).typeYourEmailAddress);
       return;
     }
     if (password1.isEmpty) {
-      showToast(context, HouseValue.of(context).typeYourPassword);
+      showMsgToast(context, HouseValue.of(context).typeYourPassword);
       return;
     }
     if (password2.isEmpty) {
-      showToast(context, HouseValue.of(context).retypeYourPassword);
+      showMsgToast(context, HouseValue.of(context).retypeYourPassword);
       return;
     }
     if (password1 != password2) {
-      showToast(context, HouseValue.of(context).passwordError);
+      showMsgToast(context, HouseValue.of(context).passwordError);
       return;
     }
     if (code.isEmpty) {
-      showToast(context, HouseValue.of(context).typeVerificationCode);
+      showMsgToast(context, HouseValue.of(context).typeVerificationCode);
       return;
     }
     if (emailCode != _userCodeController.text) {
-      showToast(context, HouseValue.of(context).codeError);
+      showMsgToast(context, HouseValue.of(context).codeError);
       return;
     }
     showLoadingDialog(context);
@@ -252,7 +252,7 @@ class _NoHaveInviteCodeSignUpState
       })
       ..catchError((e) {
         pop(context);
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
       });
   }
 

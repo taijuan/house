@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:house/importLib.dart';
+import 'package:oktoast/oktoast.dart';
 
 void main() async {
   //Fix https://github.com/flutter/flutter/issues/38056
@@ -24,7 +25,8 @@ void main() async {
     ..provide(
         Provider<ProviderCertificateReLoad>.value(ProviderCertificateReLoad()))
     ..provide(Provider<ProviderOrderReLoad>.value(ProviderOrderReLoad()));
-  return runApp(ProviderNode(child: HouseApp(), providers: providers));
+  return runApp(
+      ProviderNode(child: OKToast(child: HouseApp()), providers: providers));
 }
 
 class HouseApp extends StatelessWidget {

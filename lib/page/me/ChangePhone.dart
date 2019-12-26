@@ -53,7 +53,7 @@ class _ChangePhoneState extends BaseAppBarAndBodyState<ChangePhone> {
   void _changePhone() async {
     String tel = controller.text;
     if (tel.isEmpty) {
-      showToast(context, HouseValue.of(context).typeFirstName);
+      showMsgToast(context, HouseValue.of(context).typeFirstName);
       return;
     }
     showLoadingDialog(context);
@@ -67,7 +67,7 @@ class _ChangePhoneState extends BaseAppBarAndBodyState<ChangePhone> {
       Provide.value<ProviderUser>(context).save(user);
     }).catchError((e) {
       pop(context);
-      showToast(context, e.toString());
+      showMsgToast(context, e.toString());
     });
   }
 }

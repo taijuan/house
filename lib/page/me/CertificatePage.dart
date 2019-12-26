@@ -40,19 +40,19 @@ class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
 
   _saveCertificate() {
     if (DataUtils.isEmpty(widget.data.type)) {
-      showToast(context, "");
+      showMsgToast(context, "");
       return;
     }
     if (DataUtils.isEmpty(widget.data.certificateNo)) {
-      showToast(context, "");
+      showMsgToast(context, "");
       return;
     }
     if (DataUtils.isEmpty(widget.data.endDate)) {
-      showToast(context, "");
+      showMsgToast(context, "");
       return;
     }
     if (DataUtils.isEmpty(widget.data.picUrl) && widget.data.imgStr == null) {
-      showToast(context, "");
+      showMsgToast(context, "");
       return;
     }
     showLoadingDialog(context);
@@ -75,7 +75,7 @@ class _CertificatePageState extends BaseAppBarAndBodyState<CertificatePage> {
       })
       ..catchError((e) {
         pop(context);
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
       });
   }
 

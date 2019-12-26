@@ -222,7 +222,7 @@ class _VendorDetailHomeState extends BaseAppBarAndBodyState<VendorDetailHome> {
         ).then((user) {
           _data = user;
         }).catchError((e) {
-          showToast(context, e.toString());
+          showMsgToast(context, e.toString());
         }).whenComplete(() {
           setState(() {});
         });

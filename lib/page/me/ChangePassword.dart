@@ -50,21 +50,21 @@ class _ChangePasswordState extends BaseAppBarAndBodyState<ChangePassword> {
   void _changePassword() async {
     String oldPwd = userOldPwdController.text;
     if (oldPwd.isEmpty) {
-      showToast(context, HouseValue.of(context).typeYourEmailAddress);
+      showMsgToast(context, HouseValue.of(context).typeYourEmailAddress);
       return;
     }
     String pwd1 = userPwd1Controller.text;
     if (pwd1.isEmpty) {
-      showToast(context, HouseValue.of(context).typeNewPassword);
+      showMsgToast(context, HouseValue.of(context).typeNewPassword);
       return;
     }
     String pwd2 = userPwd2Controller.text;
     if (pwd2.isEmpty) {
-      showToast(context, HouseValue.of(context).retypeYourPassword);
+      showMsgToast(context, HouseValue.of(context).retypeYourPassword);
       return;
     }
     if (pwd1 != pwd2) {
-      showToast(context, HouseValue.of(context).passwordError);
+      showMsgToast(context, HouseValue.of(context).passwordError);
       return;
     }
     showLoadingDialog(context);
@@ -79,7 +79,7 @@ class _ChangePasswordState extends BaseAppBarAndBodyState<ChangePassword> {
       Provide.value<ProviderUser>(context).save(user);
     }).catchError((e) {
       pop(context);
-      showToast(context, e.toString());
+      showMsgToast(context, e.toString());
     });
   }
 }

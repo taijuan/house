@@ -158,7 +158,7 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
           this._data.clear();
           this._data.addAll(data);
         }).catchError((e) {
-          showToast(context, e.toString());
+          showMsgToast(context, e.toString());
         }).whenComplete(() {
           setState(() {});
         });
@@ -171,7 +171,7 @@ class _HouseHomeState extends BaseAppBarAndBodyState<HouseHome> {
         ).then((data) {
           this._data.addAll(data);
         }).catchError((e) {
-          showToast(context, e.toString());
+          showMsgToast(context, e.toString());
         }).whenComplete(() {
           setState(() {});
         });

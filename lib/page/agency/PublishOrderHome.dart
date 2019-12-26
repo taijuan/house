@@ -307,7 +307,7 @@ class _PublishOrderItemState extends BaseState<_PublishOrderItem> {
       Provide.value<ProviderOrderReLoad>(context).reLoad();
     }).catchError((e) {
       pop(context);
-      showToast(context, e.toString());
+      showMsgToast(context, e.toString());
     });
   }
 

@@ -78,11 +78,11 @@ class _ForgerPasswordState extends BaseAppBarAndBodyState<ForgerPassword> {
   _retrievePassword() {
     String account = _userNameController.text;
     if (account.isEmpty) {
-      showToast(context, HouseValue.of(context).typeYourEmailAddress);
+      showMsgToast(context, HouseValue.of(context).typeYourEmailAddress);
       return;
     }
     if (!DataUtils.checkEmail(account)) {
-      showToast(context, HouseValue.of(context).isNotEmail);
+      showMsgToast(context, HouseValue.of(context).isNotEmail);
       return;
     }
     showLoadingDialog(context);
@@ -97,7 +97,7 @@ class _ForgerPasswordState extends BaseAppBarAndBodyState<ForgerPassword> {
       })
       ..catchError((e) {
         pop(context);
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
       });
   }
 }

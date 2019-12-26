@@ -42,7 +42,7 @@ class MapHomeState extends BaseState<MapHome> {
         }
       })
       ..catchError((e) {
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
         pop(context);
       });
   }
@@ -117,7 +117,7 @@ class MapHomeState extends BaseState<MapHome> {
         child: HouseBigCard(house),
       );
     }).catchError((e) {
-      showToast(context, e.toString());
+      showMsgToast(context, e.toString());
       pop(context);
     });
   }

@@ -112,7 +112,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
           Provide.value<ProviderOrderReLoad>(context).reLoad();
         }).catchError((e) {
           pop(context);
-          showToast(context, e.toString());
+          showMsgToast(context, e.toString());
         });
       },
     );
@@ -151,7 +151,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
                     Provide.value<ProviderOrderReLoad>(context).reLoad();
                   }).catchError((e) {
                     pop(context);
-                    showToast(context, e.toString());
+                    showMsgToast(context, e.toString());
                   });
                 });
               },
@@ -222,7 +222,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
               ).then((data) {
                 _data = data;
               }).catchError((e) {
-                showToast(context, e.toString());
+                showMsgToast(context, e.toString());
               }).whenComplete(() {
                 setState(() {});
               });
@@ -464,7 +464,7 @@ class _CaseDetailPageState extends BaseAppBarAndBodyState<CaseDetailPage> {
         Provide.value<ProviderOrderReLoad>(context).reLoad();
       })
       ..catchError((e) {
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
         pop(context);
       });
   }

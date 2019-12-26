@@ -64,7 +64,7 @@ class _LandlordOrdersPageState
                 _data.clear();
                 _data.addAll(data);
               }).catchError((e) {
-                showToast(context, e.toString());
+                showMsgToast(context, e.toString());
               }).whenComplete(() {
                 setState(() {});
               });
@@ -78,7 +78,7 @@ class _LandlordOrdersPageState
               ).then((data) {
                 _data.addAll(data);
               }).catchError((e) {
-                showToast(context, e.toString());
+                showMsgToast(context, e.toString());
               }).whenComplete(() {
                 setState(() {});
               });

@@ -195,12 +195,12 @@ class _PublishCasePageState extends BaseAppBarAndBodyState<PublishCasePage> {
   void commit() {
     String description = controller.text;
     if (DataUtils.isEmpty(description)) {
-      showToast(context,
+      showMsgToast(context,
           HouseValue.of(context).type + HouseValue.of(context).description);
       return;
     }
     if (images.isEmpty) {
-      showToast(context, HouseValue.of(context).pleaseUploadPhotos);
+      showMsgToast(context, HouseValue.of(context).pleaseUploadPhotos);
       return;
     }
     showLoadingDialog(context);
@@ -219,7 +219,7 @@ class _PublishCasePageState extends BaseAppBarAndBodyState<PublishCasePage> {
       })
       ..catchError((e) {
         pop(context);
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
       });
   }
 }

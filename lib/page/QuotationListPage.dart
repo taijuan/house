@@ -53,7 +53,7 @@ class _QuotationListPageState
               this._data.addAll(data.data);
               this._transactor = data.transactor;
             }).catchError((e) {
-              showToast(context, e.toString());
+              showMsgToast(context, e.toString());
             }).whenComplete(() {
               setState(() {});
             });
@@ -68,7 +68,7 @@ class _QuotationListPageState
               this._data.addAll(data.data);
               this._transactor = data.transactor;
             }).catchError((e) {
-              showToast(context, e.toString());
+              showMsgToast(context, e.toString());
             }).whenComplete(() {
               setState(() {});
             });
@@ -167,7 +167,7 @@ class _QuotationListPageState
           pop(context);
         }).catchError((e) {
           pop(context);
-          showToast(context, e.toString());
+          showMsgToast(context, e.toString());
         });
       },
     );
@@ -311,7 +311,7 @@ class _QuotationListPageState
       Provide.value<ProviderOrderReLoad>(context).reLoad();
     }).catchError((e) {
       pop(context);
-      showToast(context, e.toString());
+      showMsgToast(context, e.toString());
     });
   }
 

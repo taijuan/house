@@ -78,7 +78,7 @@ class _CheckInviteCodeState extends BaseAppBarAndBodyState<CheckInviteCode> {
       })
       ..catchError((e) {
         pop(context);
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
       });
   }
 }

@@ -231,7 +231,7 @@ class _ProfileHomeState extends BaseAppBarAndBodyState<ProfileHome> {
       pop(context);
       Provide.value<ProviderUser>(context).save(user);
     }).catchError((e) {
-      showToast(context, e.toString());
+      showMsgToast(context, e.toString());
       pop(context);
     });
   }

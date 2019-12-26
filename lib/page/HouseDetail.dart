@@ -56,7 +56,7 @@ class _HouseDetailState extends BaseAppBarAndBodyState<HouseDetail> {
           ).then((v) {
             _data = v;
           }).catchError((e) {
-            showToast(context, e.toString());
+            showMsgToast(context, e.toString());
           }).whenComplete(() {
             setState(() {});
           });

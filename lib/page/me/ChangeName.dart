@@ -61,12 +61,12 @@ class _ChangeNameState extends BaseAppBarAndBodyState<ChangeName> {
   void _changeName() async {
     String firstName = _mController.text;
     if (firstName.isEmpty) {
-      showToast(context, HouseValue.of(context).typeFirstName);
+      showMsgToast(context, HouseValue.of(context).typeFirstName);
       return;
     }
     String lastName = _xController.text;
     if (lastName.isEmpty) {
-      showToast(context, HouseValue.of(context).typeLastName);
+      showMsgToast(context, HouseValue.of(context).typeLastName);
       return;
     }
     showLoadingDialog(context);
@@ -81,7 +81,7 @@ class _ChangeNameState extends BaseAppBarAndBodyState<ChangeName> {
       Provide.value<ProviderUser>(context).save(user);
     }).catchError((e) {
       pop(context);
-      showToast(context, e.toString());
+      showMsgToast(context, e.toString());
     });
   }
 }

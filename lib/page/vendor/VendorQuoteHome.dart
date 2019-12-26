@@ -28,11 +28,11 @@ class _VendorQuoteHomeState extends BaseAppBarAndBodyState<VendorQuoteHome> {
             style: createTextStyle(color: HouseColor.green),
           ), onPressed: () async {
         if (DataUtils.isEmpty(_priceController.text)) {
-          showToast(context, HouseValue.of(context).type + "price");
+          showMsgToast(context, HouseValue.of(context).type + "price");
           return;
         }
         if (DataUtils.isEmpty(_descController.text)) {
-          showToast(
+          showMsgToast(
             context,
             HouseValue.of(context).type +
                 HouseValue.of(context).quotationDetail,
@@ -52,7 +52,7 @@ class _VendorQuoteHomeState extends BaseAppBarAndBodyState<VendorQuoteHome> {
           Provide.value<ProviderOrderReLoad>(context).reLoad();
         }).catchError((e) {
           pop(context);
-          showToast(context, e.toString());
+          showMsgToast(context, e.toString());
         });
       }),
     );

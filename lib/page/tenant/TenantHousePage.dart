@@ -51,7 +51,7 @@ class _TenantHousePageState extends BaseAppBarAndBodyState<TenantHousePage> {
           this._data.clear();
           this._data.addAll(data);
         }).catchError((e) {
-          showToast(context, e.toString());
+          showMsgToast(context, e.toString());
         }).whenComplete(() {
           setState(() {});
         });
@@ -64,7 +64,7 @@ class _TenantHousePageState extends BaseAppBarAndBodyState<TenantHousePage> {
         ).then((data) {
           this._data.addAll(data);
         }).catchError((e) {
-          showToast(context, e.toString());
+          showMsgToast(context, e.toString());
         }).whenComplete(() {
           setState(() {});
         });

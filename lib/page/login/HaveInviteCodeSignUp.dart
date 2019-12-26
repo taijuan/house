@@ -166,19 +166,19 @@ class _HaveInviteCodeSignUpState
     String firstName = _firstNameController.text;
     String lastName = _lastNameController.text;
     if (account.isEmpty) {
-      showToast(context, HouseValue.of(context).typeYourEmailAddress);
+      showMsgToast(context, HouseValue.of(context).typeYourEmailAddress);
       return;
     }
     if (password1.isEmpty) {
-      showToast(context, HouseValue.of(context).typeYourPassword);
+      showMsgToast(context, HouseValue.of(context).typeYourPassword);
       return;
     }
     if (password2.isEmpty) {
-      showToast(context, HouseValue.of(context).retypeYourPassword);
+      showMsgToast(context, HouseValue.of(context).retypeYourPassword);
       return;
     }
     if (password1 != password2) {
-      showToast(context, HouseValue.of(context).passwordError);
+      showMsgToast(context, HouseValue.of(context).passwordError);
       return;
     }
     showLoadingDialog(context);
@@ -202,7 +202,7 @@ class _HaveInviteCodeSignUpState
       })
       ..catchError((e) {
         pop(context);
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
       });
   }
 }

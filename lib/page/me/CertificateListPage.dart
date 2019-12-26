@@ -283,7 +283,7 @@ class _CertificateListPageState
       })
       ..catchError((e) {
         pop(context);
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
       });
   }
 

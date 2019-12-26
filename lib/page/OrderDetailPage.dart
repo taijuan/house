@@ -74,7 +74,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
             ).then((data) {
               this._data = data;
             }).catchError((e) {
-              showToast(context, e.toString());
+              showMsgToast(context, e.toString());
             }).whenComplete(() {
               setState(() {});
             });
@@ -264,11 +264,11 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                       padding: EdgeInsets.fromLTRB(16, 0, 16, 4),
                       onPressed: () {
                         if (DataUtils.isEmpty(_messageController.text)) {
-                          showToast(context, "input message");
+                          showMsgToast(context, "input message");
                           return;
                         }
                         if (_receiveUserType == null) {
-                          showToast(context, "select message to one");
+                          showMsgToast(context, "select message to one");
                           return;
                         }
                         if (!DataUtils.isEmpty(_messageController.text)) {
@@ -286,7 +286,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                                 .reLoad();
                           }).catchError((e) {
                             pop(context);
-                            showToast(context, e.toString());
+                            showMsgToast(context, e.toString());
                           });
                         }
                       },
@@ -480,7 +480,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                       Provide.value<ProviderOrderReLoad>(context).reLoad();
                     }).catchError((e) {
                       pop(context);
-                      showToast(context, e.toString());
+                      showMsgToast(context, e.toString());
                     });
                   },
                 );
@@ -516,7 +516,7 @@ class _OrderDetailPageState extends BaseAppBarAndBodyState<OrderDetailPage> {
                       Provide.value<ProviderOrderReLoad>(context).reLoad();
                     }).catchError((e) {
                       pop(context);
-                      showToast(context, e.toString());
+                      showMsgToast(context, e.toString());
                     });
                   },
                 );

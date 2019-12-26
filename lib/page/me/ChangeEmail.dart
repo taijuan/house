@@ -63,16 +63,16 @@ class _ChangeEmailState extends BaseAppBarAndBodyState<ChangeEmail> {
   void _changeEmail() async {
     String email = _userNameController.text;
     if (email.isEmpty) {
-      showToast(context, HouseValue.of(context).typeYourEmailAddress);
+      showMsgToast(context, HouseValue.of(context).typeYourEmailAddress);
       return;
     }
     String code = _userCodeController.text;
     if (code.isEmpty) {
-      showToast(context, HouseValue.of(context).typeVerificationCode);
+      showMsgToast(context, HouseValue.of(context).typeVerificationCode);
       return;
     }
     if (this.code != code) {
-      showToast(context, HouseValue.of(context).codeError);
+      showMsgToast(context, HouseValue.of(context).codeError);
       return;
     }
     showLoadingDialog(context);
@@ -86,14 +86,14 @@ class _ChangeEmailState extends BaseAppBarAndBodyState<ChangeEmail> {
       Provide.value<ProviderUser>(context).save(user);
     }).catchError((e) {
       pop(context);
-      showToast(context, e.toString());
+      showMsgToast(context, e.toString());
     });
   }
 
   void _sendEmail() {
     String account = _userNameController.text;
     if (account.isEmpty) {
-      showToast(context, HouseValue.of(context).typeYourEmailAddress);
+      showMsgToast(context, HouseValue.of(context).typeYourEmailAddress);
       return;
     }
     showLoadingDialog(context);
@@ -108,7 +108,7 @@ class _ChangeEmailState extends BaseAppBarAndBodyState<ChangeEmail> {
       })
       ..catchError((e) {
         pop(context);
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
       });
   }
 }

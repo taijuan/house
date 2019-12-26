@@ -44,7 +44,7 @@ class _OrdersHomeState extends BaseState<OrdersHome>
                 _data.clear();
                 _data.addAll(data);
               }).catchError((e) {
-                showToast(context, e.toString());
+                showMsgToast(context, e.toString());
               }).whenComplete(() {
                 setState(() {});
               });
@@ -59,7 +59,7 @@ class _OrdersHomeState extends BaseState<OrdersHome>
               ).then((data) {
                 _data.addAll(data);
               }).catchError((e) {
-                showToast(context, e.toString());
+                showMsgToast(context, e.toString());
               }).whenComplete(() {
                 setState(() {});
               });

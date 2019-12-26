@@ -216,19 +216,19 @@ class _LoginState extends BaseAppBarAndBodyState<Login> {
     String account = _userNameController.text;
     String password = _userPwdController.text;
     if (account.isEmpty) {
-      showToast(context, HouseValue.of(context).typeYourEmailAddress);
+      showMsgToast(context, HouseValue.of(context).typeYourEmailAddress);
       return;
     }
     if (!DataUtils.checkEmail(account)) {
-      showToast(context, HouseValue.of(context).isNotEmail);
+      showMsgToast(context, HouseValue.of(context).isNotEmail);
       return;
     }
     if (password.isEmpty) {
-      showToast(context, HouseValue.of(context).typeYourPassword);
+      showMsgToast(context, HouseValue.of(context).typeYourPassword);
       return;
     }
     if (password.length < 6) {
-      showToast(context, HouseValue.of(context).passwordLengthMoreThan6);
+      showMsgToast(context, HouseValue.of(context).passwordLengthMoreThan6);
       return;
     }
     showLoadingDialog(context);
@@ -249,7 +249,7 @@ class _LoginState extends BaseAppBarAndBodyState<Login> {
       ..catchError((e) {
         LogUtils.log(e);
         pop(context);
-        showToast(context, e.toString());
+        showMsgToast(context, e.toString());
       });
   }
 }
