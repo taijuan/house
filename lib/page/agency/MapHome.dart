@@ -16,11 +16,9 @@ class MapHomeState extends BaseState<MapHome> {
   LatLng _current = LatLng(33.8688197000, 151.2092955000);
 
   void _getPermission(GoogleMapController controller) {
-    PermissionHandler().requestPermissions([
-      PermissionGroup.location,
-    ]).then((values) {
+    [Permission.location].request().then((values) {
       return values.values.every((status) {
-        return status == PermissionStatus.granted;
+        return status.isGranted;
       });
     }).then((granted) {
       _initLocation(controller);

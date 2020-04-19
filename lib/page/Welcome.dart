@@ -11,17 +11,17 @@ class Welcome extends BaseStatefulWidget {
 class _WelcomeState extends BaseState<Welcome> {
   @override
   void initState() {
-    List<PermissionGroup> permissions = [];
+    List<Permission> permissions = [];
     if (Platform.isAndroid) {
-      permissions.add(PermissionGroup.location);
-      permissions.add(PermissionGroup.storage);
+      permissions.add(Permission.location);
+      permissions.add(Permission.storage);
     }
     if (Platform.isIOS) {
-      permissions.add(PermissionGroup.locationWhenInUse);
-      permissions.add(PermissionGroup.locationAlways);
-      permissions.add(PermissionGroup.photos);
+      permissions.add(Permission.locationWhenInUse);
+      permissions.add(Permission.locationAlways);
+      permissions.add(Permission.photos);
     }
-    PermissionHandler().requestPermissions(permissions).then((values) {
+    permissions.request().then((values) {
       Future.delayed(const Duration(seconds: 2), () {
         loginSuccessToNavigator(context, isFromWelCome: true);
       });
